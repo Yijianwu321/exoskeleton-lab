@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>重要事件记录 | Milestones · 外骨骼实验室</title>
+<meta name="description" content="深圳技术大学中德智能制造学院 外骨骼实验室 重要事件记录：一条会跟着滚动生长的时间轴。">
+<style>
+/* ============ tokens: same light theme as the homepage ============ */
+:root{
+  color-scheme:light;
+  --bg:#F7FAFC;
+  --bg-2:#EFF5FA;
+  --surface:#FFFFFF;
+  --surface-2:#F2F8FC;
+  --line:rgba(12,42,64,.10);
+  --line-2:rgba(12,42,64,.16);
+  --line-strong:rgba(12,42,64,.26);
+  --txt:#0C2436;
+  --txt-2:#3E5D72;
+  --txt-3:#5B7488;
+  --accent:#0B7A63;
+  --accent-dim:rgba(11,122,99,.10);
+  --accent-line:rgba(11,122,99,.30);
+  --accent-hi:#096B57;
+  --accent-ink:#FFFFFF;
+  --radius:4px;
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px;
+  --sp-5:20px; --sp-6:24px; --sp-7:32px; --sp-8:48px;
+  --nav-h:64px;
+  --pad:clamp(20px,5vw,72px);
+  --maxw:1240px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --font:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"Cascadia Mono","Consolas","SFMono-Regular",monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 16px);-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--txt);font-family:var(--font);font-size:16px;line-height:1.65;
+  letter-spacing:.01em;overflow-x:hidden;caret-color:var(--accent);scrollbar-color:var(--line-strong) transparent}
+body::-webkit-scrollbar{width:10px;height:10px}
+body::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:var(--radius)}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4{margin:0;font-weight:600;letter-spacing:-.01em;line-height:1.12}
+p{margin:0;color:var(--txt-2);max-width:62ch}
+ul{margin:0;padding:0;list-style:none}
+::selection{background:var(--accent);color:var(--accent-ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:var(--radius)}
+[data-lang="zh"] .en{display:none !important}
+[data-lang="en"] .zh{display:none !important}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
+.label{font-family:var(--mono);font-size:12px;color:var(--txt-3)}
+.ph{font-family:var(--mono);font-size:max(11px,.8em);color:var(--accent);
+  border:1px dashed var(--accent-line);border-radius:var(--radius);
+  padding:.05em .42em;white-space:nowrap;background:var(--accent-dim)}
+.btn{display:inline-flex;align-items:center;gap:10px;white-space:nowrap;padding:12px 20px;
+  border-radius:var(--radius);font-size:14.5px;font-weight:500;border:1px solid var(--line-strong);
+  background:var(--surface);color:var(--txt);
+  transition:background .2s var(--ease),border-color .2s var(--ease),transform .16s var(--ease),color .2s var(--ease)}
+.btn:hover{border-color:var(--accent-line);background:var(--accent-dim);color:var(--accent-hi)}
+.btn:active{transform:translateY(1px)}
+.btn--primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+.btn--primary:hover{background:var(--accent-hi);border-color:var(--accent-hi);color:var(--accent-ink)}
+
+/* ============ nav ============ */
+.nav{position:sticky;top:0;z-index:50;height:var(--nav-h);
+  background:rgba(255,255,255,.82);backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid var(--line);display:flex;align-items:center}
+.nav__in{width:100%;max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad);
+  display:flex;align-items:center;gap:clamp(12px,1.8vw,24px)}
+.brand{display:flex;align-items:center;gap:var(--sp-2);font-weight:600;font-size:15px;flex:0 0 auto;
+  transition:color .2s var(--ease)}
+.brand:hover{color:var(--accent)}
+.brand__mark{width:26px;height:26px;border:1px solid var(--accent-line);border-radius:var(--radius);
+  display:grid;place-items:center;color:var(--accent);font-family:var(--mono);font-size:11px;background:var(--accent-dim)}
+.nav__links{display:flex;align-items:center;gap:clamp(10px,1.6vw,24px);flex:1 1 auto;min-width:0;justify-content:flex-end}
+.nav__links a{font-size:13.5px;color:var(--txt-2);padding:6px 2px;border-bottom:1px solid transparent;
+  transition:color .2s var(--ease),border-color .2s var(--ease);white-space:nowrap}
+.nav__links a:hover{color:var(--txt);border-color:var(--accent)}
+.nav__links a.is-here{color:var(--txt);border-color:var(--accent)}
+.langbtn{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--txt-2);
+  background:transparent;border:1px solid var(--line-strong);border-radius:var(--radius);
+  padding:var(--sp-2) 10px;cursor:pointer;flex:0 0 auto;transition:border-color .2s var(--ease),color .2s var(--ease)}
+.langbtn:hover{border-color:var(--accent-line);color:var(--accent-hi)}
+
+/* ============ page header ============ */
+.phead{padding-top:clamp(44px,5.6vw,72px);padding-bottom:clamp(28px,3.6vw,44px)}
+.phead__eyebrow{display:flex;align-items:center;gap:var(--sp-3);margin-bottom:var(--sp-5)}
+.phead__eyebrow i{width:34px;height:1px;background:var(--accent)}
+.phead h1{font-size:clamp(34px,5.4vw,64px);letter-spacing:-.03em;line-height:1.02;max-width:24ch}
+.phead__lede{margin-top:var(--sp-6);font-size:clamp(15px,1.5vw,17.5px);max-width:56ch}
+.phead__row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);
+  border:1px solid var(--line);margin-top:clamp(28px,3.4vw,44px)}
+.phead__cell{background:var(--surface);padding:var(--sp-5) var(--sp-6)}
+.phead__k{font-family:var(--mono);font-size:12px;color:var(--txt-3)}
+.phead__v{font-family:var(--mono);font-size:clamp(20px,2.4vw,28px);color:var(--txt);line-height:1.2;
+  font-variant-numeric:tabular-nums}
+
+/* ============ tick ruler: the page is alive before you scroll ============ */
+.ruler{position:relative;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:var(--bg-2);overflow:hidden;height:44px;display:flex;align-items:flex-end}
+.ruler__ticks{display:flex;align-items:flex-end;gap:6px;width:100%;padding-inline:var(--pad)}
+.ruler__ticks i{flex:0 0 1px;width:1px;background:var(--line-2);height:10px;
+  transform:scaleY(.2);transform-origin:bottom;animation:tickUp .5s var(--ease) both}
+.ruler__ticks i:nth-child(4n+1){height:20px}
+.ruler__ticks i:nth-child(8n+1){height:26px;background:var(--accent-line)}
+.ruler__sweep{position:absolute;inset-block:0;width:120px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,var(--accent-dim) 45%,var(--accent-line) 50%,var(--accent-dim) 55%,transparent);
+  animation:sweepX 6.5s linear infinite}
+@keyframes tickUp{to{transform:scaleY(1)}}
+@keyframes sweepX{0%{transform:translateX(-140px)}100%{transform:translateX(calc(100vw + 140px))}}
+
+/* ============ the timeline ============ */
+.tlx{padding-block:clamp(56px,7vw,104px)}
+.tlx__grid{display:grid;grid-template-columns:minmax(200px,260px) minmax(0,1fr);
+  gap:clamp(24px,4vw,72px);align-items:start}
+.tlx__aside{position:sticky;top:calc(var(--nav-h) + 24px);display:grid;gap:var(--sp-4)}
+.tlx__readout{font-family:var(--mono);font-size:clamp(38px,4.4vw,58px);line-height:1;color:var(--accent);
+  font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.tlx__readout span{font-size:.44em;color:var(--txt-3);margin-left:.16em}
+.tlx__meter{height:3px;background:var(--line);border-radius:var(--radius);overflow:hidden}
+.tlx__meter i{display:block;height:100%;width:0;background:var(--accent);
+  transform-origin:left;transition:width .12s linear}
+.tlx__index{border-top:1px solid var(--line)}
+.tlx__index a{display:flex;gap:var(--sp-3);align-items:baseline;padding:var(--sp-3) 0;
+  border-bottom:1px solid var(--line);font-size:13.5px;color:var(--txt-3);
+  transition:color .2s var(--ease),padding-left .25s var(--ease)}
+.tlx__index a .idx{font-family:var(--mono);font-size:12px;color:var(--txt-3);min-width:2.2em}
+.tlx__index a:hover{color:var(--txt)}
+.tlx__index a.is-active{color:var(--accent-hi);padding-left:6px}
+.tlx__index a.is-active .idx{color:var(--accent)}
+
+.tlx__body{position:relative;padding-left:clamp(28px,4vw,52px)}
+.tlx__rail{position:absolute;left:0;top:6px;bottom:6px;width:1px;background:var(--line-2)}
+.tlx__fill{position:absolute;inset:0;background:var(--accent);transform:scaleY(0);transform-origin:top;
+  will-change:transform}
+.tlx__playhead{position:absolute;left:-4px;top:0;width:9px;height:9px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 0 4px var(--accent-dim);will-change:transform}
+.tlx__row{position:relative;padding-block:clamp(24px,3vw,40px);border-bottom:1px solid var(--line);
+  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(20px,3vw,40px);
+  align-items:start;opacity:.62;transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.tlx__row:first-child{border-top:1px solid var(--line)}
+.tlx__row.is-active{opacity:1;transform:translateX(6px)}
+.tlx__node{position:absolute;left:calc(-1 * clamp(28px,4vw,52px) - 4px);top:calc(clamp(24px,3vw,40px) + 6px);
+  width:9px;height:9px;border-radius:50%;background:var(--surface);border:1px solid var(--line-strong);
+  transition:background .3s var(--ease),border-color .3s var(--ease),transform .3s var(--ease)}
+.tlx__row.is-active .tlx__node{background:var(--accent);border-color:var(--accent);transform:scale(1.35)}
+.tlx__year{font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:var(--accent);
+  font-variant-numeric:tabular-nums;display:inline-flex;align-items:center;gap:var(--sp-2)}
+.tlx__row h3{font-size:clamp(19px,2.2vw,25px);margin-top:var(--sp-3);letter-spacing:-.015em}
+.tlx__row p{font-size:14.5px;margin-top:var(--sp-3)}
+.tlx__tags{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-4)}
+.tlx__tag{font-family:var(--mono);font-size:12px;color:var(--txt-3);border:1px solid var(--line);
+  border-radius:var(--radius);padding:3px 8px;background:var(--surface)}
+.tlx__shot{position:relative;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  aspect-ratio:16/10;background:
+    repeating-linear-gradient(135deg,var(--accent-dim) 0 1px,transparent 1px 11px),
+    var(--surface-2);display:grid;place-items:end start;
+  transition:border-color .4s var(--ease)}
+.tlx__row.is-active .tlx__shot{border-color:var(--accent-line)}
+.tlx__shot span{font-family:var(--mono);font-size:12px;color:var(--txt-3);padding:var(--sp-2) var(--sp-3);
+  background:rgba(255,255,255,.72)}
+
+/* ============ close ============ */
+.close{padding-block:clamp(48px,6vw,88px);background:var(--bg-2);border-top:1px solid var(--line)}
+.close h2{font-size:clamp(24px,3vw,36px);letter-spacing:-.02em}
+.close p{margin-top:var(--sp-4)}
+.close__cta{display:flex;gap:var(--sp-3);flex-wrap:wrap;margin-top:var(--sp-6)}
+
+footer{border-top:1px solid var(--line);padding-block:30px;background:var(--surface)}
+.foot{display:flex;justify-content:space-between;gap:var(--sp-5);flex-wrap:wrap;
+  font-family:var(--mono);font-size:12px;color:var(--txt-3)}
+
+/* ============ reveal ============ */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .ruler__ticks i{animation:none;transform:none}
+  .ruler__sweep{display:none}
+  .rv{opacity:1;transform:none;transition:none}
+  .tlx__row{opacity:1;transform:none;transition:none}
+  .tlx__fill{transform:scaleY(1)}
+  .tlx__playhead{display:none}
+  .tlx__meter i{transition:none}
+}
+@media (max-width:1024px){
+  .tlx__grid{grid-template-columns:1fr;gap:var(--sp-6)}
+  .tlx__aside{position:static}
+  .tlx__index{display:none}
+  .tlx__row{grid-template-columns:1fr}
+}
+@media (max-width:768px){
+  .nav{height:auto}
+  .nav__in{flex-wrap:wrap;gap:12px;padding-block:10px}
+  .brand{order:1}.langbtn{order:2;margin-left:auto}
+  .nav__links{order:3;flex:1 1 100%;gap:14px;overflow-x:auto;scrollbar-width:none;justify-content:flex-start}
+  .nav__links::-webkit-scrollbar{display:none}
+  .nav__links a{font-size:13px}
+  .phead__row{grid-template-columns:1fr}
+  .tlx__body{padding-left:24px}
+  .tlx__node{left:-28px}
+  .phead h1{font-size:clamp(30px,9vw,44px)}
+}
+</style>
+<noscript><style>.rv{opacity:1!important;transform:none!important}</style></noscript>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav__in">
+    <a class="brand" href="index.html">
+      <span class="brand__mark">EX</span>
+      <span class="brand__txt"><span class="zh">外骨骼实验室</span><span class="en">Exoskeleton Lab</span></span>
+    </a>
+    <nav class="nav__links" aria-label="主导航">
+      <a href="index.html#research"><span class="zh">研究内容</span><span class="en">Research</span></a>
+      <a href="index.html#metrics"><span class="zh">成果数据</span><span class="en">Results</span></a>
+      <a href="index.html#hardware"><span class="zh">实验硬件</span><span class="en">Hardware</span></a>
+      <a href="index.html#album"><span class="zh">活动相册</span><span class="en">Gallery</span></a>
+      <a class="is-here" href="milestones.html" aria-current="page"><span class="zh">重要事件</span><span class="en">Milestones</span></a>
+      <a href="index.html#team"><span class="zh">团队成员</span><span class="en">Team</span></a>
+    </nav>
+    <button class="langbtn" id="langbtn" type="button" aria-label="切换语言 / Switch language">EN</button>
+  </div>
+</header>
+
+<main>
+
+<section class="phead">
+  <div class="wrap">
+    <div class="phead__eyebrow">
+      <i></i>
+      <span class="label zh">重要事件记录 · 样板页</span>
+      <span class="label en">Milestones · sample page</span>
+    </div>
+    <h1 class="zh">实验室的每一步，都落在这条线上</h1>
+    <h1 class="en">Every step the lab takes lands on this line</h1>
+    <p class="phead__lede zh">从第一台样机到下一次验收。往下滚动，时间轴会跟着你的进度生长：进度条、节点和年份一起亮起来。</p>
+    <p class="phead__lede en">From the first prototype to the next review. Scroll down and the timeline grows with you: the rail, the nodes and the years light up in turn.</p>
+    <div class="phead__row">
+      <div class="phead__cell">
+        <div class="phead__k zh">记录条数</div><div class="phead__k en">Entries</div>
+        <div class="phead__v">06</div>
+      </div>
+      <div class="phead__cell">
+        <div class="phead__k zh">时间跨度</div><div class="phead__k en">Span</div>
+        <div class="phead__v"><span class="ph">[ 年份 ]</span> - <span class="ph">[ 年份 ]</span></div>
+      </div>
+      <div class="phead__cell">
+        <div class="phead__k zh">最近更新</div><div class="phead__k en">Last updated</div>
+        <div class="phead__v"><span class="ph">[ 待填 ]</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ruler" aria-hidden="true">
+  <div class="ruler__ticks">
+    <i style="animation-delay:0ms"></i><i style="animation-delay:30ms"></i><i style="animation-delay:60ms"></i>
+    <i style="animation-delay:90ms"></i><i style="animation-delay:120ms"></i><i style="animation-delay:150ms"></i>
+    <i style="animation-delay:180ms"></i><i style="animation-delay:210ms"></i><i style="animation-delay:240ms"></i>
+    <i style="animation-delay:270ms"></i><i style="animation-delay:300ms"></i><i style="animation-delay:330ms"></i>
+    <i style="animation-delay:360ms"></i><i style="animation-delay:390ms"></i><i style="animation-delay:420ms"></i>
+    <i style="animation-delay:450ms"></i><i style="animation-delay:480ms"></i><i style="animation-delay:510ms"></i>
+    <i style="animation-delay:540ms"></i><i style="animation-delay:570ms"></i><i style="animation-delay:600ms"></i>
+    <i style="animation-delay:630ms"></i><i style="animation-delay:660ms"></i><i style="animation-delay:690ms"></i>
+    <i style="animation-delay:720ms"></i><i style="animation-delay:750ms"></i><i style="animation-delay:780ms"></i>
+    <i style="animation-delay:810ms"></i><i style="animation-delay:840ms"></i><i style="animation-delay:870ms"></i>
+    <i style="animation-delay:900ms"></i><i style="animation-delay:930ms"></i><i style="animation-delay:960ms"></i>
+    <i style="animation-delay:990ms"></i><i style="animation-delay:1020ms"></i><i style="animation-delay:1050ms"></i>
+    <i style="animation-delay:1080ms"></i><i style="animation-delay:1110ms"></i><i style="animation-delay:1140ms"></i>
+    <i style="animation-delay:1170ms"></i>
+  </div>
+  <span class="ruler__sweep"></span>
+</div>
+
+<section class="tlx" data-timeline>
+  <div class="wrap tlx__grid">
+    <aside class="tlx__aside">
+      <div class="tlx__readout"><span id="tlxPct">0</span><span>%</span></div>
+      <div class="tlx__meter" aria-hidden="true"><i id="tlxMeter"></i></div>
+      <div class="label zh">时间轴进度</div>
+      <div class="label en">Timeline progress</div>
+      <nav class="tlx__index" aria-label="事件索引">
+        <a href="#m1"><span class="idx">01</span><span class="zh">第一条记录</span><span class="en">Entry one</span></a>
+        <a href="#m2"><span class="idx">02</span><span class="zh">第二条记录</span><span class="en">Entry two</span></a>
+        <a href="#m3"><span class="idx">03</span><span class="zh">第三条记录</span><span class="en">Entry three</span></a>
+        <a href="#m4"><span class="idx">04</span><span class="zh">第四条记录</span><span class="en">Entry four</span></a>
+        <a href="#m5"><span class="idx">05</span><span class="zh">第五条记录</span><span class="en">Entry five</span></a>
+        <a href="#m6"><span class="idx">06</span><span class="zh">第六条记录</span><span class="en">Entry six</span></a>
+      </nav>
+    </aside>
+
+    <div class="tlx__body">
+      <div class="tlx__rail" aria-hidden="true">
+        <span class="tlx__fill" id="tlxFill"></span>
+        <span class="tlx__playhead" id="tlxHead"></span>
+      </div>
+
+      <article class="tlx__row" id="m1" data-row>
+        <span class="tlx__node" aria-hidden="true"></span>
+        <div>
+          <span class="tlx__year"><span class="ph">[ 年份 ]</span><span class="zh">事件</span><span class="en">Event</span></span>
+          <h3 class="zh"><span class="ph">[ 事件标题待填 ]</span></h3>
+          <h3 class="en"><span class="ph">[ event title TBC ]</span></h3>
+          <p class="zh"><span class="ph">[ 一句话说明：发生了什么、谁参与、结果如何 ]</span></p>
+          <p class="en"><span class="ph">[ one-line note: what happened, who was involved, what changed ]</span></p>
+          <div class="tlx__tags">
+            <span class="tlx__tag"><span class="zh">[ 标签 ]</span><span class="en">[ tag ]</span></span>
+            <span class="tlx__tag"><span class="zh">[ 标签 ]</span><span class="en">[ tag ]</span></span>
+          </div>
+        </div>
+        <div class="tlx__shot"><span>[ 现场照片 · 待填 ]</span></div>
+      </article>
+
+      <article class="tlx__row" id="m2" data-row>
+        <span class="tlx__node" aria-hidden="true"></span>
+        <div>
+          <span class="tlx__year"><span class="ph">[ 年份 ]</span><span class="zh">事件</span><span class="en">Event</span></span>
+          <h3 class="zh"><span class="ph">[ 事件标题待填 ]</span></h3>
+          <h3 class="en"><span class="ph">[ event title TBC ]</span></h3>
+          <p class="zh"><span class="ph">[ 一句话说明 ]</span></p>
+          <p class="en"><span class="ph">[ one-line note ]</span></p>
+          <div class="tlx__tags">
+            <span class="tlx__tag"><span class="zh">[ 标签 ]</span><span class="en">[ tag ]</span></span>
+            <span class="tlx__tag"><span class="zh">[ 标签 ]</span><span class="en">[ tag ]</span></span>
+          </div>
+        </div>
+        <div class="tlx__shot"><span>[ 现场照片 · 待填 ]</span></div>
+      </article>
+
+      <article class="tlx__row" id="m3" data-row>
+        <span class="tlx__node" aria-hidden="true"></span>
+        <div>
+          <span class="tlx__year"><span class="ph">[ 年份 ]</span><span class="zh">事件</span><span class="en">Event</span></span>
+          <h3 class="zh"><span class="ph">[ 事件标题待填 ]</span></h3>
+          <h3 class="en"><span class="ph">[ event title TBC ]</span></h3>
+          <p class="zh"><span class="ph">[ 一句话说明 ]</span></p>
+          <p class="en"><span class="ph">[ one-line note ]</span></p>
+          <div class="tlx__tags">
+            <span class="tlx__tag"><span class="zh">[ 标签 ]</span><span class="en">[ tag ]</span></span>
+            <span class="tlx__tag"><span class="zh">[ 标签 ]</span><span class="en">[ tag ]</span></span>
+          </div>
+        </div>
+        <div class="tlx__shot"><span>[ 现场照片 · 待填 ]</span></div>
+      </article>
+
+      <article class="tlx__row" id="m4" data-row>
+        <span class="tlx__node" aria-hidden="true"></span>
+        <div>
+          <span class="tlx__year"><span class="ph">[ 年份 ]</span><span class="zh">事件</span><span class="en">Event</span></span>
+          <h3 class="zh"><span class="ph">[ 事件标题待填 ]</span></h3>
+          <h3 class="en"><span class="ph">[ event title TBC ]</span></h3>
+          <p class="zh"><span class="ph">[ 一句话说明 ]</span></p>
+          <p class="en"><span class="ph">[ one-line note ]</span></p>
+          <div class="tlx__tags">
+            <span class="tlx__tag"><span class="zh">[ 标签 ]</span><span class="en">[ tag ]</span></span>
+            <span class="tlx__tag"><span class="zh">[ 标签 ]</span><span class="en">[ tag ]</span></span>
+          </div>
+        </div>
+        <div class="tlx__shot"><span>[ 现场照片 · 待填 ]</span></div>
+      </article>
+
+      <article class="tlx__row" id="m5" data-row>
+        <span class="tlx__node" aria-hidden="true"></span>
+        <div>
+          <span class="tlx__year"><span class="ph">[ 年份 ]</span><span class="zh">事件</span><span class="en">Event</span></span>
+          <h3 class="zh"><span class="ph">[ 事件标题待填 ]</span></h3>
+          <h3 class="en"><span class="ph">[ event title TBC ]</span></h3>
+          <p class="zh"><span class="ph">[ 一句话说明 ]</span></p>
+          <p class="en"><span class="ph">[ one-line note ]</span></p>
+          <div class="tlx__tags">
+            <span class="tlx__tag"><span class="zh">[ 标签 ]</span><span class="en">[ tag ]</span></span>
+            <span class="tlx__tag"><span class="zh">[ 标签 ]</span><span class="en">[ tag ]</span></span>
+          </div>
+        </div>
+        <div class="tlx__shot"><span>[ 现场照片 · 待填 ]</span></div>
+      </article>
+
+      <article class="tlx__row" id="m6" data-row>
+        <span class="tlx__node" aria-hidden="true"></span>
+        <div>
+          <span class="tlx__year"><span class="ph">[ 年份 ]</span><span class="zh">事件</span><span class="en">Event</span></span>
+          <h3 class="zh"><span class="ph">[ 事件标题待填 ]</span></h3>
+          <h3 class="en"><span class="ph">[ event title TBC ]</span></h3>
+          <p class="zh"><span class="ph">[ 一句话说明 ]</span></p>
+          <p class="en"><span class="ph">[ one-line note ]</span></p>
+          <div class="tlx__tags">
+            <span class="tlx__tag"><span class="zh">[ 标签 ]</span><span class="en">[ tag ]</span></span>
+            <span class="tlx__tag"><span class="zh">[ 标签 ]</span><span class="en">[ tag ]</span></span>
+          </div>
+        </div>
+        <div class="tlx__shot"><span>[ 现场照片 · 待填 ]</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="close">
+  <div class="wrap">
+    <h2 class="zh">这是样板页，其余板块照这个规格做</h2>
+    <h2 class="en">This is the sample page, the rest follow this spec</h2>
+    <p class="zh">六条记录、年份标签、照片位与标签全部是占位符，替换成真实资料即可；下方按钮回到首页。</p>
+    <p class="en">The six entries, year chips, photo slots and tags are placeholders. Replace them with real material; the button below returns to the homepage.</p>
+    <div class="close__cta">
+      <a class="btn btn--primary" href="index.html"><span class="zh">返回首页</span><span class="en">Back to homepage</span></a>
+      <a class="btn" href="index.html#events"><span class="zh">看首页的时间线段</span><span class="en">See the homepage timeline</span></a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span class="zh">深圳技术大学 中德智能制造学院 · 外骨骼实验室</span>
+    <span class="en">Exoskeleton Laboratory · Sino-German College of Intelligent Manufacturing, SZTU</span>
+    <span>© <span class="ph">[ 年份 ]</span></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* language toggle */
+  var root=document.documentElement, btn=document.getElementById("langbtn");
+  function apply(lang){
+    root.setAttribute("data-lang",lang);
+    root.setAttribute("lang",lang==="zh"?"zh-CN":"en");
+    btn.textContent = lang==="zh" ? "EN" : "中文";
+  }
+  btn.addEventListener("click",function(){
+    apply(root.getAttribute("data-lang")==="zh" ? "en" : "zh");
+  });
+
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* reveal */
+  var items=document.querySelectorAll(".rv");
+  if(reduce || !("IntersectionObserver" in window)){
+    items.forEach(function(el){el.classList.add("in");});
+  }else{
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+    },{rootMargin:"0px 0px -8% 0px",threshold:.12});
+    items.forEach(function(el){io.observe(el);});
+  }
+
+  /* ---------- timeline engine ----------
+     Progress is measured from the timeline block's own geometry, updated inside a
+     requestAnimationFrame loop that only runs while the block is on screen. No
+     scroll listener, no library. Reduced motion gets the finished state at rest. */
+  var tl      = document.querySelector("[data-timeline]");
+  var fill    = document.getElementById("tlxFill");
+  var head    = document.getElementById("tlxHead");
+  var meter   = document.getElementById("tlxMeter");
+  var pctOut  = document.getElementById("tlxPct");
+  var rows    = Array.prototype.slice.call(tl.querySelectorAll("[data-row]"));
+  var idxLinks= Array.prototype.slice.call(document.querySelectorAll(".tlx__index a"));
+  var lastPct = -1;
+
+  function clamp01(v){ return v<0?0:(v>1?1:v); }
+
+  function paint(){
+    var r  = tl.getBoundingClientRect();
+    var vh = window.innerHeight || 800;
+    /* 0 when the block's top reaches 78% of the viewport, 1 when its bottom passes 22% */
+    var startAt = vh*0.78, endAt = vh*0.22;
+    var span = r.height + (startAt - endAt);
+    var p = clamp01((startAt - r.top) / (span > 1 ? span : 1));
+
+    var railH = r.height - 12;
+    fill.style.transform = "scaleY(" + p + ")";
+    head.style.transform = "translateY(" + (p * railH) + "px)";
+
+    var pct = Math.round(p*100);
+    if(pct !== lastPct){
+      lastPct = pct;
+      pctOut.textContent = pct;
+      meter.style.width = pct + "%";
+    }
+
+    /* the row nearest the middle of the viewport is the active one */
+    var band = vh*0.42, best = null, bestD = Infinity;
+    rows.forEach(function(row){
+      var rr = row.getBoundingClientRect();
+      var c  = rr.top + rr.height/2;
+      var d  = Math.abs(c - vh*0.45);
+      if(d < bestD){ bestD = d; best = row; }
+    });
+    rows.forEach(function(row){ row.classList.toggle("is-active", row === best); });
+    idxLinks.forEach(function(a){
+      a.classList.toggle("is-active", best && a.getAttribute("href") === "#" + best.id);
+    });
+  }
+
+  if(reduce){
+    /* static, finished state */
+    fill.style.transform = "scaleY(1)";
+    if(head) head.style.display = "none";
+    pctOut.textContent = "100";
+    meter.style.width = "100%";
+    if(idxLinks[0]) idxLinks[0].classList.add("is-active");
+    rows[0] && rows[0].classList.add("is-active");
+  }else{
+    var raf = null, live = false;
+    function loop(){
+      if(!live){ raf = null; return; }
+      paint();
+      raf = requestAnimationFrame(loop);
+    }
+    if("IntersectionObserver" in window){
+      var vio = new IntersectionObserver(function(es){
+        live = es[0].isIntersecting;
+        if(live && raf === null){ raf = requestAnimationFrame(loop); }
+      },{rootMargin:"160px 0px"});
+      vio.observe(tl);
+    }else{
+      live = true; raf = requestAnimationFrame(loop);
+    }
+    paint();
+  }
+})();
+</script>
+</body>
+</html>

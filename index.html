@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>外骨骼实验室 | Exoskeleton Laboratory · 深圳技术大学</title>
+<meta name="description" content="深圳技术大学中德智能制造学院 外骨骼实验室。下肢助力外骨骼、人机协同控制与运动意图识别研究。">
+<style>
+/* ============ tokens: light theme, one accent (green), blue-tinted neutrals ============ */
+:root{
+  color-scheme:light;
+  --bg:#F7FAFC;        /* page ground: pale blue-white */
+  --bg-2:#EFF5FA;      /* alternating section ground: pale blue */
+  --surface:#FFFFFF;   /* cards */
+  --surface-2:#F2F8FC; /* inset blocks */
+  --line:rgba(12,42,64,.10);
+  --line-strong:rgba(12,42,64,.26);
+  --txt:#0C2436;       /* 15.2:1 on bg */
+  --txt-2:#3E5D72;     /* 6.7:1 on bg */
+  --txt-3:#5B7488;     /* 4.7:1 on bg */
+  --accent:#0B7A63;    /* 5.3:1 on white, the only accent */
+  --accent-dim:rgba(11,122,99,.10);
+  --accent-line:rgba(11,122,99,.30);
+  --accent-hi:#096B57;
+  --accent-ink:#FFFFFF;
+  --radius:4px;
+  /* spacing scale: 4px base, one step per role */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px;
+  --sp-5:20px; --sp-6:24px; --sp-7:32px; --sp-8:48px;
+  --section-y:clamp(72px,9vw,128px);
+  --nav-h:64px;
+  --pad:clamp(20px,5vw,72px);
+  --maxw:1240px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --font:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"Cascadia Mono","Consolas","SFMono-Regular",monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 12px);-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--txt);font-family:var(--font);
+  font-size:16px;line-height:1.65;letter-spacing:.01em;
+  overflow-x:hidden;caret-color:var(--accent);scrollbar-color:var(--line-strong) transparent;
+}
+body::-webkit-scrollbar{width:10px;height:10px}
+body::-webkit-scrollbar-track{background:transparent}
+body::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:var(--radius)}
+body::-webkit-scrollbar-thumb:hover{background:rgba(12,42,64,.38)}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4{margin:0;font-weight:600;letter-spacing:-.01em;line-height:1.12}
+p{margin:0;color:var(--txt-2);max-width:62ch}
+ul{margin:0;padding:0;list-style:none}
+img,svg{display:block;max-width:100%}
+::selection{background:var(--accent);color:var(--accent-ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:var(--radius)}
+
+/* ============ language switching ============ */
+[data-lang="zh"] .en{display:none !important}
+[data-lang="en"] .zh{display:none !important}
+
+/* ============ shared bits ============ */
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
+section{position:relative;padding-block:var(--section-y)}
+.label{font-family:var(--mono);font-size:12px;letter-spacing:.02em;color:var(--txt-3)}
+.ph{ /* visible placeholder token, never below the 11px legibility floor */
+  font-family:var(--mono);font-size:max(11px,.8em);color:var(--accent);
+  border:1px dashed var(--accent-line);border-radius:var(--radius);
+  padding:.05em .42em;white-space:nowrap;background:var(--accent-dim);
+}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;white-space:nowrap;
+  padding:12px 20px;border-radius:var(--radius);font-size:14.5px;font-weight:500;
+  border:1px solid var(--line-strong);background:var(--surface);color:var(--txt);
+  transition:background .2s var(--ease),border-color .2s var(--ease),transform .16s var(--ease),color .2s var(--ease);
+}
+.btn:hover{border-color:var(--accent-line);background:var(--accent-dim);color:var(--accent-hi)}
+.btn:active{transform:translateY(1px)}
+.btn.btn--primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+.btn.btn--primary:hover{background:var(--accent-hi);border-color:var(--accent-hi);color:var(--accent-ink)}
+
+/* ============ nav ============ */
+.nav{
+  position:sticky;top:0;z-index:50;height:var(--nav-h);
+  background:rgba(255,255,255,.82);backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;
+}
+.nav__in{width:100%;max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad);
+  display:flex;align-items:center;gap:clamp(12px,1.8vw,24px)}
+.brand{display:flex;align-items:center;gap:var(--sp-2);font-weight:600;font-size:15px;flex:0 0 auto;
+  transition:color .2s var(--ease)}
+.brand:hover{color:var(--accent)}
+.brand__mark{width:26px;height:26px;border:1px solid var(--accent-line);border-radius:var(--radius);
+  display:grid;place-items:center;color:var(--accent);font-family:var(--mono);font-size:11px;background:var(--accent-dim)}
+.nav__links{display:flex;align-items:center;gap:clamp(10px,1.6vw,24px);flex:1 1 auto;min-width:0;justify-content:flex-end}
+.nav__links a{font-size:13.5px;color:var(--txt-2);padding:6px 2px;border-bottom:1px solid transparent;
+  transition:color .2s var(--ease),border-color .2s var(--ease);white-space:nowrap}
+.nav__links a:hover,.nav__links a[aria-current="true"]{color:var(--txt);border-color:var(--accent)}
+.langbtn{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--txt-2);
+  background:transparent;border:1px solid var(--line-strong);border-radius:var(--radius);
+  padding:var(--sp-2) 10px;cursor:pointer;flex:0 0 auto;
+  transition:border-color .2s var(--ease),color .2s var(--ease),transform .16s var(--ease)}
+.langbtn:hover{border-color:var(--accent-line);color:var(--accent-hi)}
+.langbtn:active{transform:translateY(1px)}
+.nav .btn{padding:9px 16px;font-size:13.5px;flex:0 0 auto}
+
+/* ============ hero ============ */
+.hero{padding-top:clamp(56px,7vw,88px);padding-bottom:clamp(56px,7vw,96px);overflow:hidden}
+.hero__grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,4vw,64px);align-items:end}
+.hero__eyebrow{display:flex;align-items:center;gap:var(--sp-3);margin-bottom:var(--sp-6)}
+.hero__eyebrow .label{color:var(--txt-2)}
+.hero__tick{width:34px;height:1px;background:var(--accent);display:block}
+h1{font-size:clamp(44px,7.4vw,92px);font-weight:650;letter-spacing:-.035em;line-height:.98;color:var(--txt)}
+.hero__tagline{margin-top:var(--sp-4);font-size:clamp(20px,2.6vw,36px);font-weight:300;color:var(--txt-2);letter-spacing:.02em;line-height:1.3}
+.hero__sub{margin-top:var(--sp-6);font-size:clamp(15px,1.5vw,17.5px);max-width:52ch}
+.hero__cta{display:flex;gap:var(--sp-3);flex-wrap:wrap;margin-top:var(--sp-7)}
+.hero__side{position:relative;padding-left:clamp(20px,3vw,34px)}
+.metrics{display:grid;gap:var(--sp-5)}
+.metric{position:relative;padding-top:var(--sp-3)}
+.metric:first-child{padding-top:0}
+.metric::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--line);
+  transform:scaleX(0);transform-origin:left;animation:drawX .8s var(--ease) both}
+.metric:first-child::before{display:none}
+.metric:nth-child(2)::before{animation-delay:.5s}
+.metric:nth-child(3)::before{animation-delay:.65s}
+.metric:nth-child(4)::before{animation-delay:.8s}
+.metric__num{font-family:var(--mono);font-size:clamp(28px,3.4vw,42px);font-weight:500;color:var(--txt);letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
+.metric__num .ph{font-size:clamp(17px,2.1vw,27px);vertical-align:.18em}
+.band__cell .metric__num .ph{font-size:clamp(18px,2.5vw,30px)}
+.metric__lab{margin-top:var(--sp-2);font-size:13px;color:var(--txt-3)}
+/* ============ hero: one line, then a sweep ============ */
+.scanlines{position:absolute;inset:0;pointer-events:none;z-index:0}
+.scanlines i.scan{position:absolute;left:0;right:0;top:0;height:100%;will-change:transform;
+  background:linear-gradient(to bottom,transparent calc(50% - .5px),var(--accent-line) 50%,transparent calc(50% + .5px));
+  opacity:0;animation:sweep 7s linear infinite 1.6s}
+.hero__side::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--line);
+  transform:scaleY(0);transform-origin:top;animation:drawY 1.2s var(--ease) .2s both}
+@keyframes drawY{to{transform:scaleY(1)}}
+@keyframes drawX{to{transform:scaleX(1)}}
+@keyframes sweep{0%{transform:translateY(-100%);opacity:0}12%{opacity:.9}88%{opacity:.9}100%{transform:translateY(100%);opacity:0}}
+.hero__grid{position:relative;z-index:1}
+
+/* ============ section header: title links out to its own page ============ */
+.shead{display:grid;gap:var(--sp-3);margin-bottom:clamp(32px,4.5vw,56px)}
+.shead--tight{margin-bottom:var(--sp-7)}
+.shead h2{font-size:clamp(28px,3.6vw,44px);letter-spacing:-.025em}
+.shead p{font-size:15px}
+.shead__link{display:inline-flex;align-items:baseline;gap:.34em;color:inherit;
+  border-bottom:1px solid transparent;
+  transition:color .22s var(--ease),border-color .22s var(--ease)}
+.shead__link::after{content:"\2192";font-family:var(--mono);font-size:.46em;color:var(--accent);
+  opacity:.6;transform:translateY(-.3em);transition:transform .25s var(--ease),opacity .25s var(--ease)}
+.shead__link:hover,.shead__link:focus-visible{color:var(--accent);border-color:var(--accent-line)}
+.shead__link:hover::after{transform:translate(.18em,-.3em);opacity:1}
+.shead__hint{font-family:var(--mono);font-size:12px;color:var(--txt-3)}
+
+/* ============ research ============ */
+.research{background:var(--surface);border-top:1px solid var(--line)}
+.rgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
+.ritem{display:grid;grid-template-columns:76px minmax(0,1fr);gap:var(--sp-5);padding:var(--sp-6) var(--sp-6) var(--sp-6) 0;border-top:1px solid var(--line)}
+.ritem:nth-child(even){padding-left:var(--sp-6);border-left:1px solid var(--line)}
+.ritem__idx{font-family:var(--mono);font-size:12px;color:var(--accent);padding-top:var(--sp-1)}
+.ritem h3{font-size:19px;margin-bottom:var(--sp-2)}
+.ritem p{font-size:14.5px;max-width:44ch}
+
+/* ============ metrics band ============ */
+.band{background:var(--bg-2);border-block:1px solid var(--line)}
+.band__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.band__cell{padding:clamp(24px,3.4vw,40px) clamp(16px,2.4vw,32px);border-left:1px solid var(--line)}
+.band__cell:first-child{border-left:0}
+.band__cell .metric__num{font-size:clamp(30px,3.8vw,48px)}
+.note{margin-top:var(--sp-6);font-family:var(--mono);font-size:12px;color:var(--txt-3)}
+
+/* ============ hardware ============ */
+.hgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.hcard{background:var(--surface);padding:clamp(20px,2.4vw,32px);display:grid;gap:var(--sp-4)}
+.hcard h3{font-size:18px}
+.hcard dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:var(--sp-2) var(--sp-4);font-size:13.5px}
+.hcard dt{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-3);padding-top:2px}
+.hcard dd{margin:0;color:var(--txt-2)}
+
+/* ============ photo placeholders ============ */
+.shot{
+  position:relative;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  background:
+    repeating-linear-gradient(135deg,var(--accent-dim) 0 1px,transparent 1px 11px),
+    var(--surface-2);
+  display:grid;place-items:end start;
+}
+.shot::after{content:"";position:absolute;inset:0;border:1px solid rgba(12,42,64,.045)}
+.shot span{font-family:var(--mono);font-size:12px;color:var(--txt-3);padding:var(--sp-2) var(--sp-3);position:relative;z-index:1;background:rgba(255,255,255,.72)}
+.shot--16x9{aspect-ratio:16/9}
+.shot--4x3{aspect-ratio:4/3}
+.shot--1x1{aspect-ratio:1/1}
+
+/* ============ album ============ */
+.album{background:var(--bg-2);border-top:1px solid var(--line)}
+.album__grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:var(--sp-3)}
+.album__grid .a1{grid-column:span 4}
+.album__grid .a2{grid-column:span 2}
+.album__grid .a3{grid-column:span 2}
+.album__grid .a4{grid-column:span 2}
+.album__grid .a5{grid-column:span 2}
+.album__grid .a6{grid-column:span 3}
+.album__grid .a7{grid-column:span 3}
+.album .shot{--surface-2:#FFFFFF}
+
+/* ============ events ============ */
+.tl{border-top:1px solid var(--line)}
+.tl__row{display:grid;grid-template-columns:120px minmax(0,1fr);gap:clamp(16px,3vw,40px);
+  padding:var(--sp-6) 0;border-bottom:1px solid var(--line);align-items:baseline}
+.tl__year{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.tl__row h3{font-size:17px;margin-bottom:var(--sp-2)}
+.tl__row p{font-size:14.5px}
+
+/* ============ team: version-2 horizontal snap strip ============ */
+.team{background:var(--surface);border-block:1px solid var(--line)}
+.strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(248px,288px);gap:16px;
+  overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 14px;
+  scrollbar-color:var(--line-strong) transparent}
+.strip::-webkit-scrollbar{height:8px}
+.strip::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:var(--radius)}
+.member{scroll-snap-align:start;border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--surface-2);padding:var(--sp-4);display:flex;flex-direction:column;gap:var(--sp-3)}
+.avatar{aspect-ratio:5/4;border-radius:var(--radius);border:1px solid var(--line);
+  background-color:var(--surface);background-image:repeating-linear-gradient(135deg,var(--accent-dim) 0 1px,transparent 1px 9px);
+  display:flex;align-items:center;justify-content:center;padding:12px;text-align:center}
+.member-name{font-size:16.5px;font-weight:600;letter-spacing:-.005em;color:var(--txt)}
+.member .small{font-size:13px;color:var(--txt-2)}
+.spec{display:flex;justify-content:space-between;gap:14px;border-top:1px solid var(--line);
+  padding-top:9px;font-size:13px;color:var(--txt-2)}
+.strip__hint{margin-top:var(--sp-4);font-family:var(--mono);font-size:12px;color:var(--txt-3)}
+
+/* ============ join ============ */
+.join__grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(32px,4vw,56px);align-items:start}
+.contacts{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.crow{background:var(--surface);display:grid;grid-template-columns:112px minmax(0,1fr);gap:var(--sp-4);padding:var(--sp-4) var(--sp-5)}
+.crow dt{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-3);padding-top:2px}
+.crow dd{margin:0;font-size:14.5px;color:var(--txt-2)}
+.qr{width:180px;height:180px;border:1px dashed var(--accent-line);border-radius:var(--radius);
+  background:repeating-linear-gradient(135deg,var(--accent-dim) 0 2px,transparent 2px 10px),var(--surface);
+  display:grid;place-items:center;text-align:center;padding:12px}
+.qr span{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.qrwrap{display:grid;gap:var(--sp-3);justify-items:start}
+.qrwrap p{font-size:13.5px}
+
+/* ============ footer ============ */
+footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2)}
+.foot{display:flex;justify-content:space-between;gap:var(--sp-5);flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--txt-3)}
+
+/* ============ reveal: authored once, one staggered entrance per list ============ */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.rv.in{opacity:1;transform:none}
+/* contained lists arrive in order; total delay capped at 6 x 60ms */
+.band__grid>*,.hgrid>*,.album__grid>*,.tl>*,.join__grid>*{
+  opacity:0;transform:translateY(14px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+.band__grid.in>*,.hgrid.in>*,.album__grid.in>*,.tl.in>*,.join__grid.in>*{opacity:1;transform:none}
+.rgrid>*:nth-child(1),.band__grid.in>*:nth-child(1),.hgrid.in>*:nth-child(1),.album__grid.in>*:nth-child(1),.tl.in>*:nth-child(1),.join__grid.in>*:nth-child(1){transition-delay:0ms}
+.rgrid>*:nth-child(2),.band__grid.in>*:nth-child(2),.hgrid.in>*:nth-child(2),.album__grid.in>*:nth-child(2),.tl.in>*:nth-child(2),.join__grid.in>*:nth-child(2){transition-delay:60ms}
+.rgrid>*:nth-child(3),.band__grid.in>*:nth-child(3),.hgrid.in>*:nth-child(3),.album__grid.in>*:nth-child(3),.tl.in>*:nth-child(3){transition-delay:120ms}
+.rgrid>*:nth-child(4),.band__grid.in>*:nth-child(4),.hgrid.in>*:nth-child(4),.album__grid.in>*:nth-child(4),.tl.in>*:nth-child(4){transition-delay:180ms}
+.album__grid.in>*:nth-child(5){transition-delay:240ms}
+.album__grid.in>*:nth-child(6){transition-delay:300ms}
+.album__grid.in>*:nth-child(7){transition-delay:360ms}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .scanlines i.scan,.hero__side::before{animation:none;transform:none}
+  .metric::before{animation:none;transform:none}
+  .scanlines i.scan{display:none}
+  .rv,.band__grid>*,.hgrid>*,.album__grid>*,.tl>*,.join__grid>*{opacity:1;transform:none;transition:none}
+  .btn,.langbtn,.brand,.nav__links a{transition:none}
+}
+@media (max-width:1024px){
+  .hero__grid{grid-template-columns:1fr;gap:34px;align-items:start}
+  .hero__side{border-top:1px solid var(--line);padding-left:0;padding-top:24px}
+  .hero__side::before{display:none}
+  .metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+  .metric{padding-top:0}
+  .metric::before{display:none}
+  .band__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .band__cell:nth-child(odd){border-left:0}
+}
+@media (max-width:768px){
+  html{scroll-padding-top:116px}
+  .nav{height:auto}
+  .nav__in{flex-wrap:wrap;gap:12px;padding-block:10px}
+  .brand{order:1}
+  .langbtn{order:2;margin-left:auto}
+  .nav .btn{order:3}
+  .nav__links{order:4;flex:1 1 100%;gap:14px;overflow-x:auto;scrollbar-width:none;justify-content:flex-start}
+  .nav__links::-webkit-scrollbar{display:none}
+  .nav__links a,.nav .btn,.brand span.brand__txt{font-size:13px}
+  .rgrid{grid-template-columns:1fr}
+  .ritem,.ritem:nth-child(even){padding:var(--sp-6) 0;border-left:0}
+  .ritem{grid-template-columns:52px minmax(0,1fr);gap:var(--sp-3)}
+  .hgrid{grid-template-columns:1fr}
+  .album__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .album__grid .a1,.album__grid .a2,.album__grid .a3,
+  .album__grid .a4,.album__grid .a5,.album__grid .a6,.album__grid .a7{grid-column:span 2}
+  .tl__row{grid-template-columns:1fr;gap:var(--sp-2)}
+  .join__grid{grid-template-columns:1fr}
+  .crow{grid-template-columns:1fr;gap:var(--sp-2)}
+  .crow dt{padding-top:0}
+  .strip{grid-auto-columns:minmax(232px,84%)}
+  h1{font-size:clamp(38px,11vw,56px)}
+}
+</style>
+<noscript><style>.rv,.rv>*{opacity:1!important;transform:none!important}</style></noscript>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<header class="nav">
+  <div class="nav__in">
+    <a class="brand" href="#top">
+      <span class="brand__mark">EX</span>
+      <span class="brand__txt"><span class="zh">外骨骼实验室</span><span class="en">Exoskeleton Lab</span></span>
+    </a>
+    <nav class="nav__links" aria-label="主导航">
+      <a href="#research"><span class="zh">研究内容</span><span class="en">Research</span></a>
+      <a href="#metrics"><span class="zh">成果数据</span><span class="en">Results</span></a>
+      <a href="#hardware"><span class="zh">实验硬件</span><span class="en">Hardware</span></a>
+      <a href="#album"><span class="zh">活动相册</span><span class="en">Gallery</span></a>
+      <a href="#events"><span class="zh">重要事件</span><span class="en">Milestones</span></a>
+      <a href="#team"><span class="zh">团队成员</span><span class="en">Team</span></a>
+    </nav>
+    <button class="langbtn" id="langbtn" type="button" aria-label="切换语言 / Switch language">EN</button>
+    <a class="btn btn--primary" href="#join"><span class="zh">加入我们</span><span class="en">Join us</span></a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="scanlines" aria-hidden="true">
+    <i class="scan"></i>
+  </div>
+  <div class="wrap hero__grid">
+    <div>
+      <div class="hero__eyebrow">
+        <i class="hero__tick"></i>
+        <span class="label zh">深圳技术大学 · 中德智能制造学院</span>
+        <span class="label en">SZTU · Sino-German College of Intelligent Manufacturing</span>
+      </div>
+      <h1>
+        <span class="zh">外骨骼<br>实验室</span>
+        <span class="en">Exoskeleton<br>Laboratory</span>
+      </h1>
+      <p class="hero__tagline"><span class="zh">让机器读懂人的动作，把力量还给身体</span><span class="en">Machines that read human motion, and return strength to the body</span></p>
+      <p class="hero__sub zh">梁宏博教授团队，围绕下肢助力外骨骼、运动意图识别与人机协同控制开展研究，面向康复训练与工业助力场景验证样机。</p>
+      <p class="hero__sub en">Led by Prof. Liang Hongbo. We work on lower-limb assistive exoskeletons, motion-intent recognition and human-machine collaborative control, validated on prototypes for rehabilitation and industrial assistance.</p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="#join"><span class="zh">加入我们</span><span class="en">Join us</span></a>
+        <a class="btn" href="research.html"><span class="zh">了解研究方向</span><span class="en">See our research</span></a>
+      </div>
+    </div>
+    <div class="hero__side">
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric__num"><span class="ph">[ N ]</span></div>
+          <div class="metric__lab zh">在研项目</div><div class="metric__lab en">Active projects</div>
+        </div>
+        <div class="metric">
+          <div class="metric__num"><span class="ph">[ N ]</span></div>
+          <div class="metric__lab zh">已发表论文</div><div class="metric__lab en">Publications</div>
+        </div>
+        <div class="metric">
+          <div class="metric__num"><span class="ph">[ N ]</span></div>
+          <div class="metric__lab zh">授权专利</div><div class="metric__lab en">Granted patents</div>
+        </div>
+        <div class="metric">
+          <div class="metric__num"><span class="ph">[ N ]</span></div>
+          <div class="metric__lab zh">团队成员</div><div class="metric__lab en">Team members</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RESEARCH ================= -->
+<section class="research" id="research">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="label zh">研究内容</span><span class="label en">Research</span>
+      <h2 class="zh"><a class="shead__link" href="research.html">四条主线，围绕一个身体</a></h2>
+      <h2 class="en"><a class="shead__link" href="research.html">Four lines of work, one body at the centre</a></h2>
+      <p class="zh">从机械结构到控制算法，我们的研究沿着「感知人的意图」到「把助力送到关节」这条链路展开。</p>
+      <p class="en">From mechanical structure to control algorithms, our work follows one chain: sensing human intent, then delivering assistance to the joint.</p>
+      <span class="shead__hint zh">点标题进入研究内容详情页</span>
+      <span class="shead__hint en">Open the research page</span>
+    </div>
+    <div class="rgrid">
+      <article class="ritem rv">
+        <div class="ritem__idx">01</div>
+        <div>
+          <h3 class="zh">下肢助力外骨骼</h3><h3 class="en">Lower-limb assistive exoskeleton</h3>
+          <p class="zh">髋、膝、踝关节的助力结构与轻量化设计。<span class="ph">[ 研究要点待填 ]</span></p>
+          <p class="en">Assistive structures and lightweight design for hip, knee and ankle joints. <span class="ph">[ details TBC ]</span></p>
+        </div>
+      </article>
+      <article class="ritem rv">
+        <div class="ritem__idx">02</div>
+        <div>
+          <h3 class="zh">运动意图识别</h3><h3 class="en">Motion-intent recognition</h3>
+          <p class="zh">基于肌电、惯性传感与力矩信号判断穿戴者的下一步动作。<span class="ph">[ 研究要点待填 ]</span></p>
+          <p class="en">Reading the wearer's next move from EMG, inertial and torque signals. <span class="ph">[ details TBC ]</span></p>
+        </div>
+      </article>
+      <article class="ritem rv">
+        <div class="ritem__idx">03</div>
+        <div>
+          <h3 class="zh">人机协同控制</h3><h3 class="en">Human-machine collaborative control</h3>
+          <p class="zh">柔顺驱动、阻抗控制与穿戴者舒适度的联合优化。<span class="ph">[ 研究要点待填 ]</span></p>
+          <p class="en">Compliant actuation, impedance control and wearer comfort optimised together. <span class="ph">[ details TBC ]</span></p>
+        </div>
+      </article>
+      <article class="ritem rv">
+        <div class="ritem__idx">04</div>
+        <div>
+          <h3 class="zh">康复与工业助力</h3><h3 class="en">Rehabilitation and industrial assistance</h3>
+          <p class="zh">把样机带到康复训练和长时间站立的真实场景。<span class="ph">[ 研究要点待填 ]</span></p>
+          <p class="en">Taking prototypes into rehabilitation training and long-duration standing work. <span class="ph">[ details TBC ]</span></p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= METRICS BAND ================= -->
+<section class="band" id="metrics">
+  <div class="wrap">
+    <div class="shead shead--tight rv">
+      <span class="label zh">成果数据</span><span class="label en">Results</span>
+      <h2 class="zh"><a class="shead__link" href="results.html">实验室的账本</a></h2>
+      <h2 class="en"><a class="shead__link" href="results.html">What the lab has produced</a></h2>
+    </div>
+    <div class="band__grid rv">
+      <div class="band__cell">
+        <div class="metric__num"><span class="ph">[ N ]</span></div>
+        <div class="metric__lab zh">科研项目 / 横向课题</div><div class="metric__lab en">Projects</div>
+      </div>
+      <div class="band__cell">
+        <div class="metric__num"><span class="ph">[ N ]</span></div>
+        <div class="metric__lab zh">期刊与会议论文</div><div class="metric__lab en">Papers</div>
+      </div>
+      <div class="band__cell">
+        <div class="metric__num"><span class="ph">[ N ]</span></div>
+        <div class="metric__lab zh">发明专利</div><div class="metric__lab en">Patents</div>
+      </div>
+      <div class="band__cell">
+        <div class="metric__num"><span class="ph">[ N ]</span></div>
+        <div class="metric__lab zh">竞赛获奖</div><div class="metric__lab en">Awards</div>
+      </div>
+    </div>
+    <p class="note zh">每项数字的统计口径请与课题组核对后填入。</p>
+    <p class="note en">Confirm the counting rule for each figure with the group before filling it in.</p>
+  </div>
+</section>
+
+<!-- ================= HARDWARE ================= -->
+<section id="hardware">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="label zh">实验硬件</span><span class="label en">Hardware</span>
+      <h2 class="zh"><a class="shead__link" href="hardware.html">实验室里有什么</a></h2>
+      <h2 class="en"><a class="shead__link" href="hardware.html">What the benches carry</a></h2>
+      <p class="zh">样机、驱动、测量与控制平台。照片与参数留白，等真实资料填入。</p>
+      <p class="en">Prototypes, actuation, measurement and control rigs. Photos and specs are left blank for real material.</p>
+      <span class="shead__hint zh">点标题进入实验硬件详情页</span>
+      <span class="shead__hint en">Open the hardware page</span>
+    </div>
+    <div class="hgrid rv">
+      <article class="hcard">
+        <div class="shot shot--16x9"><span>[ 硬件照片 01 · 待填 ]</span></div>
+        <h3 class="zh">下肢助力外骨骼样机</h3><h3 class="en">Lower-limb prototype</h3>
+        <dl>
+          <dt class="zh">型号</dt><dt class="en">Model</dt><dd><span class="ph">[ 待填 ]</span></dd>
+          <dt class="zh">自由度</dt><dt class="en">DOF</dt><dd><span class="ph">[ 待填 ]</span></dd>
+          <dt class="zh">整机重量</dt><dt class="en">Mass</dt><dd><span class="ph">[ 待填 ]</span></dd>
+        </dl>
+      </article>
+      <article class="hcard">
+        <div class="shot shot--16x9"><span>[ 硬件照片 02 · 待填 ]</span></div>
+        <h3 class="zh">驱动与传感平台</h3><h3 class="en">Actuation and sensing</h3>
+        <dl>
+          <dt class="zh">驱动器</dt><dt class="en">Actuator</dt><dd><span class="ph">[ 待填 ]</span></dd>
+          <dt class="zh">峰值扭矩</dt><dt class="en">Peak torque</dt><dd><span class="ph">[ 待填 ]</span></dd>
+          <dt class="zh">传感器</dt><dt class="en">Sensors</dt><dd><span class="ph">[ 待填 ]</span></dd>
+        </dl>
+      </article>
+      <article class="hcard">
+        <div class="shot shot--16x9"><span>[ 硬件照片 03 · 待填 ]</span></div>
+        <h3 class="zh">运动捕捉与测力</h3><h3 class="en">Motion capture and force plates</h3>
+        <dl>
+          <dt class="zh">设备</dt><dt class="en">Equipment</dt><dd><span class="ph">[ 待填 ]</span></dd>
+          <dt class="zh">采样率</dt><dt class="en">Sampling</dt><dd><span class="ph">[ 待填 ]</span></dd>
+          <dt class="zh">场地</dt><dt class="en">Site</dt><dd><span class="ph">[ 待填 ]</span></dd>
+        </dl>
+      </article>
+      <article class="hcard">
+        <div class="shot shot--16x9"><span>[ 硬件照片 04 · 待填 ]</span></div>
+        <h3 class="zh">实时控制与数据采集</h3><h3 class="en">Real-time control and DAQ</h3>
+        <dl>
+          <dt class="zh">控制器</dt><dt class="en">Controller</dt><dd><span class="ph">[ 待填 ]</span></dd>
+          <dt class="zh">控制周期</dt><dt class="en">Loop rate</dt><dd><span class="ph">[ 待填 ]</span></dd>
+          <dt class="zh">软件链</dt><dt class="en">Software</dt><dd><span class="ph">[ 待填 ]</span></dd>
+        </dl>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ALBUM ================= -->
+<section class="album" id="album">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="label zh">活动相册</span><span class="label en">Gallery</span>
+      <h2 class="zh"><a class="shead__link" href="gallery.html">现场记录</a></h2>
+      <h2 class="en"><a class="shead__link" href="gallery.html">On site</a></h2>
+      <p class="zh">调试、试验、答辩、出访。七张图位，请用真实照片替换。</p>
+      <p class="en">Bench work, trials, reviews, visits. Seven slots, to be replaced with real photos.</p>
+      <span class="shead__hint zh">点标题进入活动相册详情页</span>
+      <span class="shead__hint en">Open the gallery page</span>
+    </div>
+    <div class="album__grid rv">
+      <div class="shot shot--16x9 a1"><span>[ 相册 01 · 样机调试 · 待填 ]</span></div>
+      <div class="shot shot--16x9 a2"><span>[ 相册 02 · 待填 ]</span></div>
+      <div class="shot shot--4x3 a3"><span>[ 相册 03 · 待填 ]</span></div>
+      <div class="shot shot--4x3 a4"><span>[ 相册 04 · 待填 ]</span></div>
+      <div class="shot shot--4x3 a5"><span>[ 相册 05 · 待填 ]</span></div>
+      <div class="shot shot--16x9 a6"><span>[ 相册 06 · 学术会议 · 待填 ]</span></div>
+      <div class="shot shot--16x9 a7"><span>[ 相册 07 · 团队合影 · 待填 ]</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EVENTS ================= -->
+<section id="events">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="label zh">重要事件记录</span><span class="label en">Milestones</span>
+      <h2 class="zh"><a class="shead__link" href="milestones.html">时间线上的几个点</a></h2>
+      <h2 class="en"><a class="shead__link" href="milestones.html">A few points on the timeline</a></h2>
+      <span class="shead__hint zh">点标题进入重要事件详情页（动态时间轴样板）</span>
+      <span class="shead__hint en">Open the milestones page: the animated timeline sample</span>
+    </div>
+    <div class="tl rv">
+      <div class="tl__row">
+        <div class="tl__year"><span class="ph">[ 年份 ]</span></div>
+        <div><h3 class="zh"><span class="ph">[ 事件标题待填 ]</span></h3><h3 class="en"><span class="ph">[ event title TBC ]</span></h3>
+          <p class="zh"><span class="ph">[ 一句话说明 ]</span></p><p class="en"><span class="ph">[ one-line note ]</span></p></div>
+      </div>
+      <div class="tl__row">
+        <div class="tl__year"><span class="ph">[ 年份 ]</span></div>
+        <div><h3 class="zh"><span class="ph">[ 事件标题待填 ]</span></h3><h3 class="en"><span class="ph">[ event title TBC ]</span></h3>
+          <p class="zh"><span class="ph">[ 一句话说明 ]</span></p><p class="en"><span class="ph">[ one-line note ]</span></p></div>
+      </div>
+      <div class="tl__row">
+        <div class="tl__year"><span class="ph">[ 年份 ]</span></div>
+        <div><h3 class="zh"><span class="ph">[ 事件标题待填 ]</span></h3><h3 class="en"><span class="ph">[ event title TBC ]</span></h3>
+          <p class="zh"><span class="ph">[ 一句话说明 ]</span></p><p class="en"><span class="ph">[ one-line note ]</span></p></div>
+      </div>
+      <div class="tl__row">
+        <div class="tl__year"><span class="ph">[ 年份 ]</span></div>
+        <div><h3 class="zh"><span class="ph">[ 事件标题待填 ]</span></h3><h3 class="en"><span class="ph">[ event title TBC ]</span></h3>
+          <p class="zh"><span class="ph">[ 一句话说明 ]</span></p><p class="en"><span class="ph">[ one-line note ]</span></p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TEAM (version 2: snap strip of member cards) ================= -->
+<section class="team" id="team">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="label zh">团队成员</span><span class="label en">Team</span>
+      <h2 class="zh"><a class="shead__link" href="team.html">团队成员</a></h2>
+      <h2 class="en"><a class="shead__link" href="team.html">Team</a></h2>
+      <p class="zh">指导老师与成员名单，等待实验室提供肖像、职务与研究方向。</p>
+      <p class="en">Advisor and members, waiting for portraits, roles and research directions.</p>
+    </div>
+    <div class="strip rv" role="list" aria-label="团队成员 / Team members">
+      <article class="member" role="listitem">
+        <div class="avatar" aria-hidden="true"><span class="ph"><span class="zh">[ 肖像待填 ]</span><span class="en">[ portrait to be filled ]</span></span></div>
+        <p class="member-name">梁宏博 <span class="en">Liang Hongbo</span></p>
+        <p class="small zh">指导老师</p><p class="small en">Advisor</p>
+        <div class="spec"><span class="zh">研究方向</span><span class="en">Focus</span><span class="ph"><span class="zh">[ 待填 ]</span><span class="en">[ to be filled ]</span></span></div>
+        <div class="spec"><span class="zh">邮箱</span><span class="en">Email</span><span class="ph"><span class="zh">[ 邮箱待填 ]</span><span class="en">[ email to be filled ]</span></span></div>
+      </article>
+      <article class="member" role="listitem">
+        <div class="avatar" aria-hidden="true"><span class="ph"><span class="zh">[ 肖像待填 ]</span><span class="en">[ portrait to be filled ]</span></span></div>
+        <p class="member-name"><span class="ph"><span class="zh">[ 成员姓名待填 ]</span><span class="en">[ member name to be filled ]</span></span></p>
+        <p class="small"><span class="zh">[ 角色待填 ]</span><span class="en">[ role to be filled ]</span></p>
+        <div class="spec"><span class="zh">研究方向</span><span class="en">Focus</span><span class="ph"><span class="zh">[ 待填 ]</span><span class="en">[ to be filled ]</span></span></div>
+        <div class="spec"><span class="zh">邮箱</span><span class="en">Email</span><span class="ph"><span class="zh">[ 邮箱待填 ]</span><span class="en">[ email to be filled ]</span></span></div>
+      </article>
+      <article class="member" role="listitem">
+        <div class="avatar" aria-hidden="true"><span class="ph"><span class="zh">[ 肖像待填 ]</span><span class="en">[ portrait to be filled ]</span></span></div>
+        <p class="member-name"><span class="ph"><span class="zh">[ 成员姓名待填 ]</span><span class="en">[ member name to be filled ]</span></span></p>
+        <p class="small"><span class="zh">[ 角色待填 ]</span><span class="en">[ role to be filled ]</span></p>
+        <div class="spec"><span class="zh">研究方向</span><span class="en">Focus</span><span class="ph"><span class="zh">[ 待填 ]</span><span class="en">[ to be filled ]</span></span></div>
+        <div class="spec"><span class="zh">邮箱</span><span class="en">Email</span><span class="ph"><span class="zh">[ 邮箱待填 ]</span><span class="en">[ email to be filled ]</span></span></div>
+      </article>
+      <article class="member" role="listitem">
+        <div class="avatar" aria-hidden="true"><span class="ph"><span class="zh">[ 肖像待填 ]</span><span class="en">[ portrait to be filled ]</span></span></div>
+        <p class="member-name"><span class="ph"><span class="zh">[ 成员姓名待填 ]</span><span class="en">[ member name to be filled ]</span></span></p>
+        <p class="small"><span class="zh">[ 角色待填 ]</span><span class="en">[ role to be filled ]</span></p>
+        <div class="spec"><span class="zh">研究方向</span><span class="en">Focus</span><span class="ph"><span class="zh">[ 待填 ]</span><span class="en">[ to be filled ]</span></span></div>
+        <div class="spec"><span class="zh">邮箱</span><span class="en">Email</span><span class="ph"><span class="zh">[ 邮箱待填 ]</span><span class="en">[ email to be filled ]</span></span></div>
+      </article>
+      <article class="member" role="listitem">
+        <div class="avatar" aria-hidden="true"><span class="ph"><span class="zh">[ 肖像待填 ]</span><span class="en">[ portrait to be filled ]</span></span></div>
+        <p class="member-name"><span class="ph"><span class="zh">[ 成员姓名待填 ]</span><span class="en">[ member name to be filled ]</span></span></p>
+        <p class="small"><span class="zh">[ 角色待填 ]</span><span class="en">[ role to be filled ]</span></p>
+        <div class="spec"><span class="zh">研究方向</span><span class="en">Focus</span><span class="ph"><span class="zh">[ 待填 ]</span><span class="en">[ to be filled ]</span></span></div>
+        <div class="spec"><span class="zh">邮箱</span><span class="en">Email</span><span class="ph"><span class="zh">[ 邮箱待填 ]</span><span class="en">[ email to be filled ]</span></span></div>
+      </article>
+    </div>
+    <p class="strip__hint zh">横向滚动查看全部成员。</p>
+    <p class="strip__hint en">Scroll the strip sideways for more members.</p>
+  </div>
+</section>
+
+<!-- ================= JOIN ================= -->
+<section id="join">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="label zh">加入我们</span><span class="label en">Join us</span>
+      <h2 class="zh"><a class="shead__link" href="join.html">想进来做外骨骼，直接联系我们</a></h2>
+      <h2 class="en"><a class="shead__link" href="join.html">Want to build exoskeletons? Reach us directly</a></h2>
+      <p class="zh">本科生进组、研究生报考、合作洽谈，用下面任一方式联系，说明来意和可投入的时间即可。</p>
+      <p class="en">For undergrad research, graduate applications or collaboration, use any channel below and tell us what you want to work on.</p>
+      <span class="shead__hint zh">点标题进入联系方式详情页</span>
+      <span class="shead__hint en">Open the contact page</span>
+    </div>
+    <div class="join__grid rv">
+      <dl class="contacts">
+        <div class="crow"><dt class="zh">微信</dt><dt class="en">WeChat</dt><dd><span class="ph">[ 微信号待填 ]</span></dd></div>
+        <div class="crow"><dt class="zh">邮箱</dt><dt class="en">Email</dt><dd><span class="ph">[ 邮箱地址待填 ]</span></dd></div>
+        <div class="crow"><dt class="zh">电话</dt><dt class="en">Phone</dt><dd><span class="ph">[ 联系电话待填 ]</span></dd></div>
+        <div class="crow"><dt class="zh">地址</dt><dt class="en">Address</dt><dd><span class="zh">深圳市坪山区 深圳技术大学 <span class="ph">[ 具体楼栋房间待填 ]</span></span><span class="en">SZTU, Pingshan District, Shenzhen <span class="ph">[ building and room TBC ]</span></span></dd></div>
+        <div class="crow"><dt class="zh">招收对象</dt><dt class="en">Open to</dt><dd><span class="zh">本科生 / 研究生 <span class="ph">[ 具体要求待填 ]</span></span><span class="en">Undergrad / graduate students <span class="ph">[ requirements TBC ]</span></span></dd></div>
+      </dl>
+      <div class="qrwrap">
+        <div class="qr"><span>[ 二维码占位 · 微信或咨询群 ]</span></div>
+        <p class="zh">把实验室的微信二维码或咨询群二维码图片放到这里。</p>
+        <p class="en">Drop the lab's WeChat QR code or group code into this slot.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span class="zh">深圳技术大学 中德智能制造学院 · 外骨骼实验室</span>
+    <span class="en">Exoskeleton Laboratory · Sino-German College of Intelligent Manufacturing, SZTU</span>
+    <span>© <span class="ph">[ 年份 ]</span></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* language toggle */
+  var root=document.documentElement, btn=document.getElementById("langbtn");
+  function apply(lang){
+    root.setAttribute("data-lang",lang);
+    root.setAttribute("lang",lang==="zh"?"zh-CN":"en");
+    btn.textContent = lang==="zh" ? "EN" : "中文";
+  }
+  btn.addEventListener("click",function(){
+    apply(root.getAttribute("data-lang")==="zh" ? "en" : "zh");
+  });
+
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* scroll reveal */
+  var items=document.querySelectorAll(".rv");
+  if(reduce || !("IntersectionObserver" in window)){
+    items.forEach(function(el){el.classList.add("in");});
+  }else{
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}
+      });
+    },{rootMargin:"0px 0px -8% 0px",threshold:.12});
+    items.forEach(function(el){io.observe(el);});
+  }
+
+  /* active section in nav */
+  var links=Array.prototype.slice.call(document.querySelectorAll(".nav__links a[href^='#']"));
+  var targets=links.map(function(a){return document.querySelector(a.getAttribute("href"));}).filter(Boolean);
+  if("IntersectionObserver" in window && targets.length){
+    var navIo=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting) return;
+        links.forEach(function(a){
+          a.setAttribute("aria-current", a.getAttribute("href")==="#"+e.target.id ? "true":"false");
+        });
+      });
+    },{rootMargin:"-45% 0px -50% 0px"});
+    targets.forEach(function(t){navIo.observe(t);});
+  }
+})();
+</script>
+</body>
+</html>
