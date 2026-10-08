@@ -126,7 +126,8 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
 .tlx__row:first-child{border-top:1px solid var(--line)}
 .tlx__row.is-active{background:var(--bg-2)}
 .tlx__node{position:absolute;left:-36px;top:38px;width:9px;height:9px;border-radius:50%;background:var(--surface);border:1px solid var(--line-strong);transition:background .3s,border-color .3s}
-.tlx__row.is-active .tlx__node{background:var(--accent);border-color:var(--accent)}
+.tlx__row.is-passed .tlx__node{background:var(--accent);border-color:var(--accent)}
+.tlx__row.is-active .tlx__node{transform:scale(1.35);box-shadow:0 0 0 4px var(--accent-dim)}
 .tlx__year{display:inline-flex;align-items:center;gap:10px;font:13px/1.7 var(--mono);color:var(--accent);font-variant-numeric:tabular-nums}
 .tlx__row h3{font-size:24px;line-height:1.5;letter-spacing:-.015em;margin-top:20px}
 .tlx__row p{font-size:14px;line-height:1.8;margin-top:16px}
@@ -166,6 +167,7 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
 }
 @media(prefers-reduced-motion:reduce){
   .tlx__fill{transform:scaleY(1)}.tlx__playhead{display:none}
+  .tlx__node{background:var(--accent);border-color:var(--accent)}
 }
 
 </style>
@@ -436,6 +438,17 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
     fill.style.transform = "scaleY(" + p + ")";
     head.style.transform = "translateY(" + (p * railH) + "px)";
 
+    /* A node fills once the rail's fill has actually reached it, and stays filled
+       from then on. is-active only adds emphasis (size + halo) to the row you are
+       looking at, so a passed node can never fall back to white. */
+    var headY = r.top + p * railH + 4.5;
+    rows.forEach(function(row){
+      var node = row.querySelector(".tlx__node");
+      if(!node) return;
+      var nb = node.getBoundingClientRect();
+      row.classList.toggle("is-passed", (nb.top + nb.height/2) <= headY + 1.5);
+    });
+
     var pct = Math.round(p*100);
     if(pct !== lastPct){
       lastPct = pct;
@@ -474,7 +487,10 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
       head.style.display = "none";
       pctOut.textContent = "100";
       meter.style.width = "100%";
-      rows.forEach(function(row,i){ row.classList.toggle("is-active",i===0); });
+      rows.forEach(function(row,i){
+        row.classList.toggle("is-active",i===0);
+        row.classList.add("is-passed");
+      });
       idxLinks.forEach(function(a,i){
         a.classList.toggle("is-active",i===0);
         if(i===0) a.setAttribute("aria-current","step");
