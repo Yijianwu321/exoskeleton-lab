@@ -6,15 +6,26 @@
 <title>成果数据 | Results · 外骨骼实验室</title>
 <meta name="description" content="深圳技术大学中德智能制造学院 外骨骼实验室 成果数据 详情页。">
 <style>
-:root{color-scheme:light;
-  --bg:#F7FAFC;--bg-2:#EFF5FA;--surface:#FFFFFF;--surface-2:#F2F8FC;
-  --line:rgba(12,42,64,.10);--line-strong:rgba(12,42,64,.26);
-  --txt:#0C2436;--txt-2:#3E5D72;--txt-3:#5B7488;
-  --accent:#0B7A63;--accent-dim:rgba(11,122,99,.10);--accent-line:rgba(11,122,99,.30);--accent-hi:#096B57;
-  --radius:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:20px;--sp-6:24px;--sp-7:32px;
-  --nav-h:64px;--pad:clamp(20px,5vw,72px);--maxw:1240px;--ease:cubic-bezier(.16,1,.3,1);
+/* Shared light palette: blue grounds, green actions; system fonts only.
+   Geometry: 2px corners, 4px spacing base, 1440px outer grid. */
+:root{
+  color-scheme:light;
+  --bg:#FAFCFD; --bg-2:#EAF3F9;
+  --surface:#FFFFFF; --surface-2:#F2F7FB;
+  --line:rgba(23,52,71,.14); --line-2:rgba(23,52,71,.20);
+  --line-strong:rgba(23,52,71,.32);
+  --txt:#173447; --txt-2:#405F73; --txt-3:#526D80;
+  --accent:#0A705B; --accent-hi:#096B57; --accent-ink:#FFFFFF;
+  --accent-dim:rgba(11,122,99,.06); --accent-line:rgba(11,122,99,.42);
+  --radius:2px;
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px;
+  --sp-5:20px; --sp-6:24px; --sp-7:32px; --sp-8:48px;
+  --section-y:clamp(64px,7.2vw,104px);
+  --nav-h:72px; --nav-mobile-h:100px; --pad:clamp(22px,5vw,72px); --maxw:1440px;
+  --ease:cubic-bezier(.16,1,.3,1);
   --font:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
-  --mono:ui-monospace,"Cascadia Mono","Consolas",monospace}
+  --mono:ui-monospace,"Cascadia Mono","Consolas","SFMono-Regular",monospace;
+}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{background:var(--bg);color:var(--txt);font-family:var(--font);font-size:16px;line-height:1.65;

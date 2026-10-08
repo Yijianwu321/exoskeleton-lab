@@ -6,308 +6,233 @@
 <title>外骨骼实验室 | Exoskeleton Laboratory · 深圳技术大学</title>
 <meta name="description" content="深圳技术大学中德智能制造学院 外骨骼实验室。下肢助力外骨骼、人机协同控制与运动意图识别研究。">
 <style>
-/* ============ tokens: light theme, one accent (green), blue-tinted neutrals ============ */
+/* Shared light palette: blue grounds, green actions; system fonts only.
+   Geometry: 2px corners, 4px spacing base, 1440px outer grid. */
 :root{
   color-scheme:light;
-  --bg:#F7FAFC;        /* page ground: pale blue-white */
-  --bg-2:#EFF5FA;      /* alternating section ground: pale blue */
-  --surface:#FFFFFF;   /* cards */
-  --surface-2:#F2F8FC; /* inset blocks */
-  --line:rgba(12,42,64,.10);
-  --line-strong:rgba(12,42,64,.26);
-  --txt:#0C2436;       /* 15.2:1 on bg */
-  --txt-2:#3E5D72;     /* 6.7:1 on bg */
-  --txt-3:#5B7488;     /* 4.7:1 on bg */
-  --accent:#0B7A63;    /* 5.3:1 on white, the only accent */
-  --accent-dim:rgba(11,122,99,.10);
-  --accent-line:rgba(11,122,99,.30);
-  --accent-hi:#096B57;
-  --accent-ink:#FFFFFF;
-  --radius:4px;
-  /* spacing scale: 4px base, one step per role */
+  --bg:#FAFCFD; --bg-2:#EAF3F9;
+  --surface:#FFFFFF; --surface-2:#F2F7FB;
+  --line:rgba(23,52,71,.14); --line-2:rgba(23,52,71,.20);
+  --line-strong:rgba(23,52,71,.32);
+  --txt:#173447; --txt-2:#405F73; --txt-3:#526D80;
+  --accent:#0A705B; --accent-hi:#096B57; --accent-ink:#FFFFFF;
+  --accent-dim:rgba(11,122,99,.06); --accent-line:rgba(11,122,99,.42);
+  --radius:2px;
   --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px;
   --sp-5:20px; --sp-6:24px; --sp-7:32px; --sp-8:48px;
-  --section-y:clamp(72px,9vw,128px);
-  --nav-h:64px;
-  --pad:clamp(20px,5vw,72px);
-  --maxw:1240px;
+  --section-y:clamp(64px,7.2vw,104px);
+  --nav-h:72px; --nav-mobile-h:100px; --pad:clamp(22px,5vw,72px); --maxw:1440px;
   --ease:cubic-bezier(.16,1,.3,1);
   --font:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
   --mono:ui-monospace,"Cascadia Mono","Consolas","SFMono-Regular",monospace;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 12px);-webkit-text-size-adjust:100%}
-body{
-  background:var(--bg);color:var(--txt);font-family:var(--font);
-  font-size:16px;line-height:1.65;letter-spacing:.01em;
-  overflow-x:hidden;caret-color:var(--accent);scrollbar-color:var(--line-strong) transparent;
-}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 24px);-webkit-text-size-adjust:100%;scrollbar-color:var(--line-strong) var(--bg)}
+body{background:var(--bg);color:var(--txt);font:16px/1.7 var(--font);caret-color:var(--accent)}
 body::-webkit-scrollbar{width:10px;height:10px}
-body::-webkit-scrollbar-track{background:transparent}
-body::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:var(--radius)}
-body::-webkit-scrollbar-thumb:hover{background:rgba(12,42,64,.38)}
-a{color:inherit;text-decoration:none}
-h1,h2,h3,h4{margin:0;font-weight:600;letter-spacing:-.01em;line-height:1.12}
-p{margin:0;color:var(--txt-2);max-width:62ch}
+body::-webkit-scrollbar-track{background:var(--bg)}
+body::-webkit-scrollbar-thumb{background:var(--line-strong);border:2px solid var(--bg);border-radius:var(--radius)}
+a{color:inherit;text-decoration:none;text-underline-offset:.2em}
+h1,h2,h3,h4{margin:0;font-weight:600;letter-spacing:-.025em;line-height:1.25;text-wrap:balance}
+p{margin:0;color:var(--txt-2);max-width:65ch;text-wrap:pretty}
 ul{margin:0;padding:0;list-style:none}
 img,svg{display:block;max-width:100%}
 ::selection{background:var(--accent);color:var(--accent-ink)}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:var(--radius)}
-
-/* ============ language switching ============ */
-[data-lang="zh"] .en{display:none !important}
-[data-lang="en"] .zh{display:none !important}
-
-/* ============ shared bits ============ */
-.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:var(--radius)}
+[data-lang="zh"] .en{display:none!important}
+[data-lang="en"] .zh{display:none!important}
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--pad)}
 section{position:relative;padding-block:var(--section-y)}
-.label{font-family:var(--mono);font-size:12px;letter-spacing:.02em;color:var(--txt-3)}
-.ph{ /* visible placeholder token, never below the 11px legibility floor */
-  font-family:var(--mono);font-size:max(11px,.8em);color:var(--accent);
-  border:1px dashed var(--accent-line);border-radius:var(--radius);
-  padding:.05em .42em;white-space:nowrap;background:var(--accent-dim);
-}
-.btn{
-  display:inline-flex;align-items:center;gap:10px;white-space:nowrap;
-  padding:12px 20px;border-radius:var(--radius);font-size:14.5px;font-weight:500;
-  border:1px solid var(--line-strong);background:var(--surface);color:var(--txt);
-  transition:background .2s var(--ease),border-color .2s var(--ease),transform .16s var(--ease),color .2s var(--ease);
-}
-.btn:hover{border-color:var(--accent-line);background:var(--accent-dim);color:var(--accent-hi)}
-.btn:active{transform:translateY(1px)}
-.btn.btn--primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
-.btn.btn--primary:hover{background:var(--accent-hi);border-color:var(--accent-hi);color:var(--accent-ink)}
-
-/* ============ nav ============ */
-.nav{
-  position:sticky;top:0;z-index:50;height:var(--nav-h);
-  background:rgba(255,255,255,.82);backdrop-filter:blur(14px) saturate(140%);
-  border-bottom:1px solid var(--line);
-  display:flex;align-items:center;
-}
-.nav__in{width:100%;max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad);
-  display:flex;align-items:center;gap:clamp(12px,1.8vw,24px)}
-.brand{display:flex;align-items:center;gap:var(--sp-2);font-weight:600;font-size:15px;flex:0 0 auto;
-  transition:color .2s var(--ease)}
+.label{font:12px/1.6 var(--mono);color:var(--txt-3);letter-spacing:0}
+.ph{display:inline-block;max-width:100%;font: max(12px,.8em)/1.5 var(--mono);color:var(--accent);border:1px dashed var(--accent-line);border-radius:var(--radius);padding:.06em .42em;background:var(--accent-dim);white-space:normal;overflow-wrap:anywhere;vertical-align:baseline}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:11px 22px;border:1px solid var(--line-strong);border-radius:var(--radius);background:var(--surface);color:var(--txt);font-size:14px;font-weight:600;white-space:nowrap;transition:background .2s var(--ease),border-color .2s var(--ease),color .2s var(--ease),transform .15s var(--ease)}
+.btn:hover{background:var(--accent-dim);border-color:var(--accent);color:var(--accent-hi)}
+.btn:active,.langbtn:active{transform:translateY(1px)}
+.btn--primary,.btn.btn--primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn--primary:hover,.btn.btn--primary:hover{background:var(--accent-hi);border-color:var(--accent-hi);color:var(--accent-ink)}
+.nav{position:sticky;top:0;z-index:50;height:var(--nav-h);background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center}
+.nav__in{width:100%;max-width:var(--maxw);margin:auto;padding-inline:var(--pad);display:flex;align-items:center;gap:24px}
+.brand{display:flex;align-items:center;gap:10px;flex:none;font-size:15px;font-weight:600}
 .brand:hover{color:var(--accent)}
-.brand__mark{width:26px;height:26px;border:1px solid var(--accent-line);border-radius:var(--radius);
-  display:grid;place-items:center;color:var(--accent);font-family:var(--mono);font-size:11px;background:var(--accent-dim)}
-.nav__links{display:flex;align-items:center;gap:clamp(10px,1.6vw,24px);flex:1 1 auto;min-width:0;justify-content:flex-end}
-.nav__links a{font-size:13.5px;color:var(--txt-2);padding:6px 2px;border-bottom:1px solid transparent;
-  transition:color .2s var(--ease),border-color .2s var(--ease);white-space:nowrap}
-.nav__links a:hover,.nav__links a[aria-current="true"]{color:var(--txt);border-color:var(--accent)}
-.langbtn{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--txt-2);
-  background:transparent;border:1px solid var(--line-strong);border-radius:var(--radius);
-  padding:var(--sp-2) 10px;cursor:pointer;flex:0 0 auto;
-  transition:border-color .2s var(--ease),color .2s var(--ease),transform .16s var(--ease)}
-.langbtn:hover{border-color:var(--accent-line);color:var(--accent-hi)}
-.langbtn:active{transform:translateY(1px)}
-.nav .btn{padding:9px 16px;font-size:13.5px;flex:0 0 auto}
-
-/* ============ hero ============ */
-.hero{padding-top:clamp(56px,7vw,88px);padding-bottom:clamp(56px,7vw,96px);overflow:hidden}
-.hero__grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,4vw,64px);align-items:end}
-.hero__eyebrow{display:flex;align-items:center;gap:var(--sp-3);margin-bottom:var(--sp-6)}
-.hero__eyebrow .label{color:var(--txt-2)}
-.hero__tick{width:34px;height:1px;background:var(--accent);display:block}
-h1{font-size:clamp(44px,7.4vw,92px);font-weight:650;letter-spacing:-.035em;line-height:.98;color:var(--txt)}
-.hero__tagline{margin-top:var(--sp-4);font-size:clamp(20px,2.6vw,36px);font-weight:300;color:var(--txt-2);letter-spacing:.02em;line-height:1.3}
-.hero__sub{margin-top:var(--sp-6);font-size:clamp(15px,1.5vw,17.5px);max-width:52ch}
-.hero__cta{display:flex;gap:var(--sp-3);flex-wrap:wrap;margin-top:var(--sp-7)}
-.hero__side{position:relative;padding-left:clamp(20px,3vw,34px)}
-.metrics{display:grid;gap:var(--sp-5)}
-.metric{position:relative;padding-top:var(--sp-3)}
-.metric:first-child{padding-top:0}
-.metric::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--line);
-  transform:scaleX(0);transform-origin:left;animation:drawX .8s var(--ease) both}
-.metric:first-child::before{display:none}
-.metric:nth-child(2)::before{animation-delay:.5s}
-.metric:nth-child(3)::before{animation-delay:.65s}
-.metric:nth-child(4)::before{animation-delay:.8s}
-.metric__num{font-family:var(--mono);font-size:clamp(28px,3.4vw,42px);font-weight:500;color:var(--txt);letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
-.metric__num .ph{font-size:clamp(17px,2.1vw,27px);vertical-align:.18em}
-.band__cell .metric__num .ph{font-size:clamp(18px,2.5vw,30px)}
-.metric__lab{margin-top:var(--sp-2);font-size:13px;color:var(--txt-3)}
-/* ============ hero: one line, then a sweep ============ */
-.scanlines{position:absolute;inset:0;pointer-events:none;z-index:0}
-.scanlines i.scan{position:absolute;left:0;right:0;top:0;height:100%;will-change:transform;
-  background:linear-gradient(to bottom,transparent calc(50% - .5px),var(--accent-line) 50%,transparent calc(50% + .5px));
-  opacity:0;animation:sweep 7s linear infinite 1.6s}
-.hero__side::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--line);
-  transform:scaleY(0);transform-origin:top;animation:drawY 1.2s var(--ease) .2s both}
-@keyframes drawY{to{transform:scaleY(1)}}
-@keyframes drawX{to{transform:scaleX(1)}}
-@keyframes sweep{0%{transform:translateY(-100%);opacity:0}12%{opacity:.9}88%{opacity:.9}100%{transform:translateY(100%);opacity:0}}
-.hero__grid{position:relative;z-index:1}
-
-/* ============ section header: title links out to its own page ============ */
-.shead{display:grid;gap:var(--sp-3);margin-bottom:clamp(32px,4.5vw,56px)}
-.shead--tight{margin-bottom:var(--sp-7)}
-.shead h2{font-size:clamp(28px,3.6vw,44px);letter-spacing:-.025em}
-.shead p{font-size:15px}
-.shead__link{display:inline-flex;align-items:baseline;gap:.34em;color:inherit;
-  border-bottom:1px solid transparent;
-  transition:color .22s var(--ease),border-color .22s var(--ease)}
-.shead__link::after{content:"\2192";font-family:var(--mono);font-size:.46em;color:var(--accent);
-  opacity:.6;transform:translateY(-.3em);transition:transform .25s var(--ease),opacity .25s var(--ease)}
-.shead__link:hover,.shead__link:focus-visible{color:var(--accent);border-color:var(--accent-line)}
-.shead__link:hover::after{transform:translate(.18em,-.3em);opacity:1}
-.shead__hint{font-family:var(--mono);font-size:12px;color:var(--txt-3)}
-
-/* ============ research ============ */
-.research{background:var(--surface);border-top:1px solid var(--line)}
-.rgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
-.ritem{display:grid;grid-template-columns:76px minmax(0,1fr);gap:var(--sp-5);padding:var(--sp-6) var(--sp-6) var(--sp-6) 0;border-top:1px solid var(--line)}
-.ritem:nth-child(even){padding-left:var(--sp-6);border-left:1px solid var(--line)}
-.ritem__idx{font-family:var(--mono);font-size:12px;color:var(--accent);padding-top:var(--sp-1)}
-.ritem h3{font-size:19px;margin-bottom:var(--sp-2)}
-.ritem p{font-size:14.5px;max-width:44ch}
-
-/* ============ metrics band ============ */
-.band{background:var(--bg-2);border-block:1px solid var(--line)}
-.band__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
-.band__cell{padding:clamp(24px,3.4vw,40px) clamp(16px,2.4vw,32px);border-left:1px solid var(--line)}
-.band__cell:first-child{border-left:0}
-.band__cell .metric__num{font-size:clamp(30px,3.8vw,48px)}
-.note{margin-top:var(--sp-6);font-family:var(--mono);font-size:12px;color:var(--txt-3)}
-
-/* ============ hardware ============ */
-.hgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
-.hcard{background:var(--surface);padding:clamp(20px,2.4vw,32px);display:grid;gap:var(--sp-4)}
-.hcard h3{font-size:18px}
-.hcard dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:var(--sp-2) var(--sp-4);font-size:13.5px}
-.hcard dt{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-3);padding-top:2px}
-.hcard dd{margin:0;color:var(--txt-2)}
-
-/* ============ photo placeholders ============ */
-.shot{
-  position:relative;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
-  background:
-    repeating-linear-gradient(135deg,var(--accent-dim) 0 1px,transparent 1px 11px),
-    var(--surface-2);
-  display:grid;place-items:end start;
-}
-.shot::after{content:"";position:absolute;inset:0;border:1px solid rgba(12,42,64,.045)}
-.shot span{font-family:var(--mono);font-size:12px;color:var(--txt-3);padding:var(--sp-2) var(--sp-3);position:relative;z-index:1;background:rgba(255,255,255,.72)}
-.shot--16x9{aspect-ratio:16/9}
-.shot--4x3{aspect-ratio:4/3}
-.shot--1x1{aspect-ratio:1/1}
-
-/* ============ album ============ */
-.album{background:var(--bg-2);border-top:1px solid var(--line)}
-.album__grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:var(--sp-3)}
-.album__grid .a1{grid-column:span 4}
-.album__grid .a2{grid-column:span 2}
-.album__grid .a3{grid-column:span 2}
-.album__grid .a4{grid-column:span 2}
-.album__grid .a5{grid-column:span 2}
-.album__grid .a6{grid-column:span 3}
-.album__grid .a7{grid-column:span 3}
-.album .shot{--surface-2:#FFFFFF}
-
-/* ============ events ============ */
-.tl{border-top:1px solid var(--line)}
-.tl__row{display:grid;grid-template-columns:120px minmax(0,1fr);gap:clamp(16px,3vw,40px);
-  padding:var(--sp-6) 0;border-bottom:1px solid var(--line);align-items:baseline}
-.tl__year{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.06em;font-variant-numeric:tabular-nums}
-.tl__row h3{font-size:17px;margin-bottom:var(--sp-2)}
-.tl__row p{font-size:14.5px}
-
-/* ============ team: version-2 horizontal snap strip ============ */
-.team{background:var(--surface);border-block:1px solid var(--line)}
-.strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(248px,288px);gap:16px;
-  overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 14px;
-  scrollbar-color:var(--line-strong) transparent}
-.strip::-webkit-scrollbar{height:8px}
-.strip::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:var(--radius)}
-.member{scroll-snap-align:start;border:1px solid var(--line);border-radius:var(--radius);
-  background:var(--surface-2);padding:var(--sp-4);display:flex;flex-direction:column;gap:var(--sp-3)}
-.avatar{aspect-ratio:5/4;border-radius:var(--radius);border:1px solid var(--line);
-  background-color:var(--surface);background-image:repeating-linear-gradient(135deg,var(--accent-dim) 0 1px,transparent 1px 9px);
-  display:flex;align-items:center;justify-content:center;padding:12px;text-align:center}
-.member-name{font-size:16.5px;font-weight:600;letter-spacing:-.005em;color:var(--txt)}
-.member .small{font-size:13px;color:var(--txt-2)}
-.spec{display:flex;justify-content:space-between;gap:14px;border-top:1px solid var(--line);
-  padding-top:9px;font-size:13px;color:var(--txt-2)}
-.strip__hint{margin-top:var(--sp-4);font-family:var(--mono);font-size:12px;color:var(--txt-3)}
-
-/* ============ join ============ */
-.join__grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(32px,4vw,56px);align-items:start}
-.contacts{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
-.crow{background:var(--surface);display:grid;grid-template-columns:112px minmax(0,1fr);gap:var(--sp-4);padding:var(--sp-4) var(--sp-5)}
-.crow dt{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-3);padding-top:2px}
-.crow dd{margin:0;font-size:14.5px;color:var(--txt-2)}
-.qr{width:180px;height:180px;border:1px dashed var(--accent-line);border-radius:var(--radius);
-  background:repeating-linear-gradient(135deg,var(--accent-dim) 0 2px,transparent 2px 10px),var(--surface);
-  display:grid;place-items:center;text-align:center;padding:12px}
-.qr span{font-family:var(--mono);font-size:12px;color:var(--accent)}
-.qrwrap{display:grid;gap:var(--sp-3);justify-items:start}
-.qrwrap p{font-size:13.5px}
-
-/* ============ footer ============ */
-footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2)}
-.foot{display:flex;justify-content:space-between;gap:var(--sp-5);flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--txt-3)}
-
-/* ============ reveal: authored once, one staggered entrance per list ============ */
-.rv{opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
-.rv.in{opacity:1;transform:none}
-/* contained lists arrive in order; total delay capped at 6 x 60ms */
-.band__grid>*,.hgrid>*,.album__grid>*,.tl>*,.join__grid>*{
-  opacity:0;transform:translateY(14px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
-.band__grid.in>*,.hgrid.in>*,.album__grid.in>*,.tl.in>*,.join__grid.in>*{opacity:1;transform:none}
-.rgrid>*:nth-child(1),.band__grid.in>*:nth-child(1),.hgrid.in>*:nth-child(1),.album__grid.in>*:nth-child(1),.tl.in>*:nth-child(1),.join__grid.in>*:nth-child(1){transition-delay:0ms}
-.rgrid>*:nth-child(2),.band__grid.in>*:nth-child(2),.hgrid.in>*:nth-child(2),.album__grid.in>*:nth-child(2),.tl.in>*:nth-child(2),.join__grid.in>*:nth-child(2){transition-delay:60ms}
-.rgrid>*:nth-child(3),.band__grid.in>*:nth-child(3),.hgrid.in>*:nth-child(3),.album__grid.in>*:nth-child(3),.tl.in>*:nth-child(3){transition-delay:120ms}
-.rgrid>*:nth-child(4),.band__grid.in>*:nth-child(4),.hgrid.in>*:nth-child(4),.album__grid.in>*:nth-child(4),.tl.in>*:nth-child(4){transition-delay:180ms}
-.album__grid.in>*:nth-child(5){transition-delay:240ms}
-.album__grid.in>*:nth-child(6){transition-delay:300ms}
-.album__grid.in>*:nth-child(7){transition-delay:360ms}
-
-@media (prefers-reduced-motion: reduce){
-  html{scroll-behavior:auto}
-  .scanlines i.scan,.hero__side::before{animation:none;transform:none}
-  .metric::before{animation:none;transform:none}
-  .scanlines i.scan{display:none}
-  .rv,.band__grid>*,.hgrid>*,.album__grid>*,.tl>*,.join__grid>*{opacity:1;transform:none;transition:none}
-  .btn,.langbtn,.brand,.nav__links a{transition:none}
-}
-@media (max-width:1024px){
-  .hero__grid{grid-template-columns:1fr;gap:34px;align-items:start}
-  .hero__side{border-top:1px solid var(--line);padding-left:0;padding-top:24px}
-  .hero__side::before{display:none}
-  .metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
-  .metric{padding-top:0}
-  .metric::before{display:none}
-  .band__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .band__cell:nth-child(odd){border-left:0}
-}
-@media (max-width:768px){
-  html{scroll-padding-top:116px}
+.brand__mark{display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--accent-line);border-radius:var(--radius);color:var(--accent);font:12px var(--mono);background:var(--accent-dim)}
+.nav__links{display:flex;justify-content:flex-end;align-items:center;flex:1;min-width:0;gap:clamp(12px,1.8vw,26px)}
+.nav__links a{display:flex;align-items:center;min-height:44px;font-size:13px;color:var(--txt-2);white-space:nowrap;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.nav__links a:hover,.nav__links a[aria-current="true"],.nav__links a.is-here{color:var(--accent);border-color:var(--accent)}
+.langbtn{min-height:40px;padding:8px 11px;border:1px solid var(--line-strong);border-radius:var(--radius);background:var(--surface);color:var(--txt-2);font:12px var(--mono);cursor:pointer;flex:none}
+.langbtn:hover{border-color:var(--accent);color:var(--accent)}
+.nav .btn{min-height:40px;padding:8px 16px;font-size:13px;flex:none}
+footer{background:var(--surface);border-top:1px solid var(--line);padding-block:28px}
+.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--txt-3);font:12px/1.7 var(--mono)}
+/* Navigation stays native and horizontally scrollable on small screens. */
+@media(max-width:1100px){
+  html{scroll-padding-top:calc(var(--nav-mobile-h) + 24px)}
   .nav{height:auto}
-  .nav__in{flex-wrap:wrap;gap:12px;padding-block:10px}
-  .brand{order:1}
-  .langbtn{order:2;margin-left:auto}
-  .nav .btn{order:3}
-  .nav__links{order:4;flex:1 1 100%;gap:14px;overflow-x:auto;scrollbar-width:none;justify-content:flex-start}
+  .nav__in{flex-wrap:wrap;gap:4px 12px;padding-block:10px}
+  .brand{order:1}.langbtn{order:2;margin-left:auto}.nav .btn{order:3}
+  .nav__links{order:4;flex-basis:100%;justify-content:flex-start;overflow-x:auto;gap:20px;scrollbar-width:none}
   .nav__links::-webkit-scrollbar{display:none}
-  .nav__links a,.nav .btn,.brand span.brand__txt{font-size:13px}
-  .rgrid{grid-template-columns:1fr}
-  .ritem,.ritem:nth-child(even){padding:var(--sp-6) 0;border-left:0}
-  .ritem{grid-template-columns:52px minmax(0,1fr);gap:var(--sp-3)}
-  .hgrid{grid-template-columns:1fr}
-  .album__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .album__grid .a1,.album__grid .a2,.album__grid .a3,
-  .album__grid .a4,.album__grid .a5,.album__grid .a6,.album__grid .a7{grid-column:span 2}
-  .tl__row{grid-template-columns:1fr;gap:var(--sp-2)}
-  .join__grid{grid-template-columns:1fr}
-  .crow{grid-template-columns:1fr;gap:var(--sp-2)}
-  .crow dt{padding-top:0}
-  .strip{grid-auto-columns:minmax(232px,84%)}
-  h1{font-size:clamp(38px,11vw,56px)}
+  .nav__links a{min-height:36px}
 }
+@media(max-width:600px){
+  .brand{font-size:13px;gap:8px}.brand__mark{width:26px;height:26px}
+  .nav__in{gap:4px 10px}.nav .btn{padding-inline:12px;font-size:12px}
+  .langbtn{min-height:36px;padding-inline:10px}
+  .nav__links{gap:20px}.nav__links a{font-size:12px}
+  .foot{display:grid;gap:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+
+/* A broad title and a compact ledger share the first spread. */
+.hero{background:var(--surface);padding-block:64px 72px}
+.hero__grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:clamp(32px,6vw,88px);align-items:end}
+.hero__eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:32px}
+.hero__tick{width:24px;height:1px;background:var(--accent);flex:none}
+h1{font-size:clamp(64px,7.4vw,96px);line-height:1.04;font-weight:650;letter-spacing:-.04em}
+.hero__tagline{margin-top:24px;font-size:clamp(21px,2vw,28px);line-height:1.55;font-weight:400;max-width:25em;text-wrap:balance}
+.hero__tagline .zh>span,.research h2.zh .shead__link>span{display:inline-block}
+.hero__sub{margin-top:20px;font-size:16px;line-height:1.85;max-width:40em}
+.hero__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.hero__side{position:relative;background:var(--bg-2);padding:32px;min-height:356px;display:grid;align-content:stretch}
+.hero__side::before{content:"";position:absolute;top:0;left:0;width:100%;height:1px;background:var(--accent);transform-origin:left;animation:ledgerLine .9s var(--ease) both}
+@keyframes ledgerLine{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
+.metric{padding:20px 0;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.metric:nth-child(odd){border-right:1px solid var(--line);padding-right:20px}
+.metric:nth-child(even){padding-left:28px}
+.metric:nth-child(n+3){border-top:1px solid var(--line)}
+.metric__num{font:500 38px/1.1 var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.025em;color:var(--accent)}
+.metric__num .ph{font-size:26px;font-weight:400;background:transparent;padding:.05em .2em}
+.metric__lab{font-size:13px;color:var(--txt-2)}
+/* Research is a reading margin plus four uninterrupted lines of work. */
+.research{background:var(--bg-2);border-block:1px solid var(--line)}
+.shead{display:grid;gap:14px;margin-bottom:40px;justify-items:start}
+.shead h2{font-size:clamp(30px,3.1vw,44px);line-height:1.3;letter-spacing:-.03em}
+.shead p{font-size:15px;line-height:1.85}
+.shead .label{margin-bottom:4px}
+.shead__link{display:inline;color:var(--txt);transition:color .2s var(--ease)}
+.shead__link::after{content:"";display:inline-block;width:.25em;height:.25em;border-top:1px solid var(--accent);border-right:1px solid var(--accent);transform:rotate(45deg);vertical-align:.16em;margin-left:.38em;transition:translate .2s var(--ease)}
+.shead__link:hover{color:var(--accent)}
+.shead__link:hover::after{translate:3px 0}
+.shead__hint{font:12px/1.8 var(--mono);color:var(--txt-3)}
+.research>.wrap{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(40px,7vw,104px)}
+.research .shead{align-content:start;margin:0}
+.rgrid{display:grid;grid-template-columns:1fr}
+.ritem{display:grid;grid-template-columns:40px minmax(0,1fr);gap:24px;padding-block:26px;border-top:1px solid var(--line)}
+.ritem:first-child{padding-top:0;border-top:0}
+.ritem:last-child{padding-bottom:0}
+.ritem__idx{font:12px/1.8 var(--mono);color:var(--accent);padding-top:4px}
+.ritem h3{font-size:22px;line-height:1.4;margin-bottom:10px}
+.ritem p{font-size:14px;line-height:1.85;max-width:44ch}
+/* The results occupy a single, open ledger row. */
+.band{background:var(--surface)}
+.band .shead{margin-bottom:32px}
+.band__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-block:1px solid var(--line)}
+.band__cell{padding:32px;border-left:1px solid var(--line)}
+.band__cell:first-child{border-left:0;padding-left:0}
+.band__cell .metric__num .ph{font-size:36px}
+.band__cell .metric__lab{margin-top:16px}
+.note{margin-top:20px;font:12px/1.8 var(--mono);color:var(--txt-3)}
+/* Equipment is an inventory: image and specification, without nested cards. */
+#hardware{background:var(--bg-2);border-block:1px solid var(--line)}
+.hgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.hcard{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto 1fr;gap:18px 24px;padding:24px;background:var(--surface);border-radius:var(--radius)}
+.hcard .shot{grid-row:span 2;aspect-ratio:1/1;align-self:stretch;min-height:220px}
+.hcard h3{font-size:19px;line-height:1.45;align-self:end}
+.hcard dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px 12px;align-content:start;margin:0;font-size:13px}
+.hcard dt{font-size:12px;color:var(--txt-3);padding-top:3px}
+.hcard dd{margin:0;color:var(--txt-2)}
+/* Empty image slots are deliberately empty, with a legible dashed caption. */
+.shot{display:grid;place-items:end start;position:relative;min-width:0;background:var(--surface-2);border:1px dashed var(--line-strong);border-radius:var(--radius);padding:14px;overflow:hidden}
+.shot span{max-width:100%;font:12px/1.7 var(--mono);color:var(--txt-2);overflow-wrap:anywhere}
+.shot--16x9{aspect-ratio:16/9}.shot--4x3{aspect-ratio:4/3}.shot--1x1{aspect-ratio:1}
+/* A seven-frame contact sheet: one large pair, three studies, one closing pair. */
+.album{background:var(--surface)}
+.album__grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.album__grid .shot{aspect-ratio:auto;min-height:230px}
+.album__grid .a1{grid-column:span 7;min-height:340px;background:var(--bg-2)}
+.album__grid .a2{grid-column:span 5;min-height:340px}
+.album__grid .a3,.album__grid .a4,.album__grid .a5{grid-column:span 4}
+.album__grid .a6,.album__grid .a7{grid-column:span 6;min-height:260px}
+/* The home timeline reads as four points across a single horizontal axis. */
+#events{background:var(--bg-2);border-block:1px solid var(--line)}
+.tl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--accent-line)}
+.tl__row{position:relative;display:grid;align-content:start;gap:24px;padding:30px 24px 0;border-left:1px solid var(--line)}
+.tl__row:first-child{border-left:0;padding-left:0}
+.tl__row::before{content:"";position:absolute;left:24px;top:-3px;width:5px;height:5px;background:var(--accent)}
+.tl__row:first-child::before{left:0}
+.tl__year{font:13px var(--mono);font-variant-numeric:tabular-nums}
+.tl__row h3{font-size:20px;line-height:1.5;margin-bottom:12px}
+.tl__row p{font-size:14px}
+/* Team v2: the portrait, name, role and the two specification rows stay intact. */
+.team{background:var(--surface)}
+.strip{display:grid;grid-auto-flow:column;grid-auto-columns:304px;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:2px;padding:2px 2px 18px;scrollbar-color:var(--line-strong) var(--surface);overscroll-behavior-x:contain}
+.strip::-webkit-scrollbar{height:8px}.strip::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:var(--radius)}
+.member{scroll-snap-align:start;border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:12px;background:var(--surface)}
+.avatar{aspect-ratio:5/4;display:grid;place-items:center;text-align:center;padding:16px;background:var(--bg-2);border:1px dashed var(--line-strong);border-radius:var(--radius);margin-bottom:8px}
+.avatar .ph{background:transparent}
+.member-name{font-size:18px;font-weight:600;color:var(--txt)}
+.member .small{font-size:13px;line-height:1.7;color:var(--txt-2)}
+.spec{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-top:12px;border-top:1px solid var(--line);font-size:12px;color:var(--txt-2)}
+.spec>span:first-child{flex-shrink:0}.spec .ph{text-align:right}
+.strip__hint{margin-top:16px;color:var(--txt-3);font:12px/1.7 var(--mono)}
+/* A grounded close: contact information beside the code awaiting real material. */
+#join{background:var(--bg-2);border-top:1px solid var(--line)}
+#join .shead h2{font-size:clamp(30px,3.5vw,50px);max-width:22em}
+.join__grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr);gap:clamp(32px,7vw,104px);align-items:start}
+.contacts{margin:0;border-top:1px solid var(--line-strong)}
+.crow{display:grid;grid-template-columns:104px minmax(0,1fr);gap:20px;padding:18px 0;border-bottom:1px solid var(--line)}
+.crow dt{font-size:13px;color:var(--txt-3);padding-top:3px}
+.crow dd{margin:0;font-size:14px;color:var(--txt-2)}
+.qrwrap{display:grid;gap:16px;justify-items:start}
+.qr{width:208px;aspect-ratio:1;display:grid;place-items:center;text-align:center;padding:24px;border:1px dashed var(--accent-line);border-radius:var(--radius);background:var(--surface)}
+.qr span{font:12px/1.8 var(--mono);color:var(--accent)}
+.qrwrap p{font-size:13px}
+@media(max-width:1100px){
+  .hero__grid{gap:32px;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr)}
+  .hero__side{padding:24px}.metrics{grid-template-columns:1fr}
+  .metric{padding:16px 0!important;border:0!important}.metric:nth-child(n+2){border-top:1px solid var(--line)!important}
+  .hero__side{min-height:0}.metric__num .ph{font-size:24px}
+  [data-lang="en"] h1{font-size:clamp(38px,5.2vw,66px)}
+  .research>.wrap{gap:40px;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}
+  .hcard{grid-template-columns:1fr;gap:18px}.hcard .shot{grid-row:auto;aspect-ratio:16/10;min-height:0}
+}
+@media(max-width:768px){
+  .hero{padding-block:40px 48px}.hero__grid{grid-template-columns:1fr;gap:32px}
+  h1{font-size:clamp(56px,14vw,80px)}
+  [data-lang="en"] h1{font-size:clamp(36px,9.6vw,64px)}
+  .hero__eyebrow{margin-bottom:24px;gap:10px}.hero__eyebrow .label{font-size:12px}
+  .hero__tagline{font-size:21px;line-height:1.6;margin-top:20px}.hero__sub{font-size:14px;line-height:1.9;margin-top:16px}
+  .hero__cta{margin-top:24px}.hero__side{padding:22px}
+  .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .metric{padding:14px 0!important;gap:8px}.metric:nth-child(n+2){border-top:0!important}
+  .metric:nth-child(odd){border-right:1px solid var(--line)!important;padding-right:16px!important}
+  .metric:nth-child(even){padding-left:22px!important}
+  .metric:nth-child(n+3){border-top:1px solid var(--line)!important}
+  .metric__num .ph{font-size:24px}.metric__lab{font-size:12px}
+  .shead{margin-bottom:28px;gap:12px}.shead h2{font-size:30px}.shead p{font-size:14px}
+  .research>.wrap{grid-template-columns:1fr;gap:36px}.ritem{grid-template-columns:28px minmax(0,1fr);gap:16px;padding-block:24px}
+  .ritem h3{font-size:20px}.ritem p{font-size:14px}
+  .band__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.band__cell{padding:24px 20px}
+  .band__cell:nth-child(odd){border-left:0;padding-left:0}.band__cell:nth-child(n+3){border-top:1px solid var(--line)}
+  .band__cell .metric__num .ph{font-size:30px}.band__cell .metric__lab{font-size:12px;margin-top:12px}
+  .hgrid{grid-template-columns:1fr;gap:20px}.hcard{padding:20px}.hcard .shot{aspect-ratio:16/10}
+  .hcard h3{font-size:20px}.hcard dl{grid-template-columns:88px minmax(0,1fr)}
+  .album__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .album__grid .shot{grid-column:span 1;min-height:170px;padding:12px}
+  .album__grid .a1{grid-column:span 2;min-height:230px}
+  .album__grid .shot span{font-size:12px}
+  .tl{grid-template-columns:1fr}.tl__row{grid-template-columns:84px minmax(0,1fr);gap:20px;padding:24px 0;border-left:0;border-bottom:1px solid var(--line)}
+  .tl__row::before{display:none}.tl__row h3{font-size:19px}.tl__row p{font-size:14px}
+  .strip{grid-auto-columns:minmax(266px,86%);gap:16px}.member{padding:18px}
+  .join__grid{grid-template-columns:1fr;gap:32px}.crow{grid-template-columns:72px minmax(0,1fr);gap:16px}
+  #join .shead h2{font-size:30px}.qrwrap{grid-template-columns:144px minmax(0,1fr);gap:20px;align-items:center}.qr{width:144px;padding:14px}
+}
+
 </style>
-<noscript><style>.rv,.rv>*{opacity:1!important;transform:none!important}</style></noscript>
 </head>
 <body>
 
@@ -335,9 +260,6 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
 
 <!-- ================= HERO ================= -->
 <section class="hero">
-  <div class="scanlines" aria-hidden="true">
-    <i class="scan"></i>
-  </div>
   <div class="wrap hero__grid">
     <div>
       <div class="hero__eyebrow">
@@ -349,7 +271,7 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
         <span class="zh">外骨骼<br>实验室</span>
         <span class="en">Exoskeleton<br>Laboratory</span>
       </h1>
-      <p class="hero__tagline"><span class="zh">让机器读懂人的动作，把力量还给身体</span><span class="en">Machines that read human motion, and return strength to the body</span></p>
+      <p class="hero__tagline"><span class="zh"><span>让机器读懂人的动作，</span><span>把力量还给身体</span></span><span class="en">Machines that read human motion, and return strength to the body</span></p>
       <p class="hero__sub zh">梁宏博教授团队，围绕下肢助力外骨骼、运动意图识别与人机协同控制开展研究，面向康复训练与工业助力场景验证样机。</p>
       <p class="hero__sub en">Led by Prof. Liang Hongbo. We work on lower-limb assistive exoskeletons, motion-intent recognition and human-machine collaborative control, validated on prototypes for rehabilitation and industrial assistance.</p>
       <div class="hero__cta">
@@ -383,9 +305,9 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
 <!-- ================= RESEARCH ================= -->
 <section class="research" id="research">
   <div class="wrap">
-    <div class="shead rv">
+    <div class="shead">
       <span class="label zh">研究内容</span><span class="label en">Research</span>
-      <h2 class="zh"><a class="shead__link" href="research.html">四条主线，围绕一个身体</a></h2>
+      <h2 class="zh"><a class="shead__link" href="research.html"><span>四条主线，</span><span>围绕一个身体</span></a></h2>
       <h2 class="en"><a class="shead__link" href="research.html">Four lines of work, one body at the centre</a></h2>
       <p class="zh">从机械结构到控制算法，我们的研究沿着「感知人的意图」到「把助力送到关节」这条链路展开。</p>
       <p class="en">From mechanical structure to control algorithms, our work follows one chain: sensing human intent, then delivering assistance to the joint.</p>
@@ -393,7 +315,7 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
       <span class="shead__hint en">Open the research page</span>
     </div>
     <div class="rgrid">
-      <article class="ritem rv">
+      <article class="ritem">
         <div class="ritem__idx">01</div>
         <div>
           <h3 class="zh">下肢助力外骨骼</h3><h3 class="en">Lower-limb assistive exoskeleton</h3>
@@ -401,7 +323,7 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
           <p class="en">Assistive structures and lightweight design for hip, knee and ankle joints. <span class="ph">[ details TBC ]</span></p>
         </div>
       </article>
-      <article class="ritem rv">
+      <article class="ritem">
         <div class="ritem__idx">02</div>
         <div>
           <h3 class="zh">运动意图识别</h3><h3 class="en">Motion-intent recognition</h3>
@@ -409,7 +331,7 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
           <p class="en">Reading the wearer's next move from EMG, inertial and torque signals. <span class="ph">[ details TBC ]</span></p>
         </div>
       </article>
-      <article class="ritem rv">
+      <article class="ritem">
         <div class="ritem__idx">03</div>
         <div>
           <h3 class="zh">人机协同控制</h3><h3 class="en">Human-machine collaborative control</h3>
@@ -417,7 +339,7 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
           <p class="en">Compliant actuation, impedance control and wearer comfort optimised together. <span class="ph">[ details TBC ]</span></p>
         </div>
       </article>
-      <article class="ritem rv">
+      <article class="ritem">
         <div class="ritem__idx">04</div>
         <div>
           <h3 class="zh">康复与工业助力</h3><h3 class="en">Rehabilitation and industrial assistance</h3>
@@ -432,12 +354,12 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
 <!-- ================= METRICS BAND ================= -->
 <section class="band" id="metrics">
   <div class="wrap">
-    <div class="shead shead--tight rv">
+    <div class="shead shead--tight">
       <span class="label zh">成果数据</span><span class="label en">Results</span>
       <h2 class="zh"><a class="shead__link" href="results.html">实验室的账本</a></h2>
       <h2 class="en"><a class="shead__link" href="results.html">What the lab has produced</a></h2>
     </div>
-    <div class="band__grid rv">
+    <div class="band__grid">
       <div class="band__cell">
         <div class="metric__num"><span class="ph">[ N ]</span></div>
         <div class="metric__lab zh">科研项目 / 横向课题</div><div class="metric__lab en">Projects</div>
@@ -463,7 +385,7 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
 <!-- ================= HARDWARE ================= -->
 <section id="hardware">
   <div class="wrap">
-    <div class="shead rv">
+    <div class="shead">
       <span class="label zh">实验硬件</span><span class="label en">Hardware</span>
       <h2 class="zh"><a class="shead__link" href="hardware.html">实验室里有什么</a></h2>
       <h2 class="en"><a class="shead__link" href="hardware.html">What the benches carry</a></h2>
@@ -472,7 +394,7 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
       <span class="shead__hint zh">点标题进入实验硬件详情页</span>
       <span class="shead__hint en">Open the hardware page</span>
     </div>
-    <div class="hgrid rv">
+    <div class="hgrid">
       <article class="hcard">
         <div class="shot shot--16x9"><span>[ 硬件照片 01 · 待填 ]</span></div>
         <h3 class="zh">下肢助力外骨骼样机</h3><h3 class="en">Lower-limb prototype</h3>
@@ -516,7 +438,7 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
 <!-- ================= ALBUM ================= -->
 <section class="album" id="album">
   <div class="wrap">
-    <div class="shead rv">
+    <div class="shead">
       <span class="label zh">活动相册</span><span class="label en">Gallery</span>
       <h2 class="zh"><a class="shead__link" href="gallery.html">现场记录</a></h2>
       <h2 class="en"><a class="shead__link" href="gallery.html">On site</a></h2>
@@ -525,7 +447,7 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
       <span class="shead__hint zh">点标题进入活动相册详情页</span>
       <span class="shead__hint en">Open the gallery page</span>
     </div>
-    <div class="album__grid rv">
+    <div class="album__grid">
       <div class="shot shot--16x9 a1"><span>[ 相册 01 · 样机调试 · 待填 ]</span></div>
       <div class="shot shot--16x9 a2"><span>[ 相册 02 · 待填 ]</span></div>
       <div class="shot shot--4x3 a3"><span>[ 相册 03 · 待填 ]</span></div>
@@ -540,14 +462,14 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
 <!-- ================= EVENTS ================= -->
 <section id="events">
   <div class="wrap">
-    <div class="shead rv">
+    <div class="shead">
       <span class="label zh">重要事件记录</span><span class="label en">Milestones</span>
       <h2 class="zh"><a class="shead__link" href="milestones.html">时间线上的几个点</a></h2>
       <h2 class="en"><a class="shead__link" href="milestones.html">A few points on the timeline</a></h2>
       <span class="shead__hint zh">点标题进入重要事件详情页（动态时间轴样板）</span>
       <span class="shead__hint en">Open the milestones page: the animated timeline sample</span>
     </div>
-    <div class="tl rv">
+    <div class="tl">
       <div class="tl__row">
         <div class="tl__year"><span class="ph">[ 年份 ]</span></div>
         <div><h3 class="zh"><span class="ph">[ 事件标题待填 ]</span></h3><h3 class="en"><span class="ph">[ event title TBC ]</span></h3>
@@ -575,14 +497,14 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
 <!-- ================= TEAM (version 2: snap strip of member cards) ================= -->
 <section class="team" id="team">
   <div class="wrap">
-    <div class="shead rv">
+    <div class="shead">
       <span class="label zh">团队成员</span><span class="label en">Team</span>
       <h2 class="zh"><a class="shead__link" href="team.html">团队成员</a></h2>
       <h2 class="en"><a class="shead__link" href="team.html">Team</a></h2>
       <p class="zh">指导老师与成员名单，等待实验室提供肖像、职务与研究方向。</p>
       <p class="en">Advisor and members, waiting for portraits, roles and research directions.</p>
     </div>
-    <div class="strip rv" role="list" aria-label="团队成员 / Team members">
+    <div class="strip" role="list" aria-label="团队成员 / Team members">
       <article class="member" role="listitem">
         <div class="avatar" aria-hidden="true"><span class="ph"><span class="zh">[ 肖像待填 ]</span><span class="en">[ portrait to be filled ]</span></span></div>
         <p class="member-name">梁宏博 <span class="en">Liang Hongbo</span></p>
@@ -627,7 +549,7 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
 <!-- ================= JOIN ================= -->
 <section id="join">
   <div class="wrap">
-    <div class="shead rv">
+    <div class="shead">
       <span class="label zh">加入我们</span><span class="label en">Join us</span>
       <h2 class="zh"><a class="shead__link" href="join.html">想进来做外骨骼，直接联系我们</a></h2>
       <h2 class="en"><a class="shead__link" href="join.html">Want to build exoskeletons? Reach us directly</a></h2>
@@ -636,7 +558,7 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
       <span class="shead__hint zh">点标题进入联系方式详情页</span>
       <span class="shead__hint en">Open the contact page</span>
     </div>
-    <div class="join__grid rv">
+    <div class="join__grid">
       <dl class="contacts">
         <div class="crow"><dt class="zh">微信</dt><dt class="en">WeChat</dt><dd><span class="ph">[ 微信号待填 ]</span></dd></div>
         <div class="crow"><dt class="zh">邮箱</dt><dt class="en">Email</dt><dd><span class="ph">[ 邮箱地址待填 ]</span></dd></div>
@@ -677,21 +599,6 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
   btn.addEventListener("click",function(){
     apply(root.getAttribute("data-lang")==="zh" ? "en" : "zh");
   });
-
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  /* scroll reveal */
-  var items=document.querySelectorAll(".rv");
-  if(reduce || !("IntersectionObserver" in window)){
-    items.forEach(function(el){el.classList.add("in");});
-  }else{
-    var io=new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}
-      });
-    },{rootMargin:"0px 0px -8% 0px",threshold:.12});
-    items.forEach(function(el){io.observe(el);});
-  }
 
   /* active section in nav */
   var links=Array.prototype.slice.call(document.querySelectorAll(".nav__links a[href^='#']"));
