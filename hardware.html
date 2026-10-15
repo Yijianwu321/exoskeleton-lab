@@ -81,6 +81,11 @@ footer{border-top:1px solid var(--line);padding-block:30px;background:var(--bg-2
   .nav__links{order:3;flex:1 1 100%;margin-left:0;gap:14px;overflow-x:auto;scrollbar-width:none;justify-content:flex-start}
   .nav__links::-webkit-scrollbar{display:none} .nav__links a{font-size:13px}
 }
+
+/* Cross-page morph: this title is the homepage heading it came from. */
+@view-transition{navigation:auto}
+.head{view-transition-name:vt-hardware}
+@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}
 </style>
 </head>
 <body>

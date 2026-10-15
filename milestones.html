@@ -170,6 +170,11 @@ footer{background:var(--surface);border-top:1px solid var(--line);padding-block:
   .tlx__node{background:var(--accent);border-color:var(--accent)}
 }
 
+
+/* Cross-page morph: this title is the homepage heading it came from. */
+@view-transition{navigation:auto}
+.phead{view-transition-name:vt-milestones}
+@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}
 </style>
 </head>
 <body>

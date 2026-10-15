@@ -232,9 +232,131 @@ h1{font-size:clamp(64px,7.4vw,96px);line-height:1.04;font-weight:650;letter-spac
   #join .shead h2{font-size:30px}.qrwrap{grid-template-columns:144px minmax(0,1fr);gap:20px;align-items:center}.qr{width:144px;padding:14px}
 }
 
+/* ================= ROUND 2: ground texture, transitions, ruler, sticky hardware ================= */
+
+/* Cross-page morph: the section heading on the homepage becomes the page title. */
+@view-transition{navigation:auto}
+#research .shead{view-transition-name:vt-research}
+#metrics .shead{view-transition-name:vt-results}
+#hardware .shead{view-transition-name:vt-hardware}
+#album .shead{view-transition-name:vt-gallery}
+#events .shead{view-transition-name:vt-milestones}
+#team .shead{view-transition-name:vt-team}
+#join .shead{view-transition-name:vt-join}
+
+/* Ground: engineering paper grid plus two slowly drifting light fields.
+   Fixed, pointer-transparent, transform/opacity only; the two open bands let it show. */
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(to right,rgba(23,52,71,.05) 1px,transparent 1px),
+                   linear-gradient(to bottom,rgba(23,52,71,.05) 1px,transparent 1px);
+  background-size:32px 32px}
+body::after{content:"";position:fixed;inset:-25% -12%;z-index:0;pointer-events:none;
+  background:radial-gradient(40vw 40vw at 16% 10%,rgba(11,122,99,.09),transparent 62%),
+             radial-gradient(46vw 46vw at 84% 74%,rgba(118,176,214,.17),transparent 64%);
+  animation:drift 84s ease-in-out infinite alternate;will-change:transform}
+@keyframes drift{from{transform:translate3d(-2%,-1%,0) scale(1.02)}to{transform:translate3d(3%,2%,0) scale(1.08)}}
+header.nav,main,footer{position:relative;z-index:1}
+.hero,.band{background:transparent}
+
+/* Reading progress line and the current block name, both driven from one rAF loop. */
+.rbar{position:fixed;inset:0 0 auto 0;height:2px;z-index:60;pointer-events:none}
+.rbar i{display:block;height:100%;background:var(--accent);transform:scaleX(0);transform-origin:left}
+.rname{position:fixed;left:14px;bottom:12px;z-index:60;pointer-events:none;color:var(--txt-3);font:11px/1.4 var(--mono);letter-spacing:.02em;opacity:.75}
+
+/* Results: a ruler that draws itself left to right when the band enters. */
+.ruler{margin:0 0 30px;display:grid;gap:10px}
+.ruler__ticks{height:24px;clip-path:inset(0 100% 0 0);transition:clip-path 1.1s var(--ease);
+  background:repeating-linear-gradient(to right,var(--line) 0 1px,transparent 1px 16px) left bottom/100% 8px no-repeat,
+             repeating-linear-gradient(to right,var(--line-strong) 0 1px,transparent 1px 128px) left bottom/100% 22px no-repeat}
+.ruler.is-in .ruler__ticks{clip-path:inset(0 0 0 0)}
+.ruler__cap{font:12px/1.7 var(--mono);color:var(--txt-3)}
+
+/* Hardware: one sticky stage scrubbing a 36-frame turntable, four benches passing beside it. */
+.hw{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:clamp(32px,5vw,72px);align-items:start}
+.hw__stage{position:sticky;top:calc(var(--nav-h) + 20px);display:grid;gap:14px;align-content:start}
+.hw__frame{margin:0;display:grid;gap:10px}
+.hw__frame img{width:100%;max-height:min(48vh,540px);object-fit:contain;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+.hw__det{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hw__det img{width:100%;aspect-ratio:16/10;object-fit:cover;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+.hw__note{font-size:12px}
+.hw__list{display:grid}
+.hw__item{display:grid;gap:14px;padding-block:clamp(26px,5vw,54px);border-top:1px solid var(--line);opacity:.52;transition:opacity .45s var(--ease)}
+.hw__item:first-child{border-top:0;padding-top:0}
+.hw__item.is-active{opacity:1}
+.hw__idx{color:var(--accent)}
+.hw__item h3{font-size:21px;line-height:1.45}
+.hw__item dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px 14px;margin:0;font-size:13px}
+.hw__item dt{font-size:12px;color:var(--txt-3);padding-top:3px}
+.hw__item dd{margin:0;color:var(--txt-2)}
+.hw__item .shot{min-height:170px}
+
+/* Hero keeps a narrow proof-strip under the ledger. */
+.hero__strip{margin:22px 0 0;display:grid;gap:8px}
+.hero__strip img{width:100%;height:174px;object-fit:cover;object-position:center 40%;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+.hero__strip figcaption{font-size:12px}
+
+/* Team strip: soft ends on the wrapper (scrollbar intact) plus a slim position rail. */
+.stripwrap{position:relative}
+.stripwrap::before,.stripwrap::after{content:"";position:absolute;top:0;bottom:20px;width:44px;pointer-events:none;z-index:1}
+.stripwrap::before{left:0;background:linear-gradient(to right,var(--surface),rgba(255,255,255,0))}
+.stripwrap::after{right:0;background:linear-gradient(to left,var(--surface),rgba(255,255,255,0))}
+.strip__rail{position:relative;height:2px;margin-top:2px;background:var(--line);overflow:hidden}
+.strip__rail i{position:absolute;inset:0 auto 0 0;width:30%;background:var(--accent);transform-origin:left}
+
+/* Research keeps a ruled margin that draws down as the list enters. */
+.rgrid{position:relative;padding-left:20px}
+.rgrid::before{content:"";position:absolute;left:0;top:0;bottom:0;width:7px;clip-path:inset(0 0 100% 0);transition:clip-path 1.3s var(--ease);
+  background:repeating-linear-gradient(to bottom,var(--line-strong) 0 1px,transparent 1px 15px)}
+.rgrid.is-in::before{clip-path:inset(0 0 0 0)}
+
+/* Placeholder slots breathe once, softly; real photographs will replace them. */
+.shot,.avatar{position:relative}
+.avatar{overflow:hidden}
+.shot::after,.avatar::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 34%,rgba(255,255,255,.6) 50%,transparent 66%);
+  transform:translateX(-125%);animation:phSweep 13s ease-in-out infinite}
+@keyframes phSweep{0%,52%{transform:translateX(-125%);opacity:0}60%{opacity:.85}90%,100%{transform:translateX(125%);opacity:0}}
+
+/* Section headings underline themselves on hover and keyboard focus. */
+.shead__link{background-image:linear-gradient(var(--accent),var(--accent));background-repeat:no-repeat;background-position:0 100%;background-size:0% 2px;transition:background-size .38s var(--ease),color .2s var(--ease)}
+.shead__link:hover,.shead__link:focus-visible{background-size:100% 2px}
+
+/* file:// cannot read a sibling .glb, so the interactive stage steps aside for a still. */
+.exo-noserve{display:none}
+html[data-file] .exo-viewer{display:none!important}
+html[data-file] .exo-noserve{display:grid}
+.noserve{margin:0;display:grid;gap:18px}
+.noserve img{width:100%;max-height:62vh;object-fit:contain;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+.noserve p{font-size:14px;max-width:60ch}
+
+@media(max-width:1100px){
+  .hw{grid-template-columns:1fr;gap:34px}
+  .hw__stage{top:calc(var(--nav-mobile-h) + 10px);z-index:2;background:var(--bg-2);padding-block:12px}
+  .hw__frame img{max-height:36vh}
+  .hw__det{display:none}
+}
+@media(max-width:768px){
+  .hero__strip img{height:140px}
+  .rgrid{padding-left:14px}
+  .rname{display:none}
+}
+/* The sticky stage must never outgrow the viewport, or its lower rows get cut off. */
+@media(max-height:880px){.hw__det{display:none}}
+@media(max-height:700px){.hw__frame img{max-height:38vh}}
+@media(prefers-reduced-motion:reduce){
+  body::after{animation:none!important}
+  .ruler__ticks,.rgrid::before{clip-path:none!important;transition:none!important}
+  .strip__rail i{width:100%;opacity:.35}
+}
 </style>
+<link rel="stylesheet" href="assets/viewer.css">
+<script type="importmap">{"imports":{"three":"./assets/vendor/three.module.js"}}</script>
+<script type="module" src="assets/viewer.mjs"></script>
 </head>
 <body>
+<script>if(location.protocol==="file:")document.documentElement.setAttribute("data-file","");</script>
+<div class="rbar" aria-hidden="true"><i data-rbar></i></div>
+<div class="rname" data-rname aria-hidden="true"></div>
 
 <!-- ================= NAV ================= -->
 <header class="nav">
@@ -276,6 +398,7 @@ h1{font-size:clamp(64px,7.4vw,96px);line-height:1.04;font-weight:650;letter-spac
       <p class="hero__sub en">Led by Prof. Liang Hongbo. We work on lower-limb assistive exoskeletons, motion-intent recognition and human-machine collaborative control, validated on prototypes for rehabilitation and industrial assistance.</p>
       <div class="hero__cta">
         <a class="btn btn--primary" href="#join"><span class="zh">加入我们</span><span class="en">Join us</span></a>
+        <a class="btn" href="#model"><span class="zh">探索三维模型</span><span class="en">Explore in 3D</span></a>
         <a class="btn" href="research.html"><span class="zh">了解研究方向</span><span class="en">See our research</span></a>
       </div>
     </div>
@@ -298,10 +421,67 @@ h1{font-size:clamp(64px,7.4vw,96px);line-height:1.04;font-weight:650;letter-spac
           <div class="metric__lab zh">团队成员</div><div class="metric__lab en">Team members</div>
         </div>
       </div>
+      <figure class="hero__strip">
+        <img src="assets/exo-hero-2.webp" width="2400" height="1500" alt="模型渲染：fea2肩幅調整案2 肩部机构装配">
+        <figcaption class="label zh">模型渲染 · 肩幅调整案2 · 非现场照片</figcaption>
+        <figcaption class="label en">Model render · not a site photograph</figcaption>
+      </figure>
     </div>
   </div>
 </section>
 
+<!-- ================= 3D MODEL ================= -->
+<section class="exo-section" id="model" aria-labelledby="model-heading">
+<div class="wrap"><div class="exo-heading"><div><h2 id="model-heading"><span class="zh">让结构，自己说话。</span><span class="en">See how it comes together.</span></h2><p class="zh" style="margin-top:12px">用一份真实装配模型，探索机构的每一个角度。</p><p class="en" style="margin-top:12px">Explore an imported assembly, from every angle.</p></div><a href="model.html"><span class="zh">打开独立展示页 →</span><span class="en">Open model viewer →</span></a></div>
+<div class="exo-viewer" aria-label="肩部机构三维交互展示">
+  <div class="exo-stage">
+    <canvas class="exo-canvas" tabindex="0" aria-label="三维模型。拖动旋转，滚轮或双指缩放；键盘方向键旋转，加减键缩放，Home 复位。"></canvas>
+    <div class="exo-stage-head"><span class="exo-model-label">肩幅調整案2<br><span style="font-size:12px;font-weight:400;color:var(--exo-muted)">导入装配模型</span></span><span class="exo-status" data-status role="status">正在载入</span></div>
+    <div class="exo-axis" aria-hidden="true"><svg viewBox="0 0 60 60"><path d="M25 37V7M25 37L50 48M25 37L5 50" fill="none" stroke="#496679" stroke-width="1"/><circle cx="25" cy="37" r="2" fill="#0a705b"/><text x="28" y="10">Y</text><text x="49" y="59">X</text><text x="1" y="59">Z</text></svg></div>
+    <p class="exo-hint">拖动旋转 · 滚轮 / 双指缩放<br>点击零件，查看名称</p>
+    <div class="exo-stage-buttons">
+      <button class="exo-icon-button" data-zoom-in aria-label="放大" title="放大"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button class="exo-icon-button" data-zoom-out aria-label="缩小" title="缩小"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+      <button class="exo-icon-button" data-fullscreen aria-label="全屏查看" title="全屏查看" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
+    </div>
+    <div class="exo-loading" role="status"><div class="exo-loading-bar"><span></span></div><span data-loading-text>正在准备三维模型…</span></div>
+  </div>
+  <aside class="exo-panel" aria-label="模型显示控制">
+    <h3>肩部机构，<br>换个角度看。</h3>
+    <p class="exo-description">转动、靠近、展开。<br>从整体装配，看到每一处连接。</p>
+    <div class="exo-field">
+      <p class="exo-field-title">观察视角</p>
+      <div class="exo-segment" role="group" aria-label="观察视角">
+        <button data-view="perspective" aria-pressed="true">透视</button><button data-view="front" aria-pressed="false">正面</button><button data-view="side" aria-pressed="false">侧面</button><button data-view="back" aria-pressed="false">背面</button>
+      </div>
+    </div>
+    <div class="exo-field">
+      <p class="exo-field-title">显示方式</p>
+      <div class="exo-segment" role="group" aria-label="显示方式"><button data-mode="solid" aria-pressed="true">实体材质</button><button data-mode="wire" aria-pressed="false">结构线框</button></div>
+    </div>
+    <div class="exo-field">
+      <label class="exo-field-title" for="exo-explode">展开结构 <output data-spread for="exo-explode">0%</output></label>
+      <input id="exo-explode" class="exo-range" data-explode type="range" min="0" max="100" value="0" step="1">
+      <div class="exo-range-labels"><span>完整装配</span><span>分离示意</span></div>
+      <div class="exo-controls-row">
+        <button class="exo-toggle" data-auto aria-pressed="false"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M15.5 6A6.5 6.5 0 1 0 16 13M15.5 2v4H11"/></svg><span>自动旋转</span></button>
+        <button class="exo-reset" data-reset><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5a7 7 0 1 1-1.5 7M5 1v4h4"/></svg>复位</button>
+      </div>
+    </div>
+    <div class="exo-field"><p class="exo-field-title">零件观察</p><p class="exo-selection" data-selection aria-live="polite"><strong>点击模型中的任意零件</strong>查看导入文件中的零件名称。</p></div>
+    <p class="exo-provenance">模型：fea2肩幅調整案2.glb · 3.2 MB<br>用户提供的装配模型，仅作结构展示。<br>展开为示意分离，不表示实际拆装顺序。</p>
+  </aside>
+</div>
+<div class="exo-noserve">
+  <div class="noserve">
+    <img src="assets/exo-hero-1.webp" width="2400" height="1500" alt="模型渲染：fea2肩幅調整案2 肩部机构装配，三视角之一">
+    <p class="zh">现在是用「双击打开」的方式看这一页。浏览器不许本地页面读取同一文件夹里的模型文件，所以这里先放一张静态渲染图。要交互旋转、展开结构、点选零件，请双击同目录的 <b>启动预览.cmd</b>：它用本地服务打开页面，三维展示才能真正载入。</p>
+    <p class="en">This page is being previewed straight from disk. Browsers block a local page from reading a model file sitting beside it, so a still render is shown here. For interactive rotation, explode view and part picking, run <b>启动预览.cmd</b> in the same folder: it serves the folder locally so the viewer can load.</p>
+    <p class="label zh">模型渲染 · 肩幅调整案2 · 等真实样机照片替换</p>
+    <p class="label en">Model render · awaiting real photographs</p>
+  </div>
+</div>
+</div></section>
 <!-- ================= RESEARCH ================= -->
 <section class="research" id="research">
   <div class="wrap">
@@ -359,6 +539,11 @@ h1{font-size:clamp(64px,7.4vw,96px);line-height:1.04;font-weight:650;letter-spac
       <h2 class="zh"><a class="shead__link" href="results.html">实验室的账本</a></h2>
       <h2 class="en"><a class="shead__link" href="results.html">What the lab has produced</a></h2>
     </div>
+    <div class="ruler" data-ruler aria-hidden="true">
+      <div class="ruler__ticks"></div>
+      <p class="ruler__cap zh">刻度尺等真实数字到位后对齐；每格代表一个统计单位。</p>
+      <p class="ruler__cap en">The ruler is aligned once real figures arrive; one step per counting unit.</p>
+    </div>
     <div class="band__grid">
       <div class="band__cell">
         <div class="metric__num"><span class="ph">[ N ]</span></div>
@@ -394,43 +579,62 @@ h1{font-size:clamp(64px,7.4vw,96px);line-height:1.04;font-weight:650;letter-spac
       <span class="shead__hint zh">点标题进入实验硬件详情页</span>
       <span class="shead__hint en">Open the hardware page</span>
     </div>
-    <div class="hgrid">
-      <article class="hcard">
-        <div class="shot shot--16x9"><span>[ 硬件照片 01 · 待填 ]</span></div>
-        <h3 class="zh">下肢助力外骨骼样机</h3><h3 class="en">Lower-limb prototype</h3>
-        <dl>
-          <dt class="zh">型号</dt><dt class="en">Model</dt><dd><span class="ph">[ 待填 ]</span></dd>
-          <dt class="zh">自由度</dt><dt class="en">DOF</dt><dd><span class="ph">[ 待填 ]</span></dd>
-          <dt class="zh">整机重量</dt><dt class="en">Mass</dt><dd><span class="ph">[ 待填 ]</span></dd>
-        </dl>
-      </article>
-      <article class="hcard">
-        <div class="shot shot--16x9"><span>[ 硬件照片 02 · 待填 ]</span></div>
-        <h3 class="zh">驱动与传感平台</h3><h3 class="en">Actuation and sensing</h3>
-        <dl>
-          <dt class="zh">驱动器</dt><dt class="en">Actuator</dt><dd><span class="ph">[ 待填 ]</span></dd>
-          <dt class="zh">峰值扭矩</dt><dt class="en">Peak torque</dt><dd><span class="ph">[ 待填 ]</span></dd>
-          <dt class="zh">传感器</dt><dt class="en">Sensors</dt><dd><span class="ph">[ 待填 ]</span></dd>
-        </dl>
-      </article>
-      <article class="hcard">
-        <div class="shot shot--16x9"><span>[ 硬件照片 03 · 待填 ]</span></div>
-        <h3 class="zh">运动捕捉与测力</h3><h3 class="en">Motion capture and force plates</h3>
-        <dl>
-          <dt class="zh">设备</dt><dt class="en">Equipment</dt><dd><span class="ph">[ 待填 ]</span></dd>
-          <dt class="zh">采样率</dt><dt class="en">Sampling</dt><dd><span class="ph">[ 待填 ]</span></dd>
-          <dt class="zh">场地</dt><dt class="en">Site</dt><dd><span class="ph">[ 待填 ]</span></dd>
-        </dl>
-      </article>
-      <article class="hcard">
-        <div class="shot shot--16x9"><span>[ 硬件照片 04 · 待填 ]</span></div>
-        <h3 class="zh">实时控制与数据采集</h3><h3 class="en">Real-time control and DAQ</h3>
-        <dl>
-          <dt class="zh">控制器</dt><dt class="en">Controller</dt><dd><span class="ph">[ 待填 ]</span></dd>
-          <dt class="zh">控制周期</dt><dt class="en">Loop rate</dt><dd><span class="ph">[ 待填 ]</span></dd>
-          <dt class="zh">软件链</dt><dt class="en">Software</dt><dd><span class="ph">[ 待填 ]</span></dd>
-        </dl>
-      </article>
+    <div class="hw" data-hw>
+      <div class="hw__stage">
+        <figure class="hw__frame">
+          <img data-turn src="assets/exo-turn-00.webp" width="1000" height="1000" decoding="async" alt="模型渲染：fea2肩幅調整案2 肩部机构装配，随滚动旋转">
+          <figcaption class="label zh">模型渲染 · 肩幅调整案2 · 滚过这一节，样机转一圈</figcaption>
+          <figcaption class="label en">Model render · the assembly turns as this section scrolls</figcaption>
+        </figure>
+        <div class="hw__det">
+          <img src="assets/exo-detail-1.webp" width="1375" height="1125" loading="lazy" decoding="async" alt="模型渲染：肩关节连接处局部">
+          <img src="assets/exo-detail-2.webp" width="1375" height="1125" loading="lazy" decoding="async" alt="模型渲染：机构另一处连接局部">
+        </div>
+        <p class="hw__note note zh">以上均为导入模型的渲染图，不是现场照片；照片位与参数照旧留白等真实资料。</p>
+        <p class="hw__note note en">All of the above are renders of the imported model, not site photographs. Photo slots and specs still await real material.</p>
+      </div>
+      <div class="hw__list">
+        <article class="hw__item" data-hw-item>
+          <div class="hw__idx label">01</div>
+          <h3 class="zh">下肢助力外骨骼样机</h3><h3 class="en">Lower-limb prototype</h3>
+          <dl>
+            <dt class="zh">型号</dt><dt class="en">Model</dt><dd><span class="ph">[ 待填 ]</span></dd>
+            <dt class="zh">自由度</dt><dt class="en">DOF</dt><dd><span class="ph">[ 待填 ]</span></dd>
+            <dt class="zh">整机重量</dt><dt class="en">Mass</dt><dd><span class="ph">[ 待填 ]</span></dd>
+          </dl>
+          <div class="shot shot--16x9"><span>[ 硬件照片 01 · 待填 ]</span></div>
+        </article>
+        <article class="hw__item" data-hw-item>
+          <div class="hw__idx label">02</div>
+          <h3 class="zh">驱动与传感平台</h3><h3 class="en">Actuation and sensing</h3>
+          <dl>
+            <dt class="zh">驱动器</dt><dt class="en">Actuator</dt><dd><span class="ph">[ 待填 ]</span></dd>
+            <dt class="zh">峰值扭矩</dt><dt class="en">Peak torque</dt><dd><span class="ph">[ 待填 ]</span></dd>
+            <dt class="zh">传感器</dt><dt class="en">Sensors</dt><dd><span class="ph">[ 待填 ]</span></dd>
+          </dl>
+          <div class="shot shot--16x9"><span>[ 硬件照片 02 · 待填 ]</span></div>
+        </article>
+        <article class="hw__item" data-hw-item>
+          <div class="hw__idx label">03</div>
+          <h3 class="zh">运动捕捉与测力</h3><h3 class="en">Motion capture and force plates</h3>
+          <dl>
+            <dt class="zh">设备</dt><dt class="en">Equipment</dt><dd><span class="ph">[ 待填 ]</span></dd>
+            <dt class="zh">采样率</dt><dt class="en">Sampling</dt><dd><span class="ph">[ 待填 ]</span></dd>
+            <dt class="zh">场地</dt><dt class="en">Site</dt><dd><span class="ph">[ 待填 ]</span></dd>
+          </dl>
+          <div class="shot shot--16x9"><span>[ 硬件照片 03 · 待填 ]</span></div>
+        </article>
+        <article class="hw__item" data-hw-item>
+          <div class="hw__idx label">04</div>
+          <h3 class="zh">实时控制与数据采集</h3><h3 class="en">Real-time control and DAQ</h3>
+          <dl>
+            <dt class="zh">控制器</dt><dt class="en">Controller</dt><dd><span class="ph">[ 待填 ]</span></dd>
+            <dt class="zh">控制周期</dt><dt class="en">Loop rate</dt><dd><span class="ph">[ 待填 ]</span></dd>
+            <dt class="zh">软件链</dt><dt class="en">Software</dt><dd><span class="ph">[ 待填 ]</span></dd>
+          </dl>
+          <div class="shot shot--16x9"><span>[ 硬件照片 04 · 待填 ]</span></div>
+        </article>
+      </div>
     </div>
   </div>
 </section>
@@ -504,6 +708,7 @@ h1{font-size:clamp(64px,7.4vw,96px);line-height:1.04;font-weight:650;letter-spac
       <p class="zh">指导老师与成员名单，等待实验室提供肖像、职务与研究方向。</p>
       <p class="en">Advisor and members, waiting for portraits, roles and research directions.</p>
     </div>
+    <div class="stripwrap">
     <div class="strip" role="list" aria-label="团队成员 / Team members">
       <article class="member" role="listitem">
         <div class="avatar" aria-hidden="true"><span class="ph"><span class="zh">[ 肖像待填 ]</span><span class="en">[ portrait to be filled ]</span></span></div>
@@ -540,6 +745,8 @@ h1{font-size:clamp(64px,7.4vw,96px);line-height:1.04;font-weight:650;letter-spac
         <div class="spec"><span class="zh">研究方向</span><span class="en">Focus</span><span class="ph"><span class="zh">[ 待填 ]</span><span class="en">[ to be filled ]</span></span></div>
         <div class="spec"><span class="zh">邮箱</span><span class="en">Email</span><span class="ph"><span class="zh">[ 邮箱待填 ]</span><span class="en">[ email to be filled ]</span></span></div>
       </article>
+    </div>
+    <div class="strip__rail" aria-hidden="true"><i data-rail></i></div>
     </div>
     <p class="strip__hint zh">横向滚动查看全部成员。</p>
     <p class="strip__hint en">Scroll the strip sideways for more members.</p>
@@ -614,6 +821,104 @@ h1{font-size:clamp(64px,7.4vw,96px);line-height:1.04;font-weight:650;letter-spac
     },{rootMargin:"-45% 0px -50% 0px"});
     targets.forEach(function(t){navIo.observe(t);});
   }
+
+  /* ---- Round 2 ------------------------------------------------
+     One rAF loop drives: the reading line, the current block name,
+     the hardware turntable scrub and the team rail. No window scroll
+     listener; the loop parks itself while the tab is hidden. */
+  var doc=document.documentElement;
+  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var raf=null;
+
+  var bar=document.querySelector("[data-rbar]");
+  var nameEl=document.querySelector("[data-rname]");
+  var hwSec=document.querySelector("[data-hw]");
+  var turn=document.querySelector("img[data-turn]");
+  var hwItems=Array.prototype.slice.call(document.querySelectorAll("[data-hw-item]"));
+  var strip=document.querySelector(".strip");
+  var rail=document.querySelector("[data-rail]");
+  var sections=Array.prototype.slice.call(document.querySelectorAll("main > section"));
+  var NAME={hero:"首屏",model:"三维模型",research:"研究内容",metrics:"成果数据",hardware:"实验硬件",album:"活动相册",events:"重要事件",team:"团队成员",join:"加入我们"};
+
+  /* 36 frames, 10 degrees apart; only the first six load eagerly. */
+  var FRAMES=[];
+  for(var i=0;i<36;i++){FRAMES.push("assets/exo-turn-"+(i<10?"0":"")+i+".webp");}
+  var frame=-1, warmed=false;
+  function warm(){
+    if(warmed) return; warmed=true;
+    FRAMES.slice(6).forEach(function(src,k){
+      setTimeout(function(){var im=new Image(); im.src=src;}, 220*(k+1));
+    });
+  }
+  function show(n){
+    if(!turn||n===frame) return;
+    frame=n; turn.src=FRAMES[n];
+  }
+
+  function paint(){
+    raf=null;
+    var vh=window.innerHeight||800, top=window.pageYOffset||doc.scrollTop||0;
+    var max=Math.max(1,doc.scrollHeight-vh);
+
+    if(bar) bar.style.transform="scaleX("+Math.min(1,Math.max(0,top/max)).toFixed(4)+")";
+
+    if(nameEl&&sections.length){
+      var cur=sections[0];
+      for(var s=0;s<sections.length;s++){
+        if(sections[s].getBoundingClientRect().top<=vh*0.42) cur=sections[s];
+      }
+      var label=NAME[cur.id||"hero"]||"";
+      if(nameEl.textContent!==label) nameEl.textContent=label;
+    }
+
+    if(hwSec&&turn&&!reduce){
+      var hr=hwSec.getBoundingClientRect();
+      var span=hr.height-vh*0.6;
+      var q=span>0?(-hr.top+vh*0.3)/span:0;
+      show(Math.round(Math.min(1,Math.max(0,q))*35));
+      if(!warmed&&hr.top<vh*1.2) warm();
+    }
+    if(hwItems.length){
+      var best=null,bd=1e9;
+      for(var j=0;j<hwItems.length;j++){
+        var r=hwItems[j].getBoundingClientRect();
+        var d=Math.abs(r.top+r.height/2-vh/2);
+        if(d<bd){bd=d;best=hwItems[j];}
+      }
+      hwItems.forEach(function(el){el.classList.toggle("is-active",el===best);});
+    }
+    if(strip&&rail&&strip.scrollWidth>0){
+      var maxS=strip.scrollWidth-strip.clientWidth;
+      var w=Math.min(1,strip.clientWidth/strip.scrollWidth);
+      rail.style.width=(w*100).toFixed(2)+"%";
+      rail.style.transform="translateX("+((maxS>0?strip.scrollLeft/maxS:0)*((1-w)/w)*100).toFixed(2)+"%)";
+    }
+    if(running) raf=requestAnimationFrame(paint);   /* keep the frame chain alive */
+  }
+  var running=false;
+  function loop(){ if(!running){running=true; raf=requestAnimationFrame(paint);} }
+  function park(){ running=false; if(raf!==null){cancelAnimationFrame(raf);raf=null;} }
+
+  /* Rulers and the research margin draw themselves when they arrive. */
+  var grow=Array.prototype.slice.call(document.querySelectorAll("[data-ruler]"));
+  var rgrid=document.querySelector(".rgrid");
+  if(rgrid) grow.push(rgrid);
+  if(reduce||!("IntersectionObserver" in window)){
+    grow.forEach(function(el){el.classList.add("is-in");});
+  }else{
+    var gio=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("is-in"); gio.unobserve(e.target); } });
+    },{rootMargin:"-10% 0px -16% 0px"});
+    grow.forEach(function(el){ gio.observe(el); });
+  }
+
+  if(reduce){ show(6); paint(); }
+  else{ loop(); }
+
+  document.addEventListener("visibilitychange",function(){ document.hidden?park():loop(); });
+  window.addEventListener("pagehide",park);
+  window.addEventListener("pageshow",function(){ reduce?paint():loop(); });
+  window.addEventListener("resize",function(){ reduce?paint():loop(); });
 })();
 </script>
 </body>
