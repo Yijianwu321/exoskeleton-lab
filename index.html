@@ -274,11 +274,18 @@ header.nav,main,footer{position:relative;z-index:1}
 /* Hardware: one sticky stage scrubbing a 36-frame turntable, four benches passing beside it. */
 .hw{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:clamp(32px,5vw,72px);align-items:start}
 .hw__stage{position:sticky;top:calc(var(--nav-h) + 20px);display:grid;gap:14px;align-content:start}
-.hw__frame{margin:0;display:grid;gap:10px}
-.hw__frame img{width:100%;max-height:min(48vh,540px);object-fit:contain;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
-.hw__det{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.hw__det img{width:100%;aspect-ratio:16/10;object-fit:cover;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
-.hw__note{font-size:12px}
+.hw__frame{margin:0;display:grid;gap:10px;width:100%;max-width:560px}
+.hw__canvas{position:relative;aspect-ratio:1/1;width:100%;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius);
+  background:radial-gradient(115% 115% at 50% 18%,#F1F6FA 0%,#E7EFF6 52%,#DCE7EF 100%)}
+.hw__canvas img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.hw__tag{position:absolute;left:10px;top:9px;font:10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--txt-3);opacity:.9}
+.hw__angle{position:absolute;right:9px;bottom:8px;font:11px/1 var(--mono);font-variant-numeric:tabular-nums;color:var(--txt-2);
+  background:rgba(255,255,255,.78);padding:4px 6px;border-radius:2px}
+.hw__track{position:relative;height:2px;background:var(--line);overflow:hidden}
+.hw__track i{position:absolute;inset:0 auto 0 0;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left}
+.hw__cap{font-size:12px;color:var(--txt-3)}
+.shot--photo{position:relative;padding:0;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.shot--photo img{width:100%;height:100%;object-fit:cover;display:block}
 .hw__list{display:grid}
 .hw__item{display:grid;gap:14px;padding-block:clamp(26px,5vw,54px);border-top:1px solid var(--line);opacity:.52;transition:opacity .45s var(--ease)}
 .hw__item:first-child{border-top:0;padding-top:0}
@@ -332,8 +339,7 @@ html[data-file] .exo-noserve{display:grid}
 @media(max-width:1100px){
   .hw{grid-template-columns:1fr;gap:34px}
   .hw__stage{top:calc(var(--nav-mobile-h) + 10px);z-index:2;background:var(--bg-2);padding-block:12px}
-  .hw__frame img{max-height:36vh}
-  .hw__det{display:none}
+  .hw__frame{max-width:min(100%,52vh)}
 }
 @media(max-width:768px){
   .hero__strip img{height:140px}
@@ -341,13 +347,14 @@ html[data-file] .exo-noserve{display:grid}
   .rname{display:none}
 }
 /* The sticky stage must never outgrow the viewport, or its lower rows get cut off. */
-@media(max-height:880px){.hw__det{display:none}}
-@media(max-height:700px){.hw__frame img{max-height:38vh}}
+@media(max-height:760px){.hw__frame{max-width:min(100%,46vh)}}
 @media(prefers-reduced-motion:reduce){
   body::after{animation:none!important}
   .ruler__ticks,.rgrid::before{clip-path:none!important;transition:none!important}
   .strip__rail i{width:100%;opacity:.35}
 }
+.shot__cap{position:absolute;left:0;right:0;bottom:0;padding:20px 10px 8px;font-size:11px;line-height:1.4;
+  color:#fff;text-align:left;background:linear-gradient(to top,rgba(10,20,26,.78),rgba(10,20,26,.35) 60%,rgba(10,20,26,0))}
 </style>
 <link rel="stylesheet" href="assets/viewer.css">
 <script type="importmap">{"imports":{"three":"./assets/vendor/three.module.js"}}</script>
@@ -574,65 +581,64 @@ html[data-file] .exo-noserve{display:grid}
       <span class="label zh">实验硬件</span><span class="label en">Hardware</span>
       <h2 class="zh"><a class="shead__link" href="hardware.html">实验室里有什么</a></h2>
       <h2 class="en"><a class="shead__link" href="hardware.html">What the benches carry</a></h2>
-      <p class="zh">样机、驱动、测量与控制平台。照片与参数留白，等真实资料填入。</p>
-      <p class="en">Prototypes, actuation, measurement and control rigs. Photos and specs are left blank for real material.</p>
+      <p class="zh">上肢与腰部两台助力样机，加脑电采集与动作捕捉。参数来自学院公开报道；未公开的字段仍然留白。</p>
+      <p class="en">Two assistive prototypes plus EEG acquisition and motion capture. Figures come from the college&rsquo;s public report; unpublished fields stay blank.</p>
       <span class="shead__hint zh">点标题进入实验硬件详情页</span>
       <span class="shead__hint en">Open the hardware page</span>
     </div>
     <div class="hw" data-hw>
       <div class="hw__stage">
         <figure class="hw__frame">
-          <img data-turn src="assets/exo-turn-00.webp" width="1000" height="1000" decoding="async" alt="模型渲染：fea2肩幅調整案2 肩部机构装配，随滚动旋转">
-          <figcaption class="label zh">模型渲染 · 肩幅调整案2 · 滚过这一节，样机转一圈</figcaption>
-          <figcaption class="label en">Model render · the assembly turns as this section scrolls</figcaption>
+          <div class="hw__canvas">
+            <img data-turn src="assets/studio-turn-00.webp" width="900" height="900" decoding="async"
+                 alt="模型渲染：肩幅调整案2 肩部装配机构，随页面滚动旋转">
+            <span class="hw__tag" aria-hidden="true">SCROLL · 360°</span>
+            <span class="hw__angle" data-angle aria-hidden="true">000°</span>
+          </div>
+          <div class="hw__track" aria-hidden="true"><i data-turn-bar></i></div>
+          <figcaption class="hw__cap"><span class="zh">模型渲染 · 肩幅调整案2：滚过这一节，机构转一圈。金属与橙色为展示着色，不代表实物材料。</span><span class="en">Model render · the assembly turns as you scroll this section. The metal finish is illustrative.</span></figcaption>
         </figure>
-        <div class="hw__det">
-          <img src="assets/exo-detail-1.webp" width="1375" height="1125" loading="lazy" decoding="async" alt="模型渲染：肩关节连接处局部">
-          <img src="assets/exo-detail-2.webp" width="1375" height="1125" loading="lazy" decoding="async" alt="模型渲染：机构另一处连接局部">
-        </div>
-        <p class="hw__note note zh">以上均为导入模型的渲染图，不是现场照片；照片位与参数照旧留白等真实资料。</p>
-        <p class="hw__note note en">All of the above are renders of the imported model, not site photographs. Photo slots and specs still await real material.</p>
       </div>
       <div class="hw__list">
         <article class="hw__item" data-hw-item>
           <div class="hw__idx label">01</div>
-          <h3 class="zh">下肢助力外骨骼样机</h3><h3 class="en">Lower-limb prototype</h3>
+          <h3 class="zh">上肢助力外骨骼（第三代）</h3><h3 class="en">Upper-limb exoskeleton, 3rd gen</h3>
           <dl>
-            <dt class="zh">型号</dt><dt class="en">Model</dt><dd><span class="ph">[ 待填 ]</span></dd>
-            <dt class="zh">自由度</dt><dt class="en">DOF</dt><dd><span class="ph">[ 待填 ]</span></dd>
-            <dt class="zh">整机重量</dt><dt class="en">Mass</dt><dd><span class="ph">[ 待填 ]</span></dd>
+              <dt class="zh">自重</dt><dt class="en">Mass</dt><dd>5.1 kg（不含电池）</dd>
+              <dt class="zh">助力</dt><dt class="en">Assist</dt><dd>50%</dd>
+              <dt class="zh">托举</dt><dt class="en">Lift</dt><dd>双臂 25 kg 至 1.8 m</dd>
           </dl>
-          <div class="shot shot--16x9"><span>[ 硬件照片 01 · 待填 ]</span></div>
+          <div class="shot shot--16x9 shot--photo"><img src="assets/photos/wear-front.webp" alt="第三代上肢助力外骨骼穿戴状态" loading="lazy" decoding="async"><span class="shot__cap">上肢外骨骼穿戴状态</span></div>
         </article>
         <article class="hw__item" data-hw-item>
           <div class="hw__idx label">02</div>
-          <h3 class="zh">驱动与传感平台</h3><h3 class="en">Actuation and sensing</h3>
+          <h3 class="zh">腰部助力外骨骼</h3><h3 class="en">Waist assistive exoskeleton</h3>
           <dl>
-            <dt class="zh">驱动器</dt><dt class="en">Actuator</dt><dd><span class="ph">[ 待填 ]</span></dd>
-            <dt class="zh">峰值扭矩</dt><dt class="en">Peak torque</dt><dd><span class="ph">[ 待填 ]</span></dd>
-            <dt class="zh">传感器</dt><dt class="en">Sensors</dt><dd><span class="ph">[ 待填 ]</span></dd>
+              <dt class="zh">助力</dt><dt class="en">Assist</dt><dd>50%</dd>
+              <dt class="zh">举升</dt><dt class="en">Lift</dt><dd>辅助举起 30 kg</dd>
+              <dt class="zh">控制</dt><dt class="en">Control</dt><dd>导纳—PID 双闭环</dd>
           </dl>
-          <div class="shot shot--16x9"><span>[ 硬件照片 02 · 待填 ]</span></div>
+          <div class="shot shot--16x9"><span>[ 腰部外骨骼照片 · 待填 ]</span></div>
         </article>
         <article class="hw__item" data-hw-item>
           <div class="hw__idx label">03</div>
-          <h3 class="zh">运动捕捉与测力</h3><h3 class="en">Motion capture and force plates</h3>
+          <h3 class="zh">脑机接口采集与解码</h3><h3 class="en">BCI acquisition and decoding</h3>
           <dl>
-            <dt class="zh">设备</dt><dt class="en">Equipment</dt><dd><span class="ph">[ 待填 ]</span></dd>
-            <dt class="zh">采样率</dt><dt class="en">Sampling</dt><dd><span class="ph">[ 待填 ]</span></dd>
-            <dt class="zh">场地</dt><dt class="en">Site</dt><dd><span class="ph">[ 待填 ]</span></dd>
+              <dt class="zh">采集</dt><dt class="en">Acquire</dt><dd>非侵入式脑电帽 + 肌电测试仪</dd>
+              <dt class="zh">解码</dt><dt class="en">Decode</dt><dd>运动意图实时连续解码</dd>
+              <dt class="zh">阶段</dt><dt class="en">Stage</dt><dd>前期适配研究</dd>
           </dl>
-          <div class="shot shot--16x9"><span>[ 硬件照片 03 · 待填 ]</span></div>
+          <div class="shot shot--16x9 shot--photo"><img src="assets/photos/bci-talk.webp" alt="脑电帽与外骨骼适配测试现场" loading="lazy" decoding="async"><span class="shot__cap">BCI 测试现场</span></div>
         </article>
         <article class="hw__item" data-hw-item>
           <div class="hw__idx label">04</div>
-          <h3 class="zh">实时控制与数据采集</h3><h3 class="en">Real-time control and DAQ</h3>
+          <h3 class="zh">动作捕捉与测试</h3><h3 class="en">Motion capture and testing</h3>
           <dl>
-            <dt class="zh">控制器</dt><dt class="en">Controller</dt><dd><span class="ph">[ 待填 ]</span></dd>
-            <dt class="zh">控制周期</dt><dt class="en">Loop rate</dt><dd><span class="ph">[ 待填 ]</span></dd>
-            <dt class="zh">软件链</dt><dt class="en">Software</dt><dd><span class="ph">[ 待填 ]</span></dd>
+              <dt class="zh">设备</dt><dt class="en">Device</dt><dd>动作捕捉系统</dd>
+              <dt class="zh">用途</dt><dt class="en">Use</dt><dd>基础肢体动作采集</dd>
+              <dt class="zh">对象</dt><dt class="en">Subject</dt><dd>样机适配测试</dd>
           </dl>
-          <div class="shot shot--16x9"><span>[ 硬件照片 04 · 待填 ]</span></div>
+          <div class="shot shot--16x9 shot--photo"><img src="assets/photos/tune.webp" alt="学生调试外骨骼样机" loading="lazy" decoding="async"><span class="shot__cap">样机调试</span></div>
         </article>
       </div>
     </div>
@@ -834,15 +840,17 @@ html[data-file] .exo-noserve{display:grid}
   var nameEl=document.querySelector("[data-rname]");
   var hwSec=document.querySelector("[data-hw]");
   var turn=document.querySelector("img[data-turn]");
+  var angleEl=document.querySelector("[data-angle]");
+  var turnBar=document.querySelector("[data-turn-bar]");
   var hwItems=Array.prototype.slice.call(document.querySelectorAll("[data-hw-item]"));
   var strip=document.querySelector(".strip");
   var rail=document.querySelector("[data-rail]");
   var sections=Array.prototype.slice.call(document.querySelectorAll("main > section"));
   var NAME={hero:"首屏",model:"三维模型",research:"研究内容",metrics:"成果数据",hardware:"实验硬件",album:"活动相册",events:"重要事件",team:"团队成员",join:"加入我们"};
 
-  /* 36 frames, 10 degrees apart; only the first six load eagerly. */
+  /* 36 frames, 10 degrees apart, rendered with the metal studio finish. */
   var FRAMES=[];
-  for(var i=0;i<36;i++){FRAMES.push("assets/exo-turn-"+(i<10?"0":"")+i+".webp");}
+  for(var i=0;i<36;i++){FRAMES.push("assets/studio-turn-"+(i<10?"0":"")+i+".webp");}
   var frame=-1, warmed=false;
   function warm(){
     if(warmed) return; warmed=true;
@@ -857,6 +865,7 @@ html[data-file] .exo-noserve{display:grid}
 
   function paint(){
     raf=null;
+    try{
     var vh=window.innerHeight||800, top=window.pageYOffset||doc.scrollTop||0;
     var max=Math.max(1,doc.scrollHeight-vh);
 
@@ -873,12 +882,19 @@ html[data-file] .exo-noserve{display:grid}
 
     if(hwSec&&turn&&!reduce){
       var hr=hwSec.getBoundingClientRect();
-      var span=hr.height-vh*0.6;
-      var q=span>0?(-hr.top+vh*0.3)/span:0;
-      show(Math.round(Math.min(1,Math.max(0,q))*35));
-      if(!warmed&&hr.top<vh*1.2) warm();
-    }
-    if(hwItems.length){
+      var span=hr.height-vh*0.55;
+      var q=span>0?(-hr.top+vh*0.35)/span:0;
+      q=Math.min(1,Math.max(0,q));
+      show(Math.round(q*35));
+      if(angleEl){
+        var deg=String(Math.round(q*359)).padStart(3,"0");
+        if(angleEl.textContent!==deg+"°") angleEl.textContent=deg+"°";
+      }
+      if(turnBar) turnBar.style.transform="scaleX("+q.toFixed(4)+")";
+      if(!warmed&&hr.top<vh*1.6) warm();
+      var slot=Math.min(3,Math.floor(q*4));
+      hwItems.forEach(function(el,k){el.classList.toggle("is-active",k===slot);});
+    } else if(hwItems.length){
       var best=null,bd=1e9;
       for(var j=0;j<hwItems.length;j++){
         var r=hwItems[j].getBoundingClientRect();
@@ -893,6 +909,7 @@ html[data-file] .exo-noserve{display:grid}
       rail.style.width=(w*100).toFixed(2)+"%";
       rail.style.transform="translateX("+((maxS>0?strip.scrollLeft/maxS:0)*((1-w)/w)*100).toFixed(2)+"%)";
     }
+    }catch(err){ if(!window.__paintErr){ window.__paintErr=String(err); } }
     if(running) raf=requestAnimationFrame(paint);   /* keep the frame chain alive */
   }
   var running=false;
@@ -919,6 +936,8 @@ html[data-file] .exo-noserve{display:grid}
   window.addEventListener("pagehide",park);
   window.addEventListener("pageshow",function(){ reduce?paint():loop(); });
   window.addEventListener("resize",function(){ reduce?paint():loop(); });
+  /* If the frame chain ever parks (tab hidden, occlusion), one scroll repaints the read-outs. */
+  window.addEventListener("scroll",function(){ if(raf===null) raf=requestAnimationFrame(paint); },{passive:true});
 })();
 </script>
 </body>
