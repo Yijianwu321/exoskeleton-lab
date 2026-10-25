@@ -288,9 +288,9 @@ header.nav,main,footer{position:relative;z-index:1}
 .shot--photo{position:relative;padding:0;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
 .shot--photo img{width:100%;height:100%;object-fit:cover;display:block}
 .hw__list{display:grid}
-.hw__item{display:grid;gap:14px;padding-block:clamp(26px,5vw,54px);border-top:1px solid var(--line);opacity:.52;transition:opacity .45s var(--ease)}
+.hw__item{display:grid;gap:14px;padding-block:clamp(26px,5vw,54px);border-top:1px solid var(--line);border-left:2px solid transparent;padding-left:16px;transition:border-color .45s var(--ease)}
 .hw__item:first-child{border-top:0;padding-top:0}
-.hw__item.is-active{opacity:1}
+.hw__item.is-active{border-left-color:var(--accent)}
 .hw__idx{color:var(--accent)}
 .hw__item h3{font-size:21px;line-height:1.45}
 .hw__item dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px 14px;margin:0;font-size:13px}
@@ -445,40 +445,40 @@ html[data-file] .exo-noserve{display:grid}
 <div class="exo-viewer" aria-label="肩部机构三维交互展示">
   <div class="exo-stage">
     <canvas class="exo-canvas" tabindex="0" aria-label="三维模型。拖动旋转，滚轮或双指缩放；键盘方向键旋转，加减键缩放，Home 复位。"></canvas>
-    <div class="exo-stage-head"><span class="exo-model-label">肩幅調整案2<br><span style="font-size:12px;font-weight:400;color:var(--exo-muted)">导入装配模型</span></span><span class="exo-status" data-status role="status">正在载入</span></div>
+    <div class="exo-stage-head"><span class="exo-model-label">肩幅調整案2<br><span style="font-size:12px;font-weight:400;color:var(--exo-muted)"><span class="zh">导入装配模型</span><span class="en">Imported assembly</span></span></span><span class="exo-status" data-status role="status">正在载入</span></div>
     <div class="exo-axis" aria-hidden="true"><svg viewBox="0 0 60 60"><path d="M25 37V7M25 37L50 48M25 37L5 50" fill="none" stroke="#496679" stroke-width="1"/><circle cx="25" cy="37" r="2" fill="#0a705b"/><text x="28" y="10">Y</text><text x="49" y="59">X</text><text x="1" y="59">Z</text></svg></div>
-    <p class="exo-hint">拖动旋转 · 滚轮 / 双指缩放<br>点击零件，查看名称</p>
+    <p class="exo-hint"><span class="zh">拖动旋转 · 滚轮 / 双指缩放</span><span class="en">Drag to rotate · wheel or pinch to zoom</span><br><span class="zh">点击零件，查看名称</span><span class="en">Click a part to see its name</span></p>
     <div class="exo-stage-buttons">
       <button class="exo-icon-button" data-zoom-in aria-label="放大" title="放大"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
       <button class="exo-icon-button" data-zoom-out aria-label="缩小" title="缩小"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
       <button class="exo-icon-button" data-fullscreen aria-label="全屏查看" title="全屏查看" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
     </div>
-    <div class="exo-loading" role="status"><div class="exo-loading-bar"><span></span></div><span data-loading-text>正在准备三维模型…</span></div>
+    <div class="exo-loading" role="status"><div class="exo-loading-bar"><span></span></div><span data-loading-text><span class="zh">正在准备三维模型…</span><span class="en">Preparing the model…</span></span></div>
   </div>
   <aside class="exo-panel" aria-label="模型显示控制">
-    <h3>肩部机构，<br>换个角度看。</h3>
-    <p class="exo-description">转动、靠近、展开。<br>从整体装配，看到每一处连接。</p>
+    <h3><span class="zh">肩部机构，<br>换个角度看。</span><span class="en">The shoulder unit,<br>from another angle.</span></h3>
+    <p class="exo-description"><span class="zh">转动、靠近、展开。<br>从整体装配，看到每一处连接。</span><span class="en">Rotate, zoom, separate.<br>From the assembly to every joint.</span></p>
     <div class="exo-field">
-      <p class="exo-field-title">观察视角</p>
+      <p class="exo-field-title"><span class="zh">观察视角</span><span class="en">View</span></p>
       <div class="exo-segment" role="group" aria-label="观察视角">
-        <button data-view="perspective" aria-pressed="true">透视</button><button data-view="front" aria-pressed="false">正面</button><button data-view="side" aria-pressed="false">侧面</button><button data-view="back" aria-pressed="false">背面</button>
+        <button data-view="perspective" aria-pressed="true"><span class="zh">透视</span><span class="en">Perspective</span></button><button data-view="front" aria-pressed="false"><span class="zh">正面</span><span class="en">Front</span></button><button data-view="side" aria-pressed="false"><span class="zh">侧面</span><span class="en">Side</span></button><button data-view="back" aria-pressed="false"><span class="zh">背面</span><span class="en">Back</span></button>
       </div>
     </div>
     <div class="exo-field">
-      <p class="exo-field-title">显示方式</p>
-      <div class="exo-segment" role="group" aria-label="显示方式"><button data-mode="solid" aria-pressed="true">实体材质</button><button data-mode="wire" aria-pressed="false">结构线框</button></div>
+      <p class="exo-field-title"><span class="zh">显示方式</span><span class="en">Display</span></p>
+      <div class="exo-segment" role="group" aria-label="显示方式"><button data-mode="solid" aria-pressed="true"><span class="zh">实体材质</span><span class="en">Solid</span></button><button data-mode="wire" aria-pressed="false"><span class="zh">结构线框</span><span class="en">Wireframe</span></button></div>
     </div>
     <div class="exo-field">
-      <label class="exo-field-title" for="exo-explode">展开结构 <output data-spread for="exo-explode">0%</output></label>
+      <label class="exo-field-title" for="exo-explode"><span class="zh">展开结构</span><span class="en">Separate parts</span> <output data-spread for="exo-explode">0%</output></label>
       <input id="exo-explode" class="exo-range" data-explode type="range" min="0" max="100" value="0" step="1">
-      <div class="exo-range-labels"><span>完整装配</span><span>分离示意</span></div>
+      <div class="exo-range-labels"><span><span class="zh">完整装配</span><span class="en">Assembled</span></span><span><span class="zh">分离示意</span><span class="en">Exploded</span></span></div>
       <div class="exo-controls-row">
         <button class="exo-toggle" data-auto aria-pressed="false"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M15.5 6A6.5 6.5 0 1 0 16 13M15.5 2v4H11"/></svg><span>自动旋转</span></button>
-        <button class="exo-reset" data-reset><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5a7 7 0 1 1-1.5 7M5 1v4h4"/></svg>复位</button>
+        <button class="exo-reset" data-reset><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5a7 7 0 1 1-1.5 7M5 1v4h4"/></svg><span class="zh">复位</span><span class="en">Reset</span></button>
       </div>
     </div>
-    <div class="exo-field"><p class="exo-field-title">零件观察</p><p class="exo-selection" data-selection aria-live="polite"><strong>点击模型中的任意零件</strong>查看导入文件中的零件名称。</p></div>
-    <p class="exo-provenance">模型：fea2肩幅調整案2.glb · 3.2 MB<br>用户提供的装配模型，仅作结构展示。<br>展开为示意分离，不表示实际拆装顺序。</p>
+    <div class="exo-field"><p class="exo-field-title"><span class="zh">零件观察</span><span class="en">Part inspection</span></p><p class="exo-selection" data-selection aria-live="polite"><strong><span class="zh">点击模型中的任意零件</span><span class="en">Click any part</span></strong><span class="zh">查看导入文件中的零件名称。</span><span class="en">See the part name from the source file.</span></p></div>
+    <p class="exo-provenance"><span class="zh">模型：</span><span class="en">Model: </span>fea2肩幅調整案2.glb · 3.2 MB<br><span class="zh">用户提供的装配模型，仅作结构展示。</span><span class="en">A user-supplied assembly, shown for structure only.</span><br><span class="zh">展开为示意分离，不表示实际拆装顺序。</span><span class="en">Separation is illustrative, not an assembly sequence.</span></p>
   </aside>
 </div>
 <div class="exo-noserve">
@@ -606,41 +606,41 @@ html[data-file] .exo-noserve{display:grid}
           <div class="hw__idx label">01</div>
           <h3 class="zh">上肢助力外骨骼（第三代）</h3><h3 class="en">Upper-limb exoskeleton, 3rd gen</h3>
           <dl>
-              <dt class="zh">自重</dt><dt class="en">Mass</dt><dd>5.1 kg（不含电池）</dd>
+              <dt class="zh">自重</dt><dt class="en">Mass</dt><dd><span class="zh">5.1 kg（不含电池）</span><span class="en">5.1 kg (excl. battery)</span></dd>
               <dt class="zh">助力</dt><dt class="en">Assist</dt><dd>50%</dd>
-              <dt class="zh">托举</dt><dt class="en">Lift</dt><dd>双臂 25 kg 至 1.8 m</dd>
+              <dt class="zh">托举</dt><dt class="en">Lift</dt><dd><span class="zh">双臂 25 kg 至 1.8 m</span><span class="en">25 kg to 1.8 m, both arms</span></dd>
           </dl>
-          <div class="shot shot--16x9 shot--photo"><img src="assets/photos/wear-front.webp" alt="第三代上肢助力外骨骼穿戴状态" loading="lazy" decoding="async"><span class="shot__cap">上肢外骨骼穿戴状态</span></div>
+          <div class="shot shot--16x9 shot--photo"><img src="assets/photos/wear-front.webp" alt="第三代上肢助力外骨骼穿戴状态" loading="lazy" decoding="async"><span class="shot__cap"><span class="zh">上肢外骨骼穿戴状态</span><span class="en">Upper-limb unit, worn</span></span></div>
         </article>
         <article class="hw__item" data-hw-item>
           <div class="hw__idx label">02</div>
           <h3 class="zh">腰部助力外骨骼</h3><h3 class="en">Waist assistive exoskeleton</h3>
           <dl>
               <dt class="zh">助力</dt><dt class="en">Assist</dt><dd>50%</dd>
-              <dt class="zh">举升</dt><dt class="en">Lift</dt><dd>辅助举起 30 kg</dd>
-              <dt class="zh">控制</dt><dt class="en">Control</dt><dd>导纳—PID 双闭环</dd>
+              <dt class="zh">举升</dt><dt class="en">Lift</dt><dd><span class="zh">辅助举起 30 kg</span><span class="en">Assists a 30 kg lift</span></dd>
+              <dt class="zh">控制</dt><dt class="en">Control</dt><dd><span class="zh">导纳—PID 双闭环</span><span class="en">Admittance–PID, dual loop</span></dd>
           </dl>
-          <div class="shot shot--16x9"><span>[ 腰部外骨骼照片 · 待填 ]</span></div>
+          <div class="shot shot--16x9"><span><span class="zh">[ 腰部外骨骼照片 · 待填 ]</span><span class="en">[ Waist unit photo · pending ]</span></span></div>
         </article>
         <article class="hw__item" data-hw-item>
           <div class="hw__idx label">03</div>
           <h3 class="zh">脑机接口采集与解码</h3><h3 class="en">BCI acquisition and decoding</h3>
           <dl>
-              <dt class="zh">采集</dt><dt class="en">Acquire</dt><dd>非侵入式脑电帽 + 肌电测试仪</dd>
-              <dt class="zh">解码</dt><dt class="en">Decode</dt><dd>运动意图实时连续解码</dd>
-              <dt class="zh">阶段</dt><dt class="en">Stage</dt><dd>前期适配研究</dd>
+              <dt class="zh">采集</dt><dt class="en">Acquire</dt><dd><span class="zh">非侵入式脑电帽 + 肌电测试仪</span><span class="en">Non-invasive EEG cap + EMG</span></dd>
+              <dt class="zh">解码</dt><dt class="en">Decode</dt><dd><span class="zh">运动意图实时连续解码</span><span class="en">Real-time continuous intent decoding</span></dd>
+              <dt class="zh">阶段</dt><dt class="en">Stage</dt><dd><span class="zh">前期适配研究</span><span class="en">Early-stage adaptation study</span></dd>
           </dl>
-          <div class="shot shot--16x9 shot--photo"><img src="assets/photos/bci-talk.webp" alt="脑电帽与外骨骼适配测试现场" loading="lazy" decoding="async"><span class="shot__cap">BCI 测试现场</span></div>
+          <div class="shot shot--16x9 shot--photo"><img src="assets/photos/bci-talk.webp" alt="脑电帽与外骨骼适配测试现场" loading="lazy" decoding="async"><span class="shot__cap"><span class="zh">BCI 测试现场</span><span class="en">BCI test session</span></span></div>
         </article>
         <article class="hw__item" data-hw-item>
           <div class="hw__idx label">04</div>
           <h3 class="zh">动作捕捉与测试</h3><h3 class="en">Motion capture and testing</h3>
           <dl>
-              <dt class="zh">设备</dt><dt class="en">Device</dt><dd>动作捕捉系统</dd>
-              <dt class="zh">用途</dt><dt class="en">Use</dt><dd>基础肢体动作采集</dd>
-              <dt class="zh">对象</dt><dt class="en">Subject</dt><dd>样机适配测试</dd>
+              <dt class="zh">设备</dt><dt class="en">Device</dt><dd><span class="zh">动作捕捉系统</span><span class="en">Motion-capture system</span></dd>
+              <dt class="zh">用途</dt><dt class="en">Use</dt><dd><span class="zh">基础肢体动作采集</span><span class="en">Basic limb-motion capture</span></dd>
+              <dt class="zh">对象</dt><dt class="en">Subject</dt><dd><span class="zh">样机适配测试</span><span class="en">Prototype fit testing</span></dd>
           </dl>
-          <div class="shot shot--16x9 shot--photo"><img src="assets/photos/tune.webp" alt="学生调试外骨骼样机" loading="lazy" decoding="async"><span class="shot__cap">样机调试</span></div>
+          <div class="shot shot--16x9 shot--photo"><img src="assets/photos/tune.webp" alt="学生调试外骨骼样机" loading="lazy" decoding="async"><span class="shot__cap"><span class="zh">样机调试</span><span class="en">Bench tuning</span></span></div>
         </article>
       </div>
     </div>
@@ -660,13 +660,13 @@ html[data-file] .exo-noserve{display:grid}
       <span class="shead__hint en">Open the gallery page</span>
     </div>
     <div class="album__grid">
-      <div class="shot shot--16x9 a1"><span>[ 相册 01 · 样机调试 · 待填 ]</span></div>
-      <div class="shot shot--16x9 a2"><span>[ 相册 02 · 待填 ]</span></div>
-      <div class="shot shot--4x3 a3"><span>[ 相册 03 · 待填 ]</span></div>
-      <div class="shot shot--4x3 a4"><span>[ 相册 04 · 待填 ]</span></div>
-      <div class="shot shot--4x3 a5"><span>[ 相册 05 · 待填 ]</span></div>
-      <div class="shot shot--16x9 a6"><span>[ 相册 06 · 学术会议 · 待填 ]</span></div>
-      <div class="shot shot--16x9 a7"><span>[ 相册 07 · 团队合影 · 待填 ]</span></div>
+      <div class="shot shot--16x9 a1"><span><span class="zh">[ 相册 01 · 样机调试 · 待填 ]</span><span class="en">[ Gallery 01 · bench tuning · pending ]</span></span></div>
+      <div class="shot shot--16x9 a2"><span><span class="zh">[ 相册 02 · 待填 ]</span><span class="en">[ Gallery 02 · pending ]</span></span></div>
+      <div class="shot shot--4x3 a3"><span><span class="zh">[ 相册 03 · 待填 ]</span><span class="en">[ Gallery 03 · pending ]</span></span></div>
+      <div class="shot shot--4x3 a4"><span><span class="zh">[ 相册 04 · 待填 ]</span><span class="en">[ Gallery 04 · pending ]</span></span></div>
+      <div class="shot shot--4x3 a5"><span><span class="zh">[ 相册 05 · 待填 ]</span><span class="en">[ Gallery 05 · pending ]</span></span></div>
+      <div class="shot shot--16x9 a6"><span><span class="zh">[ 相册 06 · 学术会议 · 待填 ]</span><span class="en">[ Gallery 06 · conference · pending ]</span></span></div>
+      <div class="shot shot--16x9 a7"><span><span class="zh">[ 相册 07 · 团队合影 · 待填 ]</span><span class="en">[ Gallery 07 · team photo · pending ]</span></span></div>
     </div>
   </div>
 </section>
@@ -683,22 +683,22 @@ html[data-file] .exo-noserve{display:grid}
     </div>
     <div class="tl">
       <div class="tl__row">
-        <div class="tl__year"><span class="ph">[ 年份 ]</span></div>
+        <div class="tl__year"><span class="ph"><span class="zh">[ 年份 ]</span><span class="en">[ year ]</span></span></div>
         <div><h3 class="zh"><span class="ph">[ 事件标题待填 ]</span></h3><h3 class="en"><span class="ph">[ event title TBC ]</span></h3>
           <p class="zh"><span class="ph">[ 一句话说明 ]</span></p><p class="en"><span class="ph">[ one-line note ]</span></p></div>
       </div>
       <div class="tl__row">
-        <div class="tl__year"><span class="ph">[ 年份 ]</span></div>
+        <div class="tl__year"><span class="ph"><span class="zh">[ 年份 ]</span><span class="en">[ year ]</span></span></div>
         <div><h3 class="zh"><span class="ph">[ 事件标题待填 ]</span></h3><h3 class="en"><span class="ph">[ event title TBC ]</span></h3>
           <p class="zh"><span class="ph">[ 一句话说明 ]</span></p><p class="en"><span class="ph">[ one-line note ]</span></p></div>
       </div>
       <div class="tl__row">
-        <div class="tl__year"><span class="ph">[ 年份 ]</span></div>
+        <div class="tl__year"><span class="ph"><span class="zh">[ 年份 ]</span><span class="en">[ year ]</span></span></div>
         <div><h3 class="zh"><span class="ph">[ 事件标题待填 ]</span></h3><h3 class="en"><span class="ph">[ event title TBC ]</span></h3>
           <p class="zh"><span class="ph">[ 一句话说明 ]</span></p><p class="en"><span class="ph">[ one-line note ]</span></p></div>
       </div>
       <div class="tl__row">
-        <div class="tl__year"><span class="ph">[ 年份 ]</span></div>
+        <div class="tl__year"><span class="ph"><span class="zh">[ 年份 ]</span><span class="en">[ year ]</span></span></div>
         <div><h3 class="zh"><span class="ph">[ 事件标题待填 ]</span></h3><h3 class="en"><span class="ph">[ event title TBC ]</span></h3>
           <p class="zh"><span class="ph">[ 一句话说明 ]</span></p><p class="en"><span class="ph">[ one-line note ]</span></p></div>
       </div>
@@ -775,14 +775,14 @@ html[data-file] .exo-noserve{display:grid}
     </div>
     <div class="join__grid">
       <dl class="contacts">
-        <div class="crow"><dt class="zh">微信</dt><dt class="en">WeChat</dt><dd><span class="ph">[ 微信号待填 ]</span></dd></div>
-        <div class="crow"><dt class="zh">邮箱</dt><dt class="en">Email</dt><dd><span class="ph">[ 邮箱地址待填 ]</span></dd></div>
-        <div class="crow"><dt class="zh">电话</dt><dt class="en">Phone</dt><dd><span class="ph">[ 联系电话待填 ]</span></dd></div>
+        <div class="crow"><dt class="zh">微信</dt><dt class="en">WeChat</dt><dd><span class="ph"><span class="zh">[ 微信号待填 ]</span><span class="en">[ WeChat ID pending ]</span></span></dd></div>
+        <div class="crow"><dt class="zh">邮箱</dt><dt class="en">Email</dt><dd><span class="ph"><span class="zh">[ 邮箱地址待填 ]</span><span class="en">[ email pending ]</span></span></dd></div>
+        <div class="crow"><dt class="zh">电话</dt><dt class="en">Phone</dt><dd><span class="ph"><span class="zh">[ 联系电话待填 ]</span><span class="en">[ phone pending ]</span></span></dd></div>
         <div class="crow"><dt class="zh">地址</dt><dt class="en">Address</dt><dd><span class="zh">深圳市坪山区 深圳技术大学 <span class="ph">[ 具体楼栋房间待填 ]</span></span><span class="en">SZTU, Pingshan District, Shenzhen <span class="ph">[ building and room TBC ]</span></span></dd></div>
         <div class="crow"><dt class="zh">招收对象</dt><dt class="en">Open to</dt><dd><span class="zh">本科生 / 研究生 <span class="ph">[ 具体要求待填 ]</span></span><span class="en">Undergrad / graduate students <span class="ph">[ requirements TBC ]</span></span></dd></div>
       </dl>
       <div class="qrwrap">
-        <div class="qr"><span>[ 二维码占位 · 微信或咨询群 ]</span></div>
+        <div class="qr"><span><span class="zh">[ 二维码占位 · 微信或咨询群 ]</span><span class="en">[ QR slot · WeChat or group ]</span></span></div>
         <p class="zh">把实验室的微信二维码或咨询群二维码图片放到这里。</p>
         <p class="en">Drop the lab's WeChat QR code or group code into this slot.</p>
       </div>
@@ -796,7 +796,7 @@ html[data-file] .exo-noserve{display:grid}
   <div class="wrap foot">
     <span class="zh">深圳技术大学 中德智能制造学院 · 外骨骼实验室</span>
     <span class="en">Exoskeleton Laboratory · Sino-German College of Intelligent Manufacturing, SZTU</span>
-    <span>© <span class="ph">[ 年份 ]</span></span>
+    <span>© <span class="ph"><span class="zh">[ 年份 ]</span><span class="en">[ year ]</span></span></span>
   </div>
 </footer>
 
@@ -835,7 +835,8 @@ html[data-file] .exo-noserve{display:grid}
      the hardware turntable scrub and the team rail. No window scroll
      listener; the loop parks itself while the tab is hidden. */
   var doc=document.documentElement;
-  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var motionQ=window.matchMedia("(prefers-reduced-motion: reduce)");
+  var reduce=motionQ.matches;
   var raf=null;
 
   var bar=document.querySelector("[data-rbar]");
@@ -850,20 +851,36 @@ html[data-file] .exo-noserve{display:grid}
   var rail=document.querySelector("[data-rail]");
   var sections=Array.prototype.slice.call(document.querySelectorAll("main > section"));
   var NAME={hero:"首屏",model:"三维模型",research:"研究内容",metrics:"成果数据",hardware:"实验硬件",album:"活动相册",events:"重要事件",team:"团队成员",join:"加入我们"};
+  var NAME_EN={hero:"Top",model:"3D model",research:"Research",metrics:"Results",hardware:"Hardware",album:"Gallery",events:"Milestones",team:"Team",join:"Join us"};
 
   /* 36 frames, 10 degrees apart, rendered with the metal studio finish. */
   var FRAMES=[];
   for(var i=0;i<36;i++){FRAMES.push("assets/studio-turn-"+(i<10?"0":"")+i+".webp");}
-  var frame=-1, warmed=false;
+  var frame=0, warmed=false, images=[], mobileTime=0;
   function warm(){
     if(warmed) return; warmed=true;
-    FRAMES.slice(6).forEach(function(src,k){
-      setTimeout(function(){var im=new Image(); im.src=src;}, 220*(k+1));
+    FRAMES.forEach(function(src,n){
+      var im=document.createElement("img");
+      im.setAttribute("data-turn","");
+      im.setAttribute("alt","");
+      im.setAttribute("decoding","async");
+      im.width=900; im.height=900;
+      /* Mark on load; decode() alone can reject and leave a frame locked forever. */
+      im.addEventListener("load",function(){ im.dataset.decoded="true"; },{once:true});
+      im.src=src;
+      images[n]=im;
     });
   }
   function show(n){
-    if(!turn||n===frame) return;
-    frame=n; turn.src=FRAMES[n];
+    if(!turn) return false;
+    if(n===frame) return true;
+    warm();
+    var next=images[n];
+    if(!next||next.dataset.decoded!=="true") return false;
+    turn.replaceWith(next); turn=next; frame=n;
+    if(angleEl) angleEl.textContent=String(n*10).padStart(3,"0")+"°";
+    if(turnBar) turnBar.style.transform="scaleX("+(n/35).toFixed(4)+")";
+    return true;
   }
 
   function paint(){
@@ -879,7 +896,8 @@ html[data-file] .exo-noserve{display:grid}
       for(var s=0;s<sections.length;s++){
         if(sections[s].getBoundingClientRect().top<=vh*0.42) cur=sections[s];
       }
-      var label=NAME[cur.id||"hero"]||"";
+      var map=(document.documentElement.getAttribute("data-lang")==="en")?NAME_EN:NAME;
+      var label=map[cur.id||"hero"]||"";
       if(nameEl.textContent!==label) nameEl.textContent=label;
     }
 
@@ -887,14 +905,13 @@ html[data-file] .exo-noserve{display:grid}
       var hr=hwSec.getBoundingClientRect();
       if(mobileQ.matches){
         /* Phones: the stage no longer sticks, so it spins on its own while visible. */
-        if(hr.top<vh&&hr.bottom>0){
-          var t=Math.floor(performance.now()/150)%36;
-          show(t);
-          var d2=String(t*10).padStart(3,"0")+"°";
-          if(angleEl&&angleEl.textContent!==d2) angleEl.textContent=d2;
-          if(turnBar) turnBar.style.transform="scaleX("+(t/35).toFixed(3)+")";
+        var sr=turn.getBoundingClientRect();
+        if(sr.top<vh&&sr.bottom>0){
           if(!warmed) warm();
-        }
+          var now=performance.now();
+          if(!mobileTime) mobileTime=now;
+          if(now-mobileTime>=150){ show((frame+1)%36); mobileTime=now; }
+        } else mobileTime=0;
         var slotM=Math.min(3,Math.floor(Math.min(1,Math.max(0,(-hr.top+vh*0.2)/Math.max(1,hr.height-vh*0.2)))*4));
         hwItems.forEach(function(el,k){el.classList.toggle("is-active",k===slotM);});
       } else {
@@ -902,11 +919,6 @@ html[data-file] .exo-noserve{display:grid}
       var q=span>0?(-hr.top+vh*0.35)/span:0;
       q=Math.min(1,Math.max(0,q));
       show(Math.round(q*35));
-      if(angleEl){
-        var deg=String(Math.round(q*359)).padStart(3,"0");
-        if(angleEl.textContent!==deg+"°") angleEl.textContent=deg+"°";
-      }
-      if(turnBar) turnBar.style.transform="scaleX("+q.toFixed(4)+")";
       if(!warmed&&hr.top<vh*1.6) warm();
       var slot=Math.min(3,Math.floor(q*4));
       hwItems.forEach(function(el,k){el.classList.toggle("is-active",k===slot);});
@@ -946,10 +958,14 @@ html[data-file] .exo-noserve{display:grid}
     grow.forEach(function(el){ gio.observe(el); });
   }
 
-  if(reduce){ show(6); paint(); }
+  if(reduce){ paint(); }
   else{ loop(); }
 
-  document.addEventListener("visibilitychange",function(){ document.hidden?park():loop(); });
+  motionQ.addEventListener("change",function(){
+    reduce=motionQ.matches; mobileTime=0;
+    if(reduce){park();paint();}else if(!document.hidden) loop();
+  });
+  document.addEventListener("visibilitychange",function(){ mobileTime=0; document.hidden?park():(reduce?paint():loop()); });
   window.addEventListener("pagehide",park);
   window.addEventListener("pageshow",function(){ reduce?paint():loop(); });
   window.addEventListener("resize",function(){ reduce?paint():loop(); });

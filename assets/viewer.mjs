@@ -7,6 +7,31 @@ import { mergeGeometries } from './vendor/BufferGeometryUtils.js';
 
 const root = document.querySelector('.exo-viewer');
 const $ = (s) => root.querySelector(s);
+/* UI strings follow the page language; the toggle only flips data-lang. */
+const STR = {
+  loading:   ['正在载入', 'Loading'],
+  ready:     ['可交互', 'Interactive'],
+  failed:    ['暂时无法显示', 'Unavailable'],
+  preparing: ['正在准备三维模型…', 'Preparing the model…'],
+  localOnly: ['请运行同目录的“启动预览.cmd”，通过本地预览打开三维模型。', 'Run the preview launcher in this folder to open the model over a local server.'],
+  loadFailed:['三维模型加载失败。请刷新重试，或检查浏览器是否支持 WebGL。', 'The model failed to load. Reload, or check WebGL support.'],
+  autoOn:    ['暂停旋转', 'Pause rotation'],
+  autoOff:   ['自动旋转', 'Auto rotate'],
+  pick:      ['点击模型中的任意零件', 'Click any part'],
+  pickHint:  ['查看导入文件中的零件名称。', ' to see the part name from the source file.'],
+  picked:    ['已选中 · 名称来自原始装配文件', 'Selected · name from the source file']
+};
+const lang = () => (document.documentElement.dataset.lang === 'en' ? 1 : 0);
+const t = (k) => STR[k][lang()];
+let uiState = 'loading';
+function paintStrings() {
+  status.textContent = t(uiState);
+  const lt = loading.querySelector('[data-loading-text]');
+  if (lt) lt.textContent = location.protocol === 'file:' ? t('localOnly') : t(uiState === 'failed' ? 'loadFailed' : 'preparing');
+  setAuto(auto);
+  if (!selected) $('[data-selection]').innerHTML = '<strong>' + t('pick') + '</strong>' + t('pickHint');
+}
+
 const stage = $('.exo-stage');
 const canvas = $('.exo-canvas');
 const loading = $('.exo-loading');
@@ -26,12 +51,11 @@ window.exoDiagnostics = diagnostics;
 
 function fail(error) {
   diagnostics.error = String(error?.message || error);
-  status.textContent = '暂时无法显示';
+  uiState = 'failed';
+  status.textContent = t('failed');
   loading.hidden = false;
   loading.querySelector('.exo-loading-bar')?.remove();
-  loading.querySelector('[data-loading-text]').textContent = location.protocol === 'file:'
-    ? '请运行同目录的“启动预览.cmd”，通过本地预览打开三维模型。'
-    : '三维模型加载失败。请刷新重试，或检查浏览器是否支持 WebGL。';
+  loading.querySelector('[data-loading-text]').textContent = location.protocol === 'file:' ? t('localOnly') : t('loadFailed');
   console.error('EXO viewer:', error);
 }
 
@@ -52,10 +76,10 @@ function resize() {
 }
 
 function setAuto(value) {
-  auto = value;
-  controls.autoRotate = value;
-  $('[data-auto]').setAttribute('aria-pressed', String(value));
-  $('[data-auto] span').textContent = value ? '暂停旋转' : '自动旋转';
+  auto = value && !reducedMotion.matches;
+  controls.autoRotate = auto;
+  $('[data-auto]').setAttribute('aria-pressed', String(auto));
+  $('[data-auto] span').textContent = auto ? t('autoOn') : t('autoOff');
   requestFrame();
 }
 
@@ -63,7 +87,7 @@ function clearSelection() {
   if (selected) selected.material.emissive.copy(selected.userData.emissive);
   selected = null;
   diagnostics.selected = null;
-  $('[data-selection]').innerHTML = '<strong>点击模型中的任意零件</strong>查看导入文件中的零件名称。';
+  $('[data-selection]').innerHTML = '<strong>' + t('pick') + '</strong>' + t('pickHint');
 }
 
 function setView(name, instant = false) {
@@ -214,11 +238,12 @@ async function init() {
   const ring = new THREE.Mesh(new THREE.RingGeometry(1.45,1.455,96),new THREE.MeshBasicMaterial({color:0x87b1aa,transparent:true,opacity:.55,side:THREE.DoubleSide}));
   ring.rotation.x=-Math.PI/2;ring.position.y=floorY-.01;scene.add(ring);
 
-  ready=true;diagnostics.ready=true;
+  ready=true;diagnostics.ready=true;uiState='ready';
   controlsElements.forEach(el=>el.disabled=false);
-  loading.hidden=true;status.textContent='可交互';
+  loading.hidden=true;status.textContent=t('ready');
   resize();setView('perspective',true);
   new ResizeObserver(resize).observe(stage);
+  new MutationObserver(paintStrings).observe(document.documentElement,{attributes:true,attributeFilter:['data-lang']});
   new IntersectionObserver(entries=>{active=entries[0].isIntersecting;if(active){lastTime=0;requestFrame();}},{rootMargin:'100px'}).observe(stage);
   document.addEventListener('visibilitychange',()=>{lastTime=0;requestFrame();});
   reducedMotion.addEventListener('change',()=>{controls.enableDamping=!reducedMotion.matches;if(reducedMotion.matches){setAuto(false);viewTween=null;}requestFrame();});
@@ -265,7 +290,7 @@ async function init() {
     pointer.set((event.clientX-rect.left)/rect.width*2-1,-(event.clientY-rect.top)/rect.height*2+1);
     raycaster.setFromCamera(pointer,camera);
     const hit=raycaster.intersectObjects(meshes,false)[0];clearSelection();
-    if(hit){selected=hit.object;selected.material.emissive.set('#176c5a');diagnostics.selected=selected.name;const strong=document.createElement('strong');strong.textContent=selected.name;const detail=document.createTextNode('已选中 · 名称来自原始装配文件');$('[data-selection]').replaceChildren(strong,detail);}
+    if(hit){selected=hit.object;selected.material.emissive.set('#176c5a');diagnostics.selected=selected.name;const strong=document.createElement('strong');strong.textContent=selected.name;const detail=document.createTextNode(t('picked'));$('[data-selection]').replaceChildren(strong,detail);}
     requestFrame();
   });
   requestFrame();
