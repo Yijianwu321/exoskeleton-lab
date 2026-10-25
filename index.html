@@ -986,7 +986,7 @@ html[data-file] .exo-noserve{display:grid}
   if(mobileQ.addEventListener) mobileQ.addEventListener("change",function(){ mobileQ.matches?startSpin():stopSpin(); });
   window.addEventListener("resize",function(){ reduce?paint():loop(); });
   /* If the frame chain ever parks (tab hidden, occlusion), one scroll repaints the read-outs. */
-  window.addEventListener("scroll",function(){ if(raf===null) raf=requestAnimationFrame(paint); },{passive:true});
+  window.addEventListener("scroll",function(){ if(raf===null) raf=requestAnimationFrame(paint); if(!running&&!reduce) loop(); },{passive:true});
 })();
 </script>
 </body>
