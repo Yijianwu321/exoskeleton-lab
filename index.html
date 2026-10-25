@@ -279,6 +279,7 @@ header.nav,main,footer{position:relative;z-index:1}
   background:radial-gradient(115% 115% at 50% 18%,#F1F6FA 0%,#E7EFF6 52%,#DCE7EF 100%)}
 .hw__canvas img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
 .hw__tag{position:absolute;left:10px;top:9px;font:10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--txt-3);opacity:.9}
+.tag-m{display:none}
 .hw__angle{position:absolute;right:9px;bottom:8px;font:11px/1 var(--mono);font-variant-numeric:tabular-nums;color:var(--txt-2);
   background:rgba(255,255,255,.78);padding:4px 6px;border-radius:2px}
 .hw__track{position:relative;height:2px;background:var(--line);overflow:hidden}
@@ -338,8 +339,9 @@ html[data-file] .exo-noserve{display:grid}
 
 @media(max-width:1100px){
   .hw{grid-template-columns:1fr;gap:34px}
-  .hw__stage{top:calc(var(--nav-mobile-h) + 10px);z-index:2;background:var(--bg-2);padding-block:12px}
+  .hw__stage{position:static;z-index:auto;background:transparent;padding-block:0}
   .hw__frame{max-width:min(100%,52vh)}
+  .tag-d{display:none}.tag-m{display:inline}
 }
 @media(max-width:768px){
   .hero__strip img{height:140px}
@@ -592,7 +594,7 @@ html[data-file] .exo-noserve{display:grid}
           <div class="hw__canvas">
             <img data-turn src="assets/studio-turn-00.webp" width="900" height="900" decoding="async"
                  alt="模型渲染：肩幅调整案2 肩部装配机构，随页面滚动旋转">
-            <span class="hw__tag" aria-hidden="true">SCROLL · 360°</span>
+            <span class="hw__tag" aria-hidden="true"><span class="tag-d">SCROLL · 360°</span><span class="tag-m">AUTO · 360°</span></span>
             <span class="hw__angle" data-angle aria-hidden="true">000°</span>
           </div>
           <div class="hw__track" aria-hidden="true"><i data-turn-bar></i></div>
@@ -844,6 +846,7 @@ html[data-file] .exo-noserve{display:grid}
   var turnBar=document.querySelector("[data-turn-bar]");
   var hwItems=Array.prototype.slice.call(document.querySelectorAll("[data-hw-item]"));
   var strip=document.querySelector(".strip");
+  var mobileQ=window.matchMedia("(max-width:1100px)");
   var rail=document.querySelector("[data-rail]");
   var sections=Array.prototype.slice.call(document.querySelectorAll("main > section"));
   var NAME={hero:"首屏",model:"三维模型",research:"研究内容",metrics:"成果数据",hardware:"实验硬件",album:"活动相册",events:"重要事件",team:"团队成员",join:"加入我们"};
@@ -882,6 +885,19 @@ html[data-file] .exo-noserve{display:grid}
 
     if(hwSec&&turn&&!reduce){
       var hr=hwSec.getBoundingClientRect();
+      if(mobileQ.matches){
+        /* Phones: the stage no longer sticks, so it spins on its own while visible. */
+        if(hr.top<vh&&hr.bottom>0){
+          var t=Math.floor(performance.now()/150)%36;
+          show(t);
+          var d2=String(t*10).padStart(3,"0")+"°";
+          if(angleEl&&angleEl.textContent!==d2) angleEl.textContent=d2;
+          if(turnBar) turnBar.style.transform="scaleX("+(t/35).toFixed(3)+")";
+          if(!warmed) warm();
+        }
+        var slotM=Math.min(3,Math.floor(Math.min(1,Math.max(0,(-hr.top+vh*0.2)/Math.max(1,hr.height-vh*0.2)))*4));
+        hwItems.forEach(function(el,k){el.classList.toggle("is-active",k===slotM);});
+      } else {
       var span=hr.height-vh*0.55;
       var q=span>0?(-hr.top+vh*0.35)/span:0;
       q=Math.min(1,Math.max(0,q));
@@ -894,6 +910,7 @@ html[data-file] .exo-noserve{display:grid}
       if(!warmed&&hr.top<vh*1.6) warm();
       var slot=Math.min(3,Math.floor(q*4));
       hwItems.forEach(function(el,k){el.classList.toggle("is-active",k===slot);});
+      }
     } else if(hwItems.length){
       var best=null,bd=1e9;
       for(var j=0;j<hwItems.length;j++){

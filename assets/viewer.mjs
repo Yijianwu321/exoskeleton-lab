@@ -137,9 +137,9 @@ async function init() {
   environment = pmrem.fromScene(room,.04);
   scene.environment = environment.texture;
   room.dispose();pmrem.dispose();
-  scene.add(new THREE.HemisphereLight(0xe7f5ff,0x607876,.8));
-  const key = new THREE.DirectionalLight(0xffffff,2.4);key.position.set(3,6,5);scene.add(key);
-  const rim = new THREE.DirectionalLight(0xc9f3e5,1.5);rim.position.set(-3,2,-3);scene.add(rim);
+  scene.add(new THREE.HemisphereLight(0xeaf1f7,0x8a9095,.65));
+  const key = new THREE.DirectionalLight(0xfff6ee,2.3);key.position.set(4,6,4);scene.add(key);
+  const rim = new THREE.DirectionalLight(0xffdcc4,.95);rim.position.set(-3,2.5,-4);scene.add(rim);
 
   // All geometry and decoders are hosted beside the site. No remote assets.
   const draco = new DRACOLoader();
@@ -170,11 +170,11 @@ async function init() {
     const finishColor=originalColor.clone();
     // The pale CAD palette receives a slate-aluminium display finish. Original
     // part positions and geometry stay intact; this is not a material claim.
-    if(luminosity>.62)finishColor.set('#a9bcc6');
-    else if(luminosity>.3)finishColor.set('#597780');
-    else finishColor.multiplyScalar(.85);
-    if(/肩関節連結|アルミカップリング/.test(node.name))finishColor.set('#247c6b');
-    const mat=new THREE.MeshStandardMaterial({color:finishColor,metalness:.65,roughness:.38,envMapIntensity:.9,side:node.material.side,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
+    if(luminosity>.62)finishColor.set('#c3c7cb');
+    else if(luminosity>.3)finishColor.set('#878e95');
+    else finishColor.multiplyScalar(.92);
+    if(/肩関節連結|アルミカップリング/.test(node.name))finishColor.set('#d2693a');
+    const mat=new THREE.MeshStandardMaterial({color:finishColor,metalness:.9,roughness:.3,envMapIntensity:1.15,side:node.material.side,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
     const mesh = new THREE.Mesh(geometry,mat);
     mesh.name = node.name;
     const center = geometry.boundingBox.getCenter(new THREE.Vector3());
