@@ -813,6 +813,13 @@ html[data-file] .exo-noserve{display:grid}
   }
   btn.addEventListener("click",function(){
     apply(root.getAttribute("data-lang")==="zh" ? "en" : "zh");
+    /* the section read-out is JS-driven: refresh it here, the loop may be parked */
+    if(nameEl&&sections.length){
+      var cur=sections[0];
+      for(var i=0;i<sections.length;i++){ if(sections[i].getBoundingClientRect().top<=innerHeight*0.42) cur=sections[i]; }
+      var map=(root.getAttribute("data-lang")==="en")?NAME_EN:NAME;
+      nameEl.textContent=map[cur.id||"hero"]||"";
+    }
   });
 
   /* active section in nav */
@@ -876,8 +883,9 @@ html[data-file] .exo-noserve{display:grid}
     if(n===frame) return true;
     warm();
     var next=images[n];
-    if(!next||next.dataset.decoded!=="true") return false;
-    turn.replaceWith(next); turn=next; frame=n;
+    if(next&&next.dataset.decoded==="true"){ turn.replaceWith(next); turn=next; }
+    else { turn.src=FRAMES[n]; }   /* paint when it arrives instead of freezing the stage */
+    frame=n;
     if(angleEl) angleEl.textContent=String(n*10).padStart(3,"0")+"°";
     if(turnBar) turnBar.style.transform="scaleX("+(n/35).toFixed(4)+")";
     return true;
